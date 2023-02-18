@@ -1,0 +1,21 @@
+---
+import NavbarLink from "./navbar-link.astro";
+import SearchIcon from "./search-icon.astro";
+import ThemeIcon from "./theme-icon.astro";
+---
+
+<div class="bg-zinc-800 bg-opacity-50">
+  <div class="container mx-auto flex justify-between p-4 items-center">
+    <h1>Zachary Robinson</h1>
+    <nav class="flex gap-2">
+      <NavbarLink href="/">Home</NavbarLink>
+      <NavbarLink href="/about">About</NavbarLink>
+      <NavbarLink href="/blog">Blog</NavbarLink>
+      <NavbarLink href="/gallery">Gallery</NavbarLink>
+    </nav>
+    <div class="flex gap-2">
+      <SearchIcon />
+      <ThemeIcon />
+    </div>
+  </div>
+</div>

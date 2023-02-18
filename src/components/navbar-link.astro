@@ -5,8 +5,12 @@ export interface Props {
 
 const { href } = Astro.props;
 
-let active = Astro.url.pathname === href;
-if (Astro.url.pathname.startsWith("/blog") && href === "/blog") active = true;
+let active = false;
+if (href === "/" && Astro.url.pathname === "/") {
+  active = true;
+} else if (Astro.url.pathname.startsWith(href)) {
+  active = true;
+}
 ---
 
 <a

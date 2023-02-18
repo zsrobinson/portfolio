@@ -13,6 +13,7 @@ import ThemeIcon from "./theme-icon.astro";
       <NavbarLink href="/blog">Blog</NavbarLink>
       <NavbarLink href="/gallery">Gallery</NavbarLink>
     </nav>
+    <p>{Astro.url.pathname}</p>
     <div class="flex gap-2">
       <SearchIcon />
       <ThemeIcon />

@@ -1,8 +1,12 @@
 ---
+import getBlogPosts from "../db/getBlogPosts";
 import Root from "../layouts/root.astro";
+
+const posts = await getBlogPosts();
+const postIDs = posts.map((post) => post.id);
 ---
 
 <Root title="Astro Blog">
   <h2 class="text-2xl font-bold">Blog Route</h2>
-  <p>Hello World!</p>
+  <p>Post IDs: {JSON.stringify(postIDs)}</p>
 </Root>

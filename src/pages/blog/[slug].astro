@@ -15,7 +15,18 @@ const { post } = Astro.props as { post: BlogPost };
 ---
 
 <Root title={post.title}>
-  <h1>{post.title}</h1>
-  <p>{post.date}</p>
-  <div set:html={post.content} />
+  <h1 class="font-handwriting text-4xl">{post.title}</h1>
+  <p class="text-zinc-400">
+    {
+      new Date(post.date).toLocaleDateString("en-us", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    }
+  </p>
+  <div
+    set:html={post.content}
+    class="prose prose-invert prose-img:rounded-md"
+  />
 </Root>

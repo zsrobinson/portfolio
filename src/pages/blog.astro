@@ -3,10 +3,17 @@ import getBlogPosts from "../db/getBlogPosts";
 import Root from "../layouts/root.astro";
 
 const posts = await getBlogPosts();
-const postIDs = posts.map((post) => post.id);
 ---
 
 <Root title="Astro Blog">
-  <h2 class="text-2xl font-bold">Blog Route</h2>
-  <p>Post IDs: {JSON.stringify(postIDs)}</p>
+  <h2 class="text-2xl font-bold pb-2">Blog Posts</h2>
+  <ul class="list-disc list-inside ml-4">
+    {
+      posts.map((post) => (
+        <li class="pb-1">
+          <a href={`/blog/${post.slug}`}>{post.title}</a>
+        </li>
+      ))
+    }
+  </ul>
 </Root>

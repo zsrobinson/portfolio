@@ -8,9 +8,11 @@ export default function ThemeIcon() {
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
+      document.documentElement.style.setProperty("color-scheme", "dark");
       localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      document.documentElement.style.setProperty("color-scheme", "light");
       localStorage.setItem("theme", "light");
     }
   }, [darkMode]);

@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props as { post: BlogPost };
 ---
 
-<Root title={post.title}>
+<Root title={post.title + " · Zachary Robinson"}>
   <h1 class="font-handwriting text-4xl">{post.title}</h1>
   <p class="text-zinc-400">
     {
@@ -27,6 +27,6 @@ const { post } = Astro.props as { post: BlogPost };
   </p>
   <div
     set:html={post.content}
-    class="prose prose-invert prose-img:rounded-md"
+    class="prose prose-zinc dark:prose-invert prose-img:rounded-md"
   />
 </Root>

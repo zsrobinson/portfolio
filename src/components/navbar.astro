@@ -1,21 +1,38 @@
 ---
 import NavbarLink from "./navbar-link.astro";
 import SearchIcon from "./search-icon.astro";
-import ThemeIcon from "./theme-icon.astro";
+import ThemeIcon from "./theme-icon";
 ---
 
-<div class="bg-zinc-800 bg-opacity-50">
+<div
+  class="bg-zinc-200 dark:bg-zinc-800 dark:bg-opacity-50 border-b border-zinc-300 dark:border-zinc-700"
+>
   <div class="container mx-auto flex justify-between p-4 items-center">
-    <h1 class="font-handwriting text-2xl leading-none">Zachary Robinson</h1>
-    <nav class="flex gap-2">
+    <a href="/">
+      <h1 class="font-handwriting text-2xl leading-none">Zachary Robinson</h1>
+    </a>
+    <nav class="flex gap-2 absolute left-1/2 -translate-x-1/2">
       <NavbarLink href="/">Home</NavbarLink>
       <NavbarLink href="/about">About</NavbarLink>
       <NavbarLink href="/blog">Blog</NavbarLink>
       <NavbarLink href="/gallery">Gallery</NavbarLink>
     </nav>
     <div class="flex gap-2">
-      <SearchIcon />
-      <ThemeIcon />
+      <div class="w-6 h-6">
+        <SearchIcon />
+      </div>
+      <div class="w-6 h-6">
+        <ThemeIcon client:only="react" />
+
+        <noscript title="Please Enable Javascript to Switch Themes">
+          <!-- prettier-ignore -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-sun" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+            <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"></path>
+          </svg>
+        </noscript>
+      </div>
     </div>
   </div>
 </div>

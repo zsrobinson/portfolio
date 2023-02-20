@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function ThemeIcon() {
   const [darkMode, setDarkMode] = useState(
     document.documentElement.classList.contains("dark")
   );
 
-  useEffect(() => {
-    if (darkMode) {
+  const toggle = () => {
+    if (!darkMode) {
       document.documentElement.classList.add("dark");
       document.documentElement.style.setProperty("color-scheme", "dark");
       localStorage.setItem("theme", "dark");
@@ -15,13 +15,11 @@ export default function ThemeIcon() {
       document.documentElement.style.setProperty("color-scheme", "light");
       localStorage.setItem("theme", "light");
     }
-  }, [darkMode]);
+    setDarkMode(!darkMode);
+  };
 
   return (
-    <button
-      onClick={() => setDarkMode((x) => !x)}
-      aria-label="Toggle Between Light and Dark Theme"
-    >
+    <button onClick={toggle} aria-label="Toggle Between Light and Dark Theme">
       {darkMode ? (
         /* prettier-ignore */
         <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-sun" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">

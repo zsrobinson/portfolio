@@ -8,7 +8,7 @@
     "build": "npm run fetch && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "fetch": "npx ts-node --esm ./src/fetch.ts"
+    "fetch": "npx --yes ts-node@10.9.1 --esm ./src/fetch.ts"
   },
   "dependencies": {
     "@astrojs/react": "^2.0.2",

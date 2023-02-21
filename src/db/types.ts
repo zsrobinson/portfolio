@@ -10,6 +10,6 @@ export type BlogPost = {
   title: string;
   date: string;
   draft: boolean;
-  content: string;
+  markdown: string;
   slug: string;
 };

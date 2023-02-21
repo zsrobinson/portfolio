@@ -1,32 +1,31 @@
 ---
-import getBlogPosts from "../../db/getBlogPosts";
-import type { BlogPost } from "../../db/types";
+import { CollectionEntry, getCollection } from "astro:content";
 import Root from "../../layouts/root.astro";
 
 export async function getStaticPaths() {
-  const posts = await getBlogPosts();
+  const posts = await getCollection("blog");
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: { post },
   }));
 }
 
-const { post } = Astro.props as { post: BlogPost };
+const { post } = Astro.props as { post: CollectionEntry<"blog"> };
+const { Content } = await post.render();
 ---
 
-<Root title={post.title + " · Zachary Robinson"}>
-  <h1 class="font-handwriting text-4xl">{post.title}</h1>
+<Root title={post.data.title + " · Zachary Robinson"}>
+  <h1 class="font-handwriting text-4xl">{post.data.title}</h1>
   <p class="text-zinc-400">
     {
-      new Date(post.date).toLocaleDateString("en-us", {
+      post.data.date.toLocaleDateString("en-us", {
         year: "numeric",
         month: "long",
         day: "numeric",
       })
     }
   </p>
-  <!-- <div
-    set:html={post.content}
-    class="prose prose-zinc dark:prose-invert prose-img:rounded-md"
-  /> -->
+  <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">
+    <Content />
+  </div>
 </Root>

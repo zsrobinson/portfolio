@@ -1,7 +1,6 @@
 import * as dotenv from "dotenv";
 import * as fs from "fs";
 import * as path from "path";
-import type { BlogPost } from "./db/types";
 
 dotenv.config();
 const DB_URL = process.env.DB_URL as string;
@@ -32,6 +31,22 @@ if (!loginResponse.ok) throw new Error("Failed to authenticate with DB");
 const { token }: { token: string } = await loginResponse.json();
 
 console.log(" ✓  Authenticated with DB");
+
+type BlogPost = {
+  // PocketBase fields
+  id: string;
+  created: string;
+  updated: string;
+  collectionId: string;
+  collectionName: string;
+
+  // Custom fields
+  title: string;
+  date: string;
+  draft: boolean;
+  markdown: string;
+  slug: string;
+};
 
 console.log("... Fetching list of blog posts");
 

@@ -100,14 +100,16 @@ await Promise.all(
       `${DB_URL}/api/files/` +
       `${post.collectionId}/${post.id}/${post.markdown}`;
 
+    const extension = path.split(".").at(-1) as string;
+
     const response = await fetch(path);
     if (!response.ok)
       throw new Error(`HTTP Error ${response.status} from ${path}`);
 
     const text = await response.text();
-    fs.writeFileSync(`${BLOG_DIR}/${post.slug}.md`, text);
+    fs.writeFileSync(`${BLOG_DIR}/${post.slug}.${extension}`, text);
 
-    console.log(`      Saved ${post.slug}.md`);
+    console.log(`      Saved ${post.slug}.${extension}`);
   })
 );
 

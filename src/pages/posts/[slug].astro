@@ -1,0 +1,41 @@
+---
+import { CollectionEntry, getCollection } from "astro:content";
+import getBlogPostBySlug from "../../db/getBlogPostBySlug";
+import type { ExpandedBlogPost } from "../../db/types";
+import Root from "../../layouts/root.astro";
+
+export async function getStaticPaths() {
+  const files = await getCollection("posts");
+  return Promise.all(
+    files.map(async (file) => {
+      const post = await getBlogPostBySlug(file.slug);
+      return {
+        params: { slug: file.slug },
+        props: { file, post },
+      };
+    })
+  );
+}
+
+const { file, post } = Astro.props as {
+  file: CollectionEntry<"posts">;
+  post: ExpandedBlogPost;
+};
+const { Content } = await file.render();
+---
+
+<Root title={post.title + " · Zachary Robinson"}>
+  <h1 class="font-handwriting text-4xl">{post.title}</h1>
+  <p class="text-zinc-400">
+    {
+      new Date(post.date).toLocaleDateString("en-us", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    }
+  </p>
+  <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">
+    <Content />
+  </div>
+</Root>

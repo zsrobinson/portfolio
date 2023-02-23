@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import * as fs from "fs";
 import * as path from "path";
+import type { ExpandedBlogPost } from "./db/types";
 
 dotenv.config();
 const DB_URL = process.env.DB_URL as string;
@@ -8,7 +9,7 @@ const DB_AUTH_COLLECTION = process.env.DB_AUTH_COLLECTION as string;
 const DB_USERNAME = process.env.DB_USERNAME as string;
 const DB_PASSWORD = process.env.DB_PASSWORD as string;
 
-const BLOG_DIR = "./src/content/blog";
+const BLOG_DIR = "./src/content/posts";
 
 console.log("... Attempting to authenticate with DB");
 
@@ -32,26 +33,10 @@ const { token }: { token: string } = await loginResponse.json();
 
 console.log(" ✓  Authenticated with DB");
 
-type BlogPost = {
-  // PocketBase fields
-  id: string;
-  created: string;
-  updated: string;
-  collectionId: string;
-  collectionName: string;
-
-  // Custom fields
-  title: string;
-  date: string;
-  draft: boolean;
-  markdown: string;
-  slug: string;
-};
-
 console.log("... Fetching list of blog posts");
 
 const postsResponse = await fetch(
-  `${DB_URL}/api/collections/blog_posts/records?perPage=100`,
+  `${DB_URL}/api/collections/blog_posts/records?perPage=200&expand=tags`,
   {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -59,7 +44,7 @@ const postsResponse = await fetch(
   }
 );
 
-const postsJSON: { items: BlogPost[] } = await postsResponse.json();
+const postsJSON: { items: ExpandedBlogPost[] } = await postsResponse.json();
 
 console.log(" ✓  Number of blog posts: " + postsJSON.items.length);
 
@@ -100,14 +85,16 @@ await Promise.all(
       `${DB_URL}/api/files/` +
       `${post.collectionId}/${post.id}/${post.markdown}`;
 
+    const extension = path.split(".").at(-1) as string;
+
     const response = await fetch(path);
     if (!response.ok)
       throw new Error(`HTTP Error ${response.status} from ${path}`);
 
     const text = await response.text();
-    fs.writeFileSync(`${BLOG_DIR}/${post.slug}.md`, text);
+    fs.writeFileSync(`${BLOG_DIR}/${post.slug}.${extension}`, text);
 
-    console.log(`      Saved ${post.slug}.md`);
+    console.log(`      Saved ${post.slug}.${extension}`);
   })
 );
 

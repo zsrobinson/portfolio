@@ -1,8 +1,8 @@
 ---
-import { getCollection } from "astro:content";
+import getBlogPosts from "../db/getBlogPosts";
 import Root from "../layouts/root.astro";
 
-const posts = await getCollection("blog");
+const posts = await getBlogPosts();
 ---
 
 <Root title="Blog · Zachary Robinson">
@@ -11,7 +11,7 @@ const posts = await getCollection("blog");
     {
       posts.map((post) => (
         <li class="pb-1">
-          <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+          <a href={`/posts/${post.slug}`}>{post.title}</a>
         </li>
       ))
     }

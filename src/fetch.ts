@@ -8,7 +8,7 @@ const DB_AUTH_COLLECTION = process.env.DB_AUTH_COLLECTION as string;
 const DB_USERNAME = process.env.DB_USERNAME as string;
 const DB_PASSWORD = process.env.DB_PASSWORD as string;
 
-const BLOG_DIR = "./src/content/blog";
+const BLOG_DIR = "./src/content/posts";
 
 console.log("... Attempting to authenticate with DB");
 

@@ -1,5 +1,5 @@
 import PocketBase from "pocketbase";
-import type { ExtendedBlogPost } from "./types";
+import type { ExpandedBlogPost } from "./types";
 
 export default async function getBlogPosts() {
   const pb = new PocketBase(import.meta.env.DB_URL);
@@ -9,7 +9,7 @@ export default async function getBlogPosts() {
 
   const posts = await pb
     .collection("blog_posts")
-    .getFullList<ExtendedBlogPost>(200, {
+    .getFullList<ExpandedBlogPost>(200, {
       expand: "tags",
     });
 

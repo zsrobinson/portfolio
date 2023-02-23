@@ -1,4 +1,4 @@
-export type ExtendedBlogPost = {
+export type ExpandedBlogPost = {
   collectionId: string;
   collectionName: string;
   cover_image: string;

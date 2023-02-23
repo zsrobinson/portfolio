@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import * as fs from "fs";
 import * as path from "path";
+import type { ExpandedBlogPost } from "./db/types";
 
 dotenv.config();
 const DB_URL = process.env.DB_URL as string;
@@ -32,26 +33,10 @@ const { token }: { token: string } = await loginResponse.json();
 
 console.log(" ✓  Authenticated with DB");
 
-type BlogPost = {
-  // PocketBase fields
-  id: string;
-  created: string;
-  updated: string;
-  collectionId: string;
-  collectionName: string;
-
-  // Custom fields
-  title: string;
-  date: string;
-  draft: boolean;
-  markdown: string;
-  slug: string;
-};
-
 console.log("... Fetching list of blog posts");
 
 const postsResponse = await fetch(
-  `${DB_URL}/api/collections/blog_posts/records?perPage=100`,
+  `${DB_URL}/api/collections/blog_posts/records?perPage=200&expand=tags`,
   {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -59,7 +44,7 @@ const postsResponse = await fetch(
   }
 );
 
-const postsJSON: { items: BlogPost[] } = await postsResponse.json();
+const postsJSON: { items: ExpandedBlogPost[] } = await postsResponse.json();
 
 console.log(" ✓  Number of blog posts: " + postsJSON.items.length);
 

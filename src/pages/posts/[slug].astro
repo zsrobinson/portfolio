@@ -21,21 +21,34 @@ const { file, post } = Astro.props as {
   file: CollectionEntry<"posts">;
   post: ExpandedBlogPost;
 };
-const { Content } = await file.render();
+const { Content, remarkPluginFrontmatter } = await file.render();
 ---
 
 <Root title={post.title + " · Zachary Robinson"}>
-  <h1 class="font-handwriting text-4xl">{post.title}</h1>
-  <p class="text-zinc-400">
-    {
-      new Date(post.date).toLocaleDateString("en-us", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    }
-  </p>
+  <div class="mb-8">
+    <h1 class="font-handwriting text-4xl">{post.title}</h1>
+    <p class="text-zinc-400">
+      {
+        new Date(post.date).toLocaleDateString("en-us", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      } · {remarkPluginFrontmatter.minutesRead.split(" ")[0]} min · Zachary Robinson
+    </p>
+  </div>
   <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">
+    {
+      post.cover_image !== "" && (
+        <img
+          alt={post.cover_image_alt}
+          src={`${import.meta.env.DB_URL}/api/files/${post.collectionId}/${
+            post.id
+          }/${post.cover_image}`}
+          class="rounded-md"
+        />
+      )
+    }
     <Content />
   </div>
 </Root>

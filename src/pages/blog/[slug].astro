@@ -1,0 +1,39 @@
+---
+import { CollectionEntry, getCollection } from "astro:content";
+import Root from "../../layouts/root.astro";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}) satisfies GetStaticPaths;
+
+const { data, render } = Astro.props as CollectionEntry<"blog">;
+const { Content, remarkPluginFrontmatter } = await render();
+---
+
+<Root title={data.title + " · Zachary Robinson"}>
+  <div class="mb-8">
+    <h1 class="font-handwriting text-4xl">{data.title}</h1>
+    <p class="text-zinc-400">
+      {
+        new Date(data.date).toLocaleDateString("en-us", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      } · {remarkPluginFrontmatter.minutesRead.split(" ")[0]} min · Zachary Robinson
+    </p>
+  </div>
+  <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">
+    {
+      data.heroAlt && data.heroSrc && (
+        <img alt={data.heroAlt} src={data.heroSrc} class="rounded-md" />
+      )
+    }
+    <Content />
+  </div>
+</Root>

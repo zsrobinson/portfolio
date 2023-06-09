@@ -3,12 +3,11 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "npm run fetch && astro dev",
-    "start": "npm run fetch && astro dev",
-    "build": "npm run fetch && astro build",
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "fetch": "npx --yes ts-node@10.9.1 --esm ./src/fetch.ts"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/react": "^2.2.1",

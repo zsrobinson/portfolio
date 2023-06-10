@@ -1,0 +1,25 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { formatDate } from "../utils";
+
+type Props = { post: CollectionEntry<"blog"> };
+const { post } = Astro.props;
+const { remarkPluginFrontmatter } = await post.render();
+---
+
+<a
+  class="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md p-4"
+  href={"/blog/" + post.slug}
+>
+  <div>
+    <p class="font-handwriting text-2xl">{post.data.title}</p>
+    <p class="text-zinc-600 dark:text-zinc-400 text-sm pb-2">
+      {formatDate(post.data.date)} · {
+        remarkPluginFrontmatter.minutesRead.split(" ")[0]
+      } minute read
+    </p>
+    <p class="text-zinc-600 dark:text-zinc-400 line-clamp-3 sm:line-clamp-5">
+      {post.body.split(" ").slice(0, 50).join(" ")}
+    </p>
+  </div>
+</a>

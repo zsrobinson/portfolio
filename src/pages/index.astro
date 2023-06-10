@@ -1,8 +1,21 @@
 ---
+import { getCollection } from "astro:content";
 import Root from "../layouts/root.astro";
+import BlogPostCard from "../components/blog-post-card.astro";
+
+let posts = await getCollection("blog");
+posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+posts = posts.slice(0, 6);
 ---
 
 <Root title="Zachary Robinson">
   <h2 class="text-2xl font-bold">Home Route</h2>
   <p>Hello World!</p>
+
+  <div class="my-8 flex flex-col">
+    <h2 class="text-3xl font-handwriting pb-4">Latest Blog Posts</h2>
+    <div class="flex flex-col sm:grid grid-cols-2 gap-4">
+      {posts.map((post) => <BlogPostCard post={post} />)}
+    </div>
+  </div>
 </Root>

@@ -1,15 +1,15 @@
 ---
 import { CollectionEntry, getCollection } from "astro:content";
 import Root from "../../layouts/root.astro";
-import type { GetStaticPaths } from "astro";
+import { formatDate } from "../../utils";
 
-export const getStaticPaths = (async () => {
+export async function getStaticPaths() {
   const posts = await getCollection("blog");
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: post,
   }));
-}) satisfies GetStaticPaths;
+}
 
 const { data, render } = Astro.props as CollectionEntry<"blog">;
 const { Content, remarkPluginFrontmatter } = await render();
@@ -20,17 +20,20 @@ const { Content, remarkPluginFrontmatter } = await render();
     class="h-96 w-full dark:bg-gradient-to-b from-zinc-900 to-transparent fixed top-0 left-0 -z-10"
   >
   </div>
-  <div class="mb-8">
+  <div class="mb-8 max-w-prose">
     <h1 class="font-handwriting text-4xl">{data.title}</h1>
-    <p class="text-zinc-400">
+    <div class="flex justify-between">
+      <p class="text-zinc-400">
+        {formatDate(data.date)} · {
+          remarkPluginFrontmatter.minutesRead.split(" ")[0]
+        } minute read
+      </p>
       {
-        new Date(data.date).toLocaleDateString("en-us", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
-      } · {remarkPluginFrontmatter.minutesRead.split(" ")[0]} min · Zachary Robinson
-    </p>
+        data.updatedDate && (
+          <p class="text-zinc-600">Updated {formatDate(data.updatedDate)}</p>
+        )
+      }
+    </div>
   </div>
   <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">
     {

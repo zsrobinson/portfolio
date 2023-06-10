@@ -1,0 +1,15 @@
+---
+export type Props = { href: string };
+const { href } = Astro.props;
+---
+
+<a
+  class="dark:bg-gradient-to-b from-zinc-900 to-zinc-900/50 rounded-md border border-zinc-300 dark:border-zinc-800 dark:hover:border-zinc-700 group overflow-hidden transition"
+  href={href}
+>
+  <div
+    class="bg-zinc-200 dark:bg-transparent dark:group-hover:bg-zinc-900 transition p-4 h-full"
+  >
+    <slot />
+  </div>
+</a>

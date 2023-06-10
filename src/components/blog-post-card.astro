@@ -1,27 +1,21 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { formatDate } from "../utils";
+import LinkCard from "./link-card.astro";
 
 type Props = { post: CollectionEntry<"blog"> };
 const { post } = Astro.props;
 const { remarkPluginFrontmatter } = await post.render();
 ---
 
-<a
-  class="dark:bg-gradient-to-b from-zinc-900 to-zinc-900/50 rounded-md border border-zinc-300 dark:border-zinc-800 dark:hover:border-zinc-700 group overflow-hidden transition"
-  href={"/blog/" + post.slug}
->
-  <div
-    class="bg-zinc-200 dark:bg-transparent dark:group-hover:bg-zinc-900 transition p-4 h-full"
-  >
-    <p class="font-handwriting text-2xl">{post.data.title}</p>
-    <p class="text-zinc-600 dark:text-zinc-400 text-sm pb-2">
-      {formatDate(post.data.date)} · {
-        remarkPluginFrontmatter.minutesRead.split(" ")[0]
-      } minute read
-    </p>
-    <p class="text-zinc-600 dark:text-zinc-400 line-clamp-3">
-      {post.body.split(" ").slice(0, 80).join(" ")}
-    </p>
-  </div>
-</a>
+<LinkCard href={`/blog/${post.slug}`}>
+  <p class="font-handwriting text-2xl">{post.data.title}</p>
+  <p class="text-zinc-600 dark:text-zinc-400 text-sm pb-2">
+    {formatDate(post.data.date)} · {
+      remarkPluginFrontmatter.minutesRead.split(" ")[0]
+    } minute read
+  </p>
+  <p class="text-zinc-600 dark:text-zinc-400 line-clamp-3">
+    {post.body.split(" ").slice(0, 80).join(" ")}
+  </p>
+</LinkCard>

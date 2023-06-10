@@ -1,0 +1,64 @@
+---
+import { IconBrandNextjs } from "@tabler/icons-react";
+import { githubRepoSchema } from "../schemas";
+import { formatDate } from "../utils";
+import LinkCard from "./link-card.astro";
+import { IconBrandTypescript } from "@tabler/icons-react";
+import { IconBrandTailwind } from "@tabler/icons-react";
+import { IconCode } from "@tabler/icons-react";
+import { IconBrandSvelte } from "@tabler/icons-react";
+import { IconBrandJavascript } from "@tabler/icons-react";
+import { IconRocket } from "@tabler/icons-react";
+import { IconBrandReact } from "@tabler/icons-react";
+
+export type Props = { name: string; project: string; tech?: string[] };
+const { name, project, tech } = Astro.props;
+
+const req = await fetch(`https://api.github.com/repos/${project}`);
+if (!req.ok) throw new Error(`Failed to fetch ${project}`);
+const json = (await req.json()) as unknown;
+const repo = githubRepoSchema.parse(json);
+---
+
+<LinkCard href={repo.html_url}>
+  <p class="font-handwriting text-2xl">{name}</p>
+  <p class="text-zinc-600 dark:text-zinc-400 text-sm pb-2">
+    Updated {formatDate(new Date(repo.updated_at))}
+    {
+      repo.stargazers_count > 1
+        ? ` · ${repo.stargazers_count} stars`
+        : repo.stargazers_count > 0
+        ? ` · ${repo.stargazers_count} star`
+        : ""
+    }
+  </p>
+  <p class="text-zinc-600 dark:text-zinc-400 line-clamp-3 pb-2">
+    {repo.description}
+  </p>
+  <div class="flex gap-2">
+    {
+      tech?.map((t) => (
+        <span class="text-zinc-600 dark:text-zinc-400 text-sm flex items-center gap-1">
+          {t === "Next.js" ? (
+            <IconBrandNextjs className="inline" size={18} />
+          ) : t === "TypeScript" ? (
+            <IconBrandTypescript className="inline" size={18} />
+          ) : t === "Astro" ? (
+            <IconRocket className="inline" size={18} />
+          ) : t === "React" ? (
+            <IconBrandReact className="inline" size={18} />
+          ) : t === "JavaScript" ? (
+            <IconBrandJavascript className="inline" size={18} />
+          ) : t === "Tailwind" ? (
+            <IconBrandTailwind className="inline" size={18} />
+          ) : t === "Svelte" ? (
+            <IconBrandSvelte className="inline" size={18} />
+          ) : (
+            <IconCode className="inline" size={18} />
+          )}
+          {t}
+        </span>
+      ))
+    }
+  </div>
+</LinkCard>

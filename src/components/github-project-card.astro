@@ -17,7 +17,7 @@ export type Props = { name: string; project: string; tech?: string[] };
 const { name, project, tech } = Astro.props;
 
 const req = await fetch(`https://api.github.com/repos/${project}`);
-if (!req.ok) return "Unable to fetch";
+if (!req.ok) throw new Error(`Failed to fetch ${project}`);
 const json = (await req.json()) as unknown;
 const repo = githubRepoSchema.parse(json);
 ---

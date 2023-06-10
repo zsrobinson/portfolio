@@ -1,19 +1,20 @@
 ---
+import BlogPostCard from "../components/blog-post-card.astro";
 import Root from "../layouts/root.astro";
 import { getCollection } from "astro:content";
 
 const posts = await getCollection("blog");
+posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <Root title="Blog · Zachary Robinson">
-  <h2 class="text-2xl font-bold pb-2">Blog Posts</h2>
-  <ul class="list-disc list-inside ml-4">
-    {
-      posts.map((post) => (
-        <li class="pb-1">
-          <a href={`/blog/${post.slug}`}>{post.data.title}</a>
-        </li>
-      ))
-    }
-  </ul>
+  <div class="my-8 flex flex-col">
+    <h2 class="text-3xl font-handwriting">Blog Posts</h2>
+    <p class="pb-4 dark:text-zinc-500 italic">
+      This is a beta site and not all posts are shown here.
+    </p>
+    <div class="flex flex-col gap-4">
+      {posts.map((post) => <BlogPostCard post={post} />)}
+    </div>
+  </div>
 </Root>

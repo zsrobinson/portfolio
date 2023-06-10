@@ -18,8 +18,8 @@ const { remarkPluginFrontmatter } = await post.render();
         remarkPluginFrontmatter.minutesRead.split(" ")[0]
       } minute read
     </p>
-    <p class="text-zinc-600 dark:text-zinc-400 line-clamp-3 sm:line-clamp-5">
-      {post.body.split(" ").slice(0, 50).join(" ")}
+    <p class="text-zinc-600 dark:text-zinc-400 line-clamp-3">
+      {post.body.split(" ").slice(0, 80).join(" ")}
     </p>
   </div>
 </a>

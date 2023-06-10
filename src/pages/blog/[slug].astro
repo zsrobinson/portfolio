@@ -16,6 +16,10 @@ const { Content, remarkPluginFrontmatter } = await render();
 ---
 
 <Root title={data.title + " · Zachary Robinson"}>
+  <div
+    class="h-96 w-full bg-gradient-to-b from-zinc-900 to-transparent fixed top-0 left-0 -z-10"
+  >
+  </div>
   <div class="mb-8">
     <h1 class="font-handwriting text-4xl">{data.title}</h1>
     <p class="text-zinc-400">

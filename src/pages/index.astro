@@ -9,11 +9,30 @@ posts = posts.slice(0, 6);
 ---
 
 <Root title="Zachary Robinson">
-  <h2 class="text-2xl font-bold">Home Route</h2>
-  <p>Hello World!</p>
+  <div class="flex justify-between gap-8 relative items-center">
+    <div>
+      <p class="font-handwriting font-bold text-5xl mb-2">Hey There! 👋🏻</p>
+      <p class="mb-4">
+        I'm a rishing freshman at the University of Maryland, studying Computer
+        Science. I love all things tech, and I'm especially interested in
+        full-stack web development.
+      </p>
+    </div>
+
+    <img
+      src="https://avatars.githubusercontent.com/zsrobinson"
+      alt="my profile picture"
+      class="w-48 rounded-full m-4 peer hidden sm:block"
+    />
+    <img
+      src="https://avatars.githubusercontent.com/zsrobinson"
+      alt="my profile picture"
+      class="hidden sm:block absolute right-0 w-48 rounded-full blur-lg -z-10 m-4 peer-hover:blur-xl transition"
+    />
+  </div>
 
   <div class="my-8 flex flex-col">
-    <h2 class="text-3xl font-handwriting pb-4">Latest Blog Posts</h2>
+    <h2 class="text-3xl font-handwriting pb-4 font-bold">Latest Blog Posts</h2>
     <div class="flex flex-col sm:grid grid-cols-2 gap-4">
       {posts.map((post) => <BlogPostCard post={post} />)}
     </div>

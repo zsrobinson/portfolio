@@ -1,21 +1,23 @@
 ---
-import { IconBrandNextjs } from "@tabler/icons-react";
+import {
+  IconBrandJavascript,
+  IconBrandNextjs,
+  IconBrandReact,
+  IconBrandSvelte,
+  IconBrandTailwind,
+  IconBrandTypescript,
+  IconCode,
+  IconRocket,
+} from "@tabler/icons-react";
 import { githubRepoSchema } from "../schemas";
 import { formatDate } from "../utils";
 import LinkCard from "./link-card.astro";
-import { IconBrandTypescript } from "@tabler/icons-react";
-import { IconBrandTailwind } from "@tabler/icons-react";
-import { IconCode } from "@tabler/icons-react";
-import { IconBrandSvelte } from "@tabler/icons-react";
-import { IconBrandJavascript } from "@tabler/icons-react";
-import { IconRocket } from "@tabler/icons-react";
-import { IconBrandReact } from "@tabler/icons-react";
 
 export type Props = { name: string; project: string; tech?: string[] };
 const { name, project, tech } = Astro.props;
 
 const req = await fetch(`https://api.github.com/repos/${project}`);
-if (!req.ok) throw new Error(`Failed to fetch ${project}`);
+if (!req.ok) return "Unable to fetch";
 const json = (await req.json()) as unknown;
 const repo = githubRepoSchema.parse(json);
 ---

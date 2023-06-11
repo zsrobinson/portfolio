@@ -21,41 +21,44 @@ const { Content, remarkPluginFrontmatter } = await render();
   >
   </div>
 
-  <div class="mb-8 max-w-prose">
-    <h1 class="font-handwriting text-4xl" style="text-wrap: balance;">
-      {data.title}
-    </h1>
-    <div class="flex justify-between">
-      <p class="text-zinc-400">
-        {formatDate(data.date)} · {
-          remarkPluginFrontmatter.minutesRead.split(" ")[0]
-        } minute read
-      </p>
+  <article class="flex flex-col items-center">
+    <div class="mb-8 max-w-prose">
+      <h1 class="font-handwriting text-4xl" style="text-wrap: balance;">
+        {data.title}
+      </h1>
+      <div class="flex justify-between">
+        <p class="text-zinc-400">
+          {formatDate(data.date)} · {
+            remarkPluginFrontmatter.minutesRead.split(" ")[0]
+          } minute read
+        </p>
+        {
+          data.updatedDate && (
+            <p class="text-zinc-600">Updated {formatDate(data.updatedDate)}</p>
+          )
+        }
+      </div>
+    </div>
+
+    <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">
       {
-        data.updatedDate && (
-          <p class="text-zinc-600">Updated {formatDate(data.updatedDate)}</p>
+        data.heroAlt && data.heroSrc && (
+          <div class="relative flex">
+            <img
+              alt={data.heroAlt}
+              src={data.heroSrc}
+              class="rounded-md m-0 peer"
+            />
+            <img
+              alt={data.heroAlt}
+              src={data.heroSrc}
+              class="rounded-md absolute -z-10 blur-lg m-0 peer-hover:blur-xl transition"
+            />
+          </div>
         )
       }
-    </div>
-  </div>
 
-  <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">
-    {
-      data.heroAlt && data.heroSrc && (
-        <div class="relative flex">
-          <img
-            alt={data.heroAlt}
-            src={data.heroSrc}
-            class="rounded-md m-0 peer"
-          />
-          <img
-            alt={data.heroAlt}
-            src={data.heroSrc}
-            class="rounded-md absolute -z-10 blur-lg m-0 peer-hover:blur-xl transition"
-          />
-        </div>
-      )
-    }
-    <Content />
-  </div>
+      <Content />
+    </div>
+  </article>
 </Root>

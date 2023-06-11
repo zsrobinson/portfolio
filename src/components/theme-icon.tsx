@@ -20,7 +20,7 @@ export default function ThemeIcon() {
   };
 
   return (
-    <button onClick={toggle} aria-label="Toggle Between Light and Dark Theme">
+    <button onClick={toggle} title="Theme Toggle">
       {darkMode ? <IconSun /> : <IconMoon />}
     </button>
   );

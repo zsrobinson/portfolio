@@ -2,6 +2,7 @@
 import { IconSearch, IconSun } from "@tabler/icons-react";
 import NavbarLink from "./navbar-link.astro";
 import ThemeIcon from "./theme-icon";
+import { IconRss } from "@tabler/icons-react";
 ---
 
 <div
@@ -20,16 +21,30 @@ import ThemeIcon from "./theme-icon";
       <NavbarLink href="/gallery">Gallery</NavbarLink>
     </nav>
     <div class="flex gap-2">
-      <a href="/search" class="w-6 h-6">
+      <a
+        href="/search"
+        class="w-6 h-6 hover:text-zinc-600 hover:dark:text-zinc-300 transition"
+        title="Visit Search Page"
+      >
         <IconSearch />
       </a>
-      <div class="w-6 h-6">
-        <ThemeIcon client:only="react" />
 
+      <div
+        class="w-6 h-6 hover:text-zinc-600 hover:dark:text-zinc-300 transition"
+      >
+        <ThemeIcon client:only="react" />
         <noscript title="Please Enable Javascript to Switch Themes">
           <IconSun />
         </noscript>
       </div>
+
+      <a
+        href="/index.xml"
+        class="w-6 h-6 hover:text-zinc-600 hover:dark:text-zinc-300 transition"
+        title="Visit RSS Feed"
+      >
+        <IconRss />
+      </a>
     </div>
   </div>
 </div>

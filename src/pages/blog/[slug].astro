@@ -20,8 +20,11 @@ const { Content, remarkPluginFrontmatter } = await render();
     class="h-96 w-full dark:bg-gradient-to-b from-zinc-900 to-transparent fixed top-0 left-0 -z-10"
   >
   </div>
+
   <div class="mb-8 max-w-prose">
-    <h1 class="font-handwriting text-4xl">{data.title}</h1>
+    <h1 class="font-handwriting text-4xl" style="text-wrap: balance;">
+      {data.title}
+    </h1>
     <div class="flex justify-between">
       <p class="text-zinc-400">
         {formatDate(data.date)} · {
@@ -35,10 +38,22 @@ const { Content, remarkPluginFrontmatter } = await render();
       }
     </div>
   </div>
+
   <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">
     {
       data.heroAlt && data.heroSrc && (
-        <img alt={data.heroAlt} src={data.heroSrc} class="rounded-md" />
+        <div class="relative flex">
+          <img
+            alt={data.heroAlt}
+            src={data.heroSrc}
+            class="rounded-md m-0 peer"
+          />
+          <img
+            alt={data.heroAlt}
+            src={data.heroSrc}
+            class="rounded-md absolute -z-10 blur-lg m-0 peer-hover:blur-xl transition"
+          />
+        </div>
       )
     }
     <Content />

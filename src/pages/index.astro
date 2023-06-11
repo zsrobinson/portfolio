@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import BlogPostCard from "../components/blog-post-card.astro";
 import ProjectCard from "../components/project-card.astro";
 import Root from "../layouts/root.astro";
+import HomeLinks from "../components/home-links.astro";
 
 let posts = await getCollection("blog");
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -18,6 +19,7 @@ posts = posts.slice(0, 4);
         studying Computer Science. I love all things tech, and I'm especially
         interested in full-stack web development.
       </p>
+      <HomeLinks />
     </div>
 
     <img

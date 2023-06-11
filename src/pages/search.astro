@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import BlogPostCard from "../components/blog-post-card.astro";
+import Root from "../layouts/root.astro";
+import Fuse from "fuse.js";
+
+export const prerender = false;
+const posts = await getCollection("blog");
+const q = Astro.url.searchParams.get("q") || "";
+const fuse = new Fuse(posts, {
+  keys: [
+    { name: "data.title", weight: 0.7 },
+    { name: "body", weight: 0.3 },
+    { name: "data.categories", weight: 0.5 },
+    { name: "data.tags", weight: 0.5 },
+  ],
+});
+const results = fuse.search(q);
+---
+
+<Root title="Search · Zachary Robinson">
+  <div class="flex flex-col">
+    <h2 class="text-3xl font-handwriting font-bold">Search</h2>
+    <p class="dark:text-zinc-500 italic">
+      This is a beta site and not all posts are shown here.
+    </p>
+
+    <form>
+      <label for="q" class="sr-only">Search</label>
+      <input
+        type="search"
+        name="q"
+        id="q"
+        class="w-full p-2 my-4 border border-zinc-300 dark:border-zinc-700 rounded-md dark:bg-zinc-900 bg-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-zinc-500 ring-offset-2 dark:ring-offset-zinc-900"
+        placeholder="Search"
+        value={q}
+      />
+    </form>
+
+    <div class="flex flex-col gap-4">
+      {results.map((result) => <BlogPostCard post={result.item} />)}
+    </div>
+  </div>
+</Root>

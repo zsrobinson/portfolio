@@ -2,8 +2,8 @@
 import Navbar from "../components/navbar.astro";
 import Footer from "../components/footer.astro";
 
-export type Props = { title: string };
-const { title } = Astro.props;
+export type Props = { title: string; gradientBg?: boolean };
+const { title, gradientBg = true } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -37,6 +37,11 @@ const { title } = Astro.props;
   </head>
   <body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
     <Navbar />
+    {
+      gradientBg && (
+        <div class="h-96 w-full dark:bg-gradient-to-b from-zinc-900 to-transparent fixed top-0 left-0 -z-10" />
+      )
+    }
     <main class="max-w-4xl mx-auto p-4 py-8 min-h-screen">
       <slot />
     </main>

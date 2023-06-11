@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
-import Root from "../layouts/root.astro";
 import BlogPostCard from "../components/blog-post-card.astro";
-import GithubProjectCard from "../components/github-project-card.astro";
+import ProjectCard from "../components/project-card.astro";
+import Root from "../layouts/root.astro";
 
 let posts = await getCollection("blog");
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -42,26 +42,10 @@ posts = posts.slice(0, 4);
   <div class="my-8 flex flex-col">
     <h2 class="text-3xl font-handwriting pb-4 font-bold">Featured Projects</h2>
     <div class="flex flex-col sm:grid grid-cols-2 gap-4">
-      <GithubProjectCard
-        name="Astro Blog"
-        project="zsrobinson/astro-blog"
-        tech={["Astro", "React", "Tailwind"]}
-      />
-      <GithubProjectCard
-        name="Curvature Demonstration"
-        project="zsrobinson/curvature"
-        tech={["Next.js", "TypeScript", "Tailwind", "Mafs"]}
-      />
-      <GithubProjectCard
-        name="Pendulum Simulation"
-        project="zsrobinson/pendulum"
-        tech={["JavaScript", "p5.js"]}
-      />
-      <GithubProjectCard
-        name="Circular Sleep"
-        project="zsrobinson/sleep"
-        tech={["Svelte"]}
-      />
+      <ProjectCard project="astro-blog" />
+      <ProjectCard project="curvature-demo" />
+      <ProjectCard project="pendulum-sim" />
+      <ProjectCard project="circular-sleep" />
     </div>
   </div>
 </Root>

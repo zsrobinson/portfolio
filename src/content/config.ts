@@ -16,4 +16,28 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+const tech = z.enum([
+  "Astro",
+  "React.js",
+  "TailwindCSS",
+  "Next.js",
+  "TypeScript",
+  "Mafs",
+  "p5.js",
+  "Svelte",
+  "JavaScript",
+  "Vanilla JavaScript",
+]);
+
+const projects = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.string().transform((str) => new Date(str)), // Just for Month and Year
+    deploymentURL: z.string().url().optional(),
+    sourceCodeURL: z.string().url().optional(),
+    tech: tech.or(z.string()).array(),
+  }),
+});
+
+export const collections = { blog, projects };

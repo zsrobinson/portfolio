@@ -9,37 +9,28 @@ import {
   IconCode,
   IconRocket,
 } from "@tabler/icons-react";
-import { githubRepoSchema } from "../schemas";
-import { formatDate } from "../utils";
+import { getEntry, type CollectionEntry } from "astro:content";
+import { formatMonth } from "../utils";
 import LinkCard from "./link-card.astro";
 
-export type Props = { name: string; project: string; tech?: string[] };
-const { name, project, tech } = Astro.props;
-
-const req = await fetch(`https://api.github.com/repos/${project}`);
-if (!req.ok) throw new Error(`Failed to fetch ${project}`);
-const json = (await req.json()) as unknown;
-const repo = githubRepoSchema.parse(json);
+export type Props = { project: CollectionEntry<"projects">["slug"] };
+const { project: projectName } = Astro.props;
+const project = await getEntry("projects", projectName);
 ---
 
-<LinkCard href={repo.html_url}>
-  <p class="font-handwriting text-2xl">{name}</p>
+<LinkCard href={project.data.deploymentURL ?? "https://github.com/zsrobinson"}>
+  <p class="font-handwriting text-2xl">{project.data.title}</p>
   <p class="text-zinc-600 dark:text-zinc-400 text-sm pb-2">
-    Updated {formatDate(new Date(repo.updated_at))}
-    {
-      repo.stargazers_count > 1
-        ? ` · ${repo.stargazers_count} stars`
-        : repo.stargazers_count > 0
-        ? ` · ${repo.stargazers_count} star`
-        : ""
-    }
+    Developed in {formatMonth(project.data.date)}
   </p>
+
   <p class="text-zinc-600 dark:text-zinc-400 line-clamp-3 pb-2">
-    {repo.description}
+    {project.data.description}
   </p>
+
   <div class="flex gap-2">
     {
-      tech?.map((t) => (
+      project.data.tech?.map((t) => (
         <span class="text-zinc-600 dark:text-zinc-400 text-sm flex items-center gap-1">
           {t === "Next.js" ? (
             <IconBrandNextjs className="inline" size={18} />

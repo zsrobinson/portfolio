@@ -1,3 +1,4 @@
+import type { rssSchema } from "@astrojs/rss";
 import { defineCollection, z } from "astro:content";
 
 const blog = defineCollection({

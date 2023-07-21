@@ -9,9 +9,7 @@ export default defineConfig({
   integrations: [tailwind(), react(), sitemap()],
   markdown: {
     remarkPlugins: [remarkReadingTime],
-    shikiConfig: {
-      theme: "material-darker",
-    },
+    shikiConfig: { theme: "material-darker" },
   },
   output: "hybrid",
   adapter: vercel(),

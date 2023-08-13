@@ -6,9 +6,7 @@ const isPostsPage = Astro.url.pathname.includes("/posts");
 const displayPostsThing = true;
 ---
 
-<div
-  class="bg-zinc-200 dark:bg-zinc-900 border-b border-zinc-300 dark:border-zinc-800"
->
+<div class="bg-muted dark:bg-muted/50 border-b border-muted-foreground/10">
   <div
     class="max-w-5xl mx-auto flex justify-between p-4 items-center flex-wrap gap-2"
   >
@@ -32,15 +30,13 @@ const displayPostsThing = true;
     <div class="flex gap-2">
       <a
         href="/search"
-        class="w-6 h-6 hover:text-zinc-600 hover:dark:text-zinc-300 transition"
+        class="w-6 h-6 hover:text-muted-foreground transition"
         title="Visit Search Page"
       >
         <IconSearch />
       </a>
 
-      <div
-        class="w-6 h-6 hover:text-zinc-600 hover:dark:text-zinc-300 transition"
-      >
+      <div class="w-6 h-6 hover:text-muted-foreground transition">
         <ThemeIcon client:only="react" />
         <noscript title="Please Enable Javascript to Switch Themes">
           <IconSun />
@@ -49,7 +45,7 @@ const displayPostsThing = true;
 
       <a
         href="/index.xml"
-        class="w-6 h-6 hover:text-zinc-600 hover:dark:text-zinc-300 transition"
+        class="w-6 h-6 hover:text-muted-foreground transition"
         title="Visit RSS Feed"
       >
         <IconRss />

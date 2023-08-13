@@ -5,7 +5,7 @@ import Root from "../layouts/root.astro";
 import Fuse from "fuse.js";
 
 export const prerender = false;
-const posts = await getCollection("blog");
+const posts = await getCollection("posts");
 const q = Astro.url.searchParams.get("q") || "";
 const fuse = new Fuse(posts, {
   keys: [

@@ -4,14 +4,14 @@ import Root from "../../layouts/root.astro";
 import { formatDate } from "../../utils";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const posts = await getCollection("posts");
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: post,
   }));
 }
 
-const { data, render } = Astro.props as CollectionEntry<"blog">;
+const { data, render } = Astro.props as CollectionEntry<"posts">;
 const { Content, remarkPluginFrontmatter } = await render();
 ---
 

@@ -7,7 +7,7 @@ import Root from "../layouts/root.astro";
 import Button from "../components/button.astro";
 import { IconChevronRight } from "@tabler/icons-react";
 
-let posts = await getCollection("blog");
+let posts = await getCollection("posts");
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 posts = posts.slice(0, 4);
 ---
@@ -38,8 +38,8 @@ posts = posts.slice(0, 4);
 
   <div class="my-8 flex flex-col gap-4">
     <div class="flex justify-between gap-2 items-center">
-      <h2 class="text-3xl font-bold">Latest Blog Posts</h2>
-      <Button href="/blog">
+      <h2 class="text-3xl font-bold">Latest Posts</h2>
+      <Button href="/posts">
         All Posts
         <IconChevronRight
           size={20}

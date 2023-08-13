@@ -1,3 +1,11 @@
 {
-  "cSpell.words": ["astrojs", "mdast", "shiki", "tabler"]
+  "cSpell.words": [
+    "astrojs",
+    "clsx",
+    "mdast",
+    "shadcn",
+    "shiki",
+    "tabler",
+    "tsconfigs"
+  ]
 }

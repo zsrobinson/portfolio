@@ -1,6 +1,7 @@
 ---
-import Navbar from "../components/navbar.astro";
-import Footer from "../components/footer.astro";
+import "~/styles/globals.css";
+import Footer from "~/components/footer.astro";
+import Navbar from "~/components/navbar.astro";
 
 export type Props = { title: string; gradientBg?: boolean };
 const { title, gradientBg = true } = Astro.props;

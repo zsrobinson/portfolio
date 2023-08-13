@@ -21,18 +21,14 @@ const { Content, remarkPluginFrontmatter } = await render();
       <h1 class="text-4xl" style="text-wrap: balance;">
         {data.title}
       </h1>
-      <div class="flex justify-between">
-        <p class="text-zinc-400">
-          {formatDate(data.date)} · {
-            remarkPluginFrontmatter.minutesRead.split(" ")[0]
-          } minute read
-        </p>
-        {
-          data.updatedDate && (
-            <p class="text-zinc-600">Updated {formatDate(data.updatedDate)}</p>
-          )
-        }
-      </div>
+
+      <p class="text-zinc-400">
+        <span
+          title={data.updatedDate
+            ? `Updated ${formatDate(data.updatedDate)}`
+            : ""}>{formatDate(data.date)}</span
+        > · {remarkPluginFrontmatter.minutesRead.split(" ")[0]} min read
+      </p>
     </div>
 
     <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">

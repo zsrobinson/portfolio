@@ -1,6 +1,9 @@
 ---
-import { IconRss, IconSearch, IconSun } from "@tabler/icons-react";
+import { IconRss, IconSearch, IconSlash, IconSun } from "@tabler/icons-react";
 import ThemeIcon from "./theme-icon";
+
+const isPostsPage = Astro.url.pathname.includes("/posts");
+const displayPostsThing = true;
 ---
 
 <div
@@ -9,9 +12,22 @@ import ThemeIcon from "./theme-icon";
   <div
     class="max-w-5xl mx-auto flex justify-between p-4 items-center flex-wrap gap-2"
   >
-    <a href="/">
-      <h1 class="text-2xl leading-none">Zachary Robinson</h1>
-    </a>
+    <div class="flex items-center">
+      <a href="/">
+        <h1 class="text-2xl leading-none">Zachary Robinson</h1>
+      </a>
+
+      {
+        isPostsPage && displayPostsThing && (
+          <>
+            <IconSlash className="text-muted-foreground/30 ml-0.5 -rotate-12 translate-y-[1px]" />
+            <a href="/posts" class="text-muted-foreground leading-none mt-0.5">
+              Posts
+            </a>
+          </>
+        )
+      }
+    </div>
 
     <div class="flex gap-2">
       <a

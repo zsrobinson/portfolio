@@ -7,7 +7,7 @@ export const get: APIRoute = async (context) => {
   return rss({
     title: "Zachary Robinson",
     description:
-      "Hey there, my name's Zach! I'm a Computer Science at the University of Maryland who's passionate about learning new technology and building cool stuff. I enjoy occasionally writing about my experiences and projects here on this site.",
+      "Hey there, my name's Zach! My name's Zach. I'm a Computer Science major at the University of Maryland who's passionate about learning new technology and building cool stuff. I enjoy occasionally writing about my experiences and projects here on this site.",
     site: context.site?.toString() ?? "",
     customData: `<atom:link href="${
       context.site?.toString() ?? ""

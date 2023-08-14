@@ -11,18 +11,22 @@ export async function getStaticPaths() {
   }));
 }
 
-const { data, render } = Astro.props as CollectionEntry<"posts">;
+const { data, render, slug } = Astro.props as CollectionEntry<"posts">;
 const { Content, remarkPluginFrontmatter } = await render();
 ---
 
 <Root title={data.title + " · Zachary Robinson"}>
   <article class="mb-48 flex flex-col items-center">
     <div class="mb-8 w-full max-w-prose">
-      <h1 class="text-4xl font-semibold" style="text-wrap: balance;">
+      <h1
+        class="text-4xl font-semibold"
+        style="text-wrap: balance;"
+        transition:name={slug + "-title"}
+      >
         {data.title}
       </h1>
 
-      <p class="text-muted-foreground">
+      <p class="text-muted-foreground" transition:name={slug + "-details"}>
         <span
           title={data.updatedDate
             ? `Updated ${formatDate(data.updatedDate)}`

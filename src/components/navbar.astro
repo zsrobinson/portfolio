@@ -1,6 +1,7 @@
 ---
 import { IconSearch, IconSlash, IconSun } from "@tabler/icons-react";
 import ThemeIcon from "./theme-picker";
+import { IconShadow } from "@tabler/icons-react";
 
 const isPostsPage = Astro.url.pathname.includes("/posts");
 ---
@@ -40,6 +41,9 @@ const isPostsPage = Astro.url.pathname.includes("/posts");
 
       <div class="h-6 w-6 transition hover:text-muted-foreground">
         <ThemeIcon client:only="react" />
+        <noscript title="Please Enable Javascript to Switch Themes">
+          <IconShadow />
+        </noscript>
       </div>
     </div>
   </div>

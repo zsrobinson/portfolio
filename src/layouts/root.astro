@@ -27,18 +27,26 @@ const { title } = Astro.props;
     </style>
 
     <script>
+      const media = window.matchMedia("(prefers-color-scheme: dark)");
+
       // set theme before react loads to avoid flash of incorrect theme
       const theme = localStorage.getItem("theme");
 
-      if (theme === "light") {
-        document.documentElement.classList.remove("dark");
-        document.documentElement.classList.add("light");
-        localStorage.setItem("theme", "light");
-      } else if (theme === "dark") {
-        document.documentElement.classList.remove("light");
+      if (theme === "dark" || (!theme && media.matches)) {
         document.documentElement.classList.add("dark");
-        localStorage.setItem("theme", "dark");
       }
+
+      // update class when user changes system theme
+      media.addEventListener("change", (e) => {
+        // if user has already set a theme, don't change it
+        if (localStorage.getItem("theme") !== null) return;
+
+        if (e.matches) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      });
     </script>
 
     <link rel="alternate" type="application/rss+xml" href="/index.xml" />

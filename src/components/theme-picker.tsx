@@ -13,15 +13,18 @@ export default function ThemeIcon() {
   useEffect(() => {
     if (theme === "light") {
       document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
       localStorage.setItem("theme", "light");
     } else if (theme === "dark") {
-      document.documentElement.classList.remove("light");
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
     } else {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.remove("light");
+      // if no theme is selected, check the system preference
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+
       localStorage.removeItem("theme");
     }
   }, [theme]);

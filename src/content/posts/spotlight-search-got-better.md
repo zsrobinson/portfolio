@@ -1,9 +1,10 @@
 ---
 title: "I Didn’t Think Spotlight Search Could Get Any Better"
-date: "2023-03-06"
+date: 2023-03-06
 tags: ["MacOS", "Productivity"]
-heroSrc: "https://zsrobinson.com/posts/spotlight-search-got-better/images/raycast.jpeg"
-heroAlt: "Screenshot of Raycast"
+
+cover: "~/assets/raycast-screenshot.jpg"
+coverAlt: "Screenshot of Raycast"
 ---
 
 I have been using Windows as my main operating system for just about my entire life. From a laptop running Windows 7 to a Surface Tablet running Windows 8 (gross, I know) to a few other devices running Windows 10, I’ve been through all of the recent iterations of Microsoft’s core product. After recently buying a MacBook Pro, I wasn’t quite sure what to expect. I didn’t love Windows, but I didn’t mind it either — so switching to an entirely new operating system was mildly intimidating.

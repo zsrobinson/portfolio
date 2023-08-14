@@ -1,18 +1,17 @@
-import type { rssSchema } from "@astrojs/rss";
 import { defineCollection, z } from "astro:content";
 
 const posts = defineCollection({
-  schema: z.object({
-    title: z.string(),
-    date: z.string().transform((val) => new Date(val)),
-    updatedDate: z
-      .string()
-      .optional()
-      .transform((str) => (str ? new Date(str) : undefined)),
-    heroSrc: z.string().optional(),
-    heroAlt: z.string().optional(),
-    tags: z.string().array().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.date(),
+      updatedDate: z.date().optional(),
+      tags: z.string().array().optional(),
+
+      cover: image().optional(),
+      coverAlt: z.string().optional(),
+      disclaimer: z.string().optional(),
+    }),
 });
 
 const tech = z.enum([

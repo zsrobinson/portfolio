@@ -13,18 +13,24 @@ posts.forEach((post) =>
     tags.set(tag, count + 1);
   }),
 );
+
+// sort by occurance and then alphabetically
+const tagsArray = Array.from(tags).sort((a, b) => {
+  if (a[1] === b[1]) return a[0].localeCompare(b[0]);
+  return b[1] - a[1];
+});
 ---
 
 <Root title="Tags · Zachary Robinson" parent="Tags" noIndex>
   <div class="mx-auto flex max-w-prose flex-col">
-    <h2 class="text-3xl font-bold">Tags</h2>
-    <p class="pb-4 italic text-muted-foreground">
-      This is a beta site and not all tags are shown here.
-    </p>
+    <span class="inline-flex pb-4">
+      <h2 class="text-3xl font-bold">Tags</h2>
+      <span class="ml-1 text-muted-foreground">{tagsArray.length}</span>
+    </span>
 
     <div class="flex flex-wrap gap-2">
       {
-        Array.from(tags).map(([tag, occurances]) => (
+        tagsArray.map(([tag, occurances]) => (
           <LinkBadge href={`/tags/${slugify(tag)}`} size="lg">
             <span>{tag}</span>
             <span class="mb-1 ml-1 text-xs text-muted-foreground">

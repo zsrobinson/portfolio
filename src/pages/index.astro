@@ -19,7 +19,7 @@ const tags = new Set<string>();
 posts.forEach((p) => p.data.tags?.forEach((t) => tags.add(t)));
 
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-posts = posts.slice(0, 4);
+posts = posts.slice(0, 6);
 ---
 
 <Root

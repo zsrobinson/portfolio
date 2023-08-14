@@ -1,7 +1,7 @@
 ---
 title: "How to Get Started with Docker"
-date: "2022-06-08"
-tags: ["Linux", "Docker"]
+date: 2022-06-08
+tags: ["Explainer", "Linux", "Docker"]
 ---
 
 A few months ago, I made a post outlining some of the things I did with docker on an old desktop computer running Linux on it. While that was more of a high-level overview of the process, this will be a more detailed tutorial of the process of creating your first few Docker containers.
@@ -12,7 +12,7 @@ But first, what is Docker? [AWS](https://aws.amazon.com/docker/), a popular clou
 
 In other words, Docker abstracts programs into virtualized environments called “containers”. These containers are similar to Virtual Machines (VMs), but don’t require the virtualization of an entire guest operating system. Applications virtualized into Docker Containers are much faster than those virtualized into VMs due to less system resources being used. The diagram below summarizes this well, as it shows that the tech stack using containers is much shorter, signifying less overhead. Therefore, more resources can be dedicated to the actual application, rather than unnecessary layers of virtualized operating systems.
 
-![Machine Virtualization vs. Containers](https://zsrobinson.com/posts/get-started-with-docker/images/vm-vs-docker.png)
+![Machine Virtualization vs. Containers](~/assets/vm-vs-docker.png)
 
 One more term you’ll hear referred to in this post is an “image”. An image is simply a set of instructions your computer uses to create a container. You could think of this like a template. For example, there may be a web server image available to use, and you can deploy that image as a container by providing files to host and other information. Most images are hosted on [Docker Hub](https://hub.docker.com/), but it is entirely possible to [create your own images](https://www.mirantis.com/blog/how-do-i-create-a-new-docker-image-for-my-application/). However, that is out of the scope of this article. Anyways, let’s get into it.
 
@@ -88,17 +88,7 @@ nano index.html
     <title>Sample NGINX Website</title>
     <style>
       body {
-        font-family:
-          -apple-system,
-          BlinkMacSystemFont,
-          segoe ui,
-          Roboto,
-          Oxygen,
-          Ubuntu,
-          Cantarell,
-          open sans,
-          helvetica neue,
-          sans-serif;
+        font-family: sans-serif;
         margin: 0 80px;
         background-color: #1d1e20;
         color: #dadadb;

@@ -1,4 +1,5 @@
 ---
+import Image from "astro/components/Image.astro";
 import { CollectionEntry, getCollection } from "astro:content";
 import { LinkBadge } from "~/components/link-badge";
 import Root from "~/layouts/root.astro";
@@ -52,16 +53,16 @@ const { Content, remarkPluginFrontmatter } = await render();
 
     <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">
       {
-        data.heroAlt && data.heroSrc && (
+        data.coverAlt && data.cover && (
           <div class="relative flex pb-4">
-            <img
-              alt={data.heroAlt}
-              src={data.heroSrc}
+            <Image
+              src={data.cover}
+              alt={data.coverAlt}
               class="peer m-0 rounded-md"
             />
-            <img
-              alt={data.heroAlt}
-              src={data.heroSrc}
+            <Image
+              src={data.cover}
+              alt={data.coverAlt}
               class="absolute -z-10 m-0 rounded-md blur-lg transition peer-hover:blur-xl"
             />
           </div>

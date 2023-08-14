@@ -1,9 +1,10 @@
 ---
 title: "IP Addresses for the Average Person"
-date: "2022-05-10"
+date: 2022-05-10
 tags: ["Internet", "Networking"]
-heroSrc: "https://zsrobinson.com/posts/ip-addresses-for-the-average-person/images/ip-address-house.png"
-heroAlt: "Houses with associated IP Addresses"
+
+cover: "~/assets/ip-address-house.png"
+coverAlt: "Houses with associated IP Addresses"
 ---
 
 If you’ve spent any time on the Internet, you might have heard of an “IP address” before. Maybe you even have a vague idea of what they are, like how every computer on the Internet has one to communicate. My goal is to provide you – an average person – with some clarity as to what IP addresses actually are, why they’re used, and how they affect you.
@@ -18,15 +19,15 @@ When you send information across the Internet, the data is split up and put insi
 
 Without IP addresses, the computers that forward data across the internet, also called routers, would have no idea where to send our data. If you watch a YouTube video, you need an IP address. If you send an email, you need an IP address. If you’re reading this article right now, you need an IP address.
 
-![An IPv4 Address in Both Dotted Decimal and Binary Notation](https://zsrobinson.com/posts/ip-addresses-for-the-average-person/images/dotted-decimal.jpg)
+![An IPv4 Address in Both Dotted Decimal and Binary Notation](~/assets/dotted-decimal.jpg)
 
 Time for a few of the more technical details – it's okay if this paragraph flies over your head. An IP address is formatted into four sections of eight bits, called octets, separated by periods. Each bit can hold either a zero or a one, and each octet of eight bits can hold one of 256 different values. Since we start counting at zero, each octet has a range of 0-255. When these four octets are combined, there are 32 bits allowing for almost 4.3 billion IP addresses (with only around 3.7 billion of these addresses actually being able to be routed across the Internet [^1]). It wasn’t a wild assumption that this number of addresses would be enough, with what we now think of as the Internet in 1977 being able to be drawn on a single piece of paper (shown below).
 
 [^1]: There are many reserved address ranges in IPv4. The "3.7 billion" metric is from [this comment](https://stackoverflow.com/a/2437185/15938350) on Stack Overflow.
 
-![ARPANET Logical Map](https://zsrobinson.com/posts/ip-addresses-for-the-average-person/images/arpanet-edited.jpg)
+![ARPANET Logical Map](~/assets/arpanet-diagram.png)
 
-However, the creators of the IPv4 protocol didn’t expect the rapid expansion of the Internet that we’ve seen over the past few decades. In most American households, devices that you wouldn’t typically think of computers even need IP addresses. Everything from kitchen appliances to lightbulbs may have some sort of functionality that requires Internet access. When put into practice, 4.3 billion addresses is nowhere near enough for our interconnected world.
+However, the creators of the IPv4 protocol didn’t expect the rapid expansion of the Internet that we’ve seen over the past few decades. In most American households, devices that you wouldn’t typically think of computers even need IP addresses. Everything from kitchen appliances to light bulbs may have some sort of functionality that requires Internet access. When put into practice, 4.3 billion addresses is nowhere near enough for our interconnected world.
 
 The solution to this problem is IPv6, a newer Internet Protocol standard that has support for 340 undecillion unique addresses, or to put it in perspective, 340 billion billion billion billion addresses. It’s safe to say we won’t need an IPv7 for a long time [^2]. However, the transition from IPv4 to IPv6 is a long one, so we use Network Address Translation (NAT) to overcome the IPv4 address limitation. Put simply, NAT allows for one [^3] “public” IP address to stand in for all the “private” IP addresses of devices on your network. This is usually implemented at your home router, so that only one public IP address has to be allocated.
 
@@ -49,7 +50,7 @@ For example, let’s take a device with the IP address of `192.168.1.10` and the
 
 Why does the subnet mask matter? Let’s return to our analogy of street addresses. If you want to send a letter to your friend that lives across the city, you would put it in your mailbox and it would be taken across town. If we assume you live in a gated community, this envelope would first have to go to your gate before exiting your neighborhood. However, if your friend lived on the same street as you, it would make more sense to just walk to their house and hand it to them. The same goes for IP addresses.
 
-![Packet Forwarding Using Default Gateway](https://zsrobinson.com/posts/ip-addresses-for-the-average-person/images/default-gateway-diagram.jpg)
+![Packet Forwarding Using Default Gateway](~/assets/default-gateway-diagram.jpg)
 
 When sending packets (remember, small pieces of data), your computer compares the destination IP address to your own IP address. If the network portions of those addresses are different, meaning that those devices live on separate networks, then the packet would first be forwarded by your computer to your default gateway. This is the device that lives on the edge of your network, typically something like your home router. In our gated community analogy, this would be the actual gate of the community. This point is the one way that things can get in and out. From there, that router can forward your packet to the Internet, just like your mailman would. This is shown by the red arrow in the diagram above, with the TV first forwarding data to the default gateway, which is then forwarded to the address `209.124.78.16`.
 

@@ -1,7 +1,7 @@
 ---
 title: "Is the Future of Computing a Future We Want?"
-date: "2022-06-17"
-tags: ["Computing"]
+date: 2022-06-17
+tags: ["Opinion", "Computing"]
 ---
 
 In the year 2022, the average technology consumer has many different computing devices. One person, assuming they have the means to afford such devices, may own a Phone, Tablet, Laptop, and Desktop Computer, just to name a few of the devices many use in their daily lives. But as the tech industry is able to fit more computing power into smaller form factors, it raises an interesting dilemma. At what point is the computing power of our phones enough to power our desktop computers?
@@ -16,11 +16,11 @@ The first method for this revolutionized system of computing is what I’m going
 
 This vision isn’t one of fiction, but rather it’s already here. At CES 2018, Razer introduced [Project Linda](https://www.razer.com/concepts/project-linda), a concept for this type of “plug n’ play” computing.
 
-![Razer Project Linda](https://zsrobinson.com/posts/future-of-computing/images/project-linda.jpg)
+![Razer Project Linda](~/assets/razer-project-linda.jpg)
 
 This concept (pictured above) presented what Razer called the “best of both worlds”. You could use your Razer Phone on the go just like any other smartphone, but as soon as you needed a laptop form factor, you could slot your phone into where a trackpad would traditionally be. Then, you could use your phone in this larger form factor for uses that benefit from a larger screen and keyboard, such as watching videos and responding to emails.
 
-![Samsung Dex](https://zsrobinson.com/posts/future-of-computing/images/samsung-dex.jpg)
+![Samsung Dex](~/assets/samsung-dex-desktop.jpg)
 
 A similar idea is available on many Samsung phones today, called [Samsung Dex](https://www.samsung.com/us/explore/dex/) (shown above). This allows you to dock your phone into a little stand, where you can connect up a monitor, keyboard, and mouse for a more comfortable experience.
 
@@ -38,13 +38,13 @@ The enterprise world is starting to embrace this method, with many companies opt
 
 What if this concept of thin clients was expanding to personal computing as well? In this method, what used to be your iPhone, iPad, MacBook, or Mac mini could all just be these stripped down devices with the purpose of connecting to a server to harness a greater amount of computing power. If you lose your phone, it’s no problem! Just buy another thin client and log into your account.
 
-![Shadow Cloud Computing](https://zsrobinson.com/posts/future-of-computing/images/shadow.png)
+![Shadow Cloud Computing](~/assets/shadow-cloud-compute.png)
 
 [Shadow](https://shadow.tech) is a company that promises something similar to this. They allow you to have access to your own Windows PC in the cloud that you can access from anywhere starting at around $30 per month (shown above). Instead of someone purchasing, for example, a gaming computer to play graphically demanding games, they can just use an underpowered thin client to access their cloud computer with much more processing power.
 
 Personally, I’ve set up something similar to this method in my own workflow. I don’t own a laptop to take on the go and work on, for example, programming projects — but I _do_ have an iPad Pro. On its own, this device doesn’t really allow me to code. But with a docker container called [code-server](https://hub.docker.com/r/linuxserver/code-server) running on my server at home, I’m able to access an instance of VSCode from anywhere. As long as I’m able to establish a VPN connection to my home network (I don’t want to open port 80 or 443 on my router for security reasons), I’m able to code. And the best part is that I didn’t need any special computer for this; I simply used an old desktop computer and [ran Linux and Docker on it](https://zsrobinson.com/posts/experimenting-with-linux-and-docker/). Otherwise, this computer would just be collecting dust in my basement.
 
-However, it’s clear that if this method of shared computing is made widestream, anti-consumer practices would also be made widespread. With the trends over the last decade of increasingly locking consumers into closed ecosystems and preventing interoperability, it may be difficult to justify the apparent advantages of this method.
+However, it’s clear that if this method of shared computing is made mainstream, anti-consumer practices would also be made widespread. With the trends over the last decade of increasingly locking consumers into closed ecosystems and preventing interoperability, it may be difficult to justify the apparent advantages of this method.
 
 For example, if you bought your thin clients from Microsoft, it’s probable that they would force you to use Microsoft’s cloud computing servers. Worse, if you wanted to self host your remote desktop server using a device that you own and control, this may be impossible. To not have the ability to control your own data and processing power is certainly troubling. Unless standards are made and this method is regulated to allow for more consumer choice, this could quickly devolve into companies holding your data hostage.
 

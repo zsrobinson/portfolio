@@ -1,11 +1,11 @@
 ---
+import { IconSearch } from "@tabler/icons-react";
 import { getCollection } from "astro:content";
 import Fuse from "fuse.js";
 import PostCard from "~/components/post-card.astro";
+import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import Root from "../layouts/root.astro";
-import { Button } from "~/components/ui/button";
-import { IconSearch } from "@tabler/icons-react";
 
 export const prerender = false;
 const posts = await getCollection("posts");

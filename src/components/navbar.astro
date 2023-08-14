@@ -3,7 +3,6 @@ import { IconRss, IconSearch, IconSlash, IconSun } from "@tabler/icons-react";
 import ThemeIcon from "./theme-icon";
 
 const isPostsPage = Astro.url.pathname.includes("/posts");
-const displayPostsThing = true;
 ---
 
 <div class="border-b border-border bg-muted dark:bg-muted/30">
@@ -12,14 +11,17 @@ const displayPostsThing = true;
   >
     <div class="flex items-center">
       <a href="/">
-        <h1 class="text-2xl leading-none">Zachary Robinson</h1>
+        <h1 class="text-2xl font-bold leading-none">Zachary Robinson</h1>
       </a>
 
       {
-        isPostsPage && displayPostsThing && (
+        isPostsPage && (
           <>
             <IconSlash className="text-muted-foreground/30 ml-0.5 -rotate-12 translate-y-[1px]" />
-            <a href="/posts" class="mt-0.5 leading-none text-muted-foreground">
+            <a
+              href="/posts"
+              class="mt-0.5 font-medium leading-none text-muted-foreground"
+            >
               Posts
             </a>
           </>
@@ -42,14 +44,6 @@ const displayPostsThing = true;
           <IconSun />
         </noscript>
       </div>
-
-      <a
-        href="/index.xml"
-        class="h-6 w-6 transition hover:text-muted-foreground"
-        title="Visit RSS Feed"
-      >
-        <IconRss />
-      </a>
     </div>
   </div>
 </div>

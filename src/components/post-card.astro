@@ -9,17 +9,17 @@ const { remarkPluginFrontmatter } = await post.render();
 ---
 
 <LinkCard href={`/posts/${post.slug}`}>
-  <p class="text-2xl leading-[1.15]" style="text-wrap: balance;">
+  <p class="text-2xl font-semibold leading-[1.15]" style="text-wrap: balance;">
     {post.data.title}
   </p>
 
-  <p class="pb-2 text-sm text-zinc-600 dark:text-zinc-400">
+  <p class="pb-2 text-sm text-muted-foreground">
     {formatDate(post.data.date)} · {
       remarkPluginFrontmatter.minutesRead.split(" ")[0]
     } min read
   </p>
 
-  <p class="line-clamp-3 text-zinc-600 dark:text-zinc-400">
+  <p class="line-clamp-3 text-secondary-foreground">
     {post.body.split(" ").slice(0, 80).join(" ")}
   </p>
 </LinkCard>

@@ -19,35 +19,53 @@ const project = await getEntry("projects", projectName);
 ---
 
 <LinkCard href={project.data.deploymentURL ?? "https://github.com/zsrobinson"}>
-  <p class="text-2xl leading-[1.15]">{project.data.title}</p>
-  <p class="pb-2 text-sm text-zinc-600 dark:text-zinc-400">
+  <p class="text-2xl font-semibold leading-[1.15]">{project.data.title}</p>
+  <p class="pb-2 text-sm text-muted-foreground">
     Developed in {formatMonth(project.data.date)}
   </p>
 
-  <p class="line-clamp-3 pb-2 text-zinc-600 dark:text-zinc-400">
+  <p class="line-clamp-3 pb-2 text-secondary-foreground">
     {project.data.description}
   </p>
 
   <div class="flex gap-2">
     {
       project.data.tech?.map((t) => (
-        <span class="flex items-center gap-1 text-sm text-zinc-600 dark:text-zinc-400">
+        <span class="flex items-center gap-1 text-sm text-secondary-foreground">
           {t === "Next.js" ? (
-            <IconBrandNextjs className="inline" size={18} />
+            <IconBrandNextjs
+              className="inline text-muted-foreground"
+              size={18}
+            />
           ) : t === "TypeScript" ? (
-            <IconBrandTypescript className="inline" size={18} />
+            <IconBrandTypescript
+              className="inline text-muted-foreground"
+              size={18}
+            />
           ) : t === "Astro" ? (
-            <IconRocket className="inline" size={18} />
+            <IconRocket className="inline text-muted-foreground" size={18} />
           ) : t === "React" ? (
-            <IconBrandReact className="inline" size={18} />
+            <IconBrandReact
+              className="inline text-muted-foreground"
+              size={18}
+            />
           ) : t === "JavaScript" ? (
-            <IconBrandJavascript className="inline" size={18} />
-          ) : t === "Tailwind" ? (
-            <IconBrandTailwind className="inline" size={18} />
+            <IconBrandJavascript
+              className="inline text-muted-foreground"
+              size={18}
+            />
+          ) : t === "Tailwind CSS" ? (
+            <IconBrandTailwind
+              className="inline text-muted-foreground"
+              size={18}
+            />
           ) : t === "Svelte" ? (
-            <IconBrandSvelte className="inline" size={18} />
+            <IconBrandSvelte
+              className="inline text-muted-foreground"
+              size={18}
+            />
           ) : (
-            <IconCode className="inline" size={18} />
+            <IconCode className="inline text-muted-foreground" size={18} />
           )}
           {t}
         </span>

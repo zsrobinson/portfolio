@@ -11,6 +11,7 @@ import { LinkButton } from "~/components/link-button";
 import PostCard from "~/components/post-card.astro";
 import ProjectCard from "../components/project-card.astro";
 import Root from "../layouts/root.astro";
+import { IconRss } from "@tabler/icons-react";
 
 let posts = await getCollection("posts");
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -20,12 +21,16 @@ posts = posts.slice(0, 4);
 <Root title="Zachary Robinson">
   <div class="relative flex items-center justify-between gap-8">
     <div>
-      <p class="mb-2 text-5xl font-bold">Hey There! 👋🏻</p>
+      <p class="text-4xl font-semibold">Hey There! 👋🏻</p>
 
-      <p class="mb-4">
-        My name's Zach! I'm a rising freshman at the University of Maryland,
-        studying Computer Science. I love all things tech, and I'm especially
-        interested in full-stack web development.
+      <p class="my-2 max-w-xl">
+        My name's Zach. I'm a Computer Science at the <a
+          href="https://umd.edu"
+          class="underline underline-offset-2 transition hover:text-muted-foreground"
+          target="_blank">University of Maryland</a
+        > who's passionate about learning new technology and building cool
+        stuff. I enjoy occasionally writing about my experiences and projects
+        here on this site.
       </p>
 
       <div class="flex gap-2">
@@ -33,6 +38,7 @@ posts = posts.slice(0, 4);
           variant="ghost"
           size="icon"
           href="https://github.com/zsrobinson"
+          target="_blank"
           title="GitHub"
         >
           <IconBrandGithub />
@@ -42,6 +48,7 @@ posts = posts.slice(0, 4);
           variant="ghost"
           size="icon"
           href="https://instagram.com/zsrobinson"
+          target="_blank"
           title="Instagram"
         >
           <IconBrandInstagram />
@@ -51,6 +58,7 @@ posts = posts.slice(0, 4);
           variant="ghost"
           size="icon"
           href="https://twitter.com/zsrobinson_"
+          target="_blank"
           title="Twitter"
         >
           <IconBrandTwitter />
@@ -64,6 +72,16 @@ posts = posts.slice(0, 4);
           title="Email"
         >
           <IconMail />
+        </LinkButton>
+
+        <LinkButton
+          variant="ghost"
+          size="icon"
+          href="/index.xml"
+          target="_blank"
+          title="RSS Feed"
+        >
+          <IconRss />
         </LinkButton>
 
         <script>

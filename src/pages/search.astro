@@ -26,7 +26,7 @@ const results = fuse.search(q);
 <Root title="Search · Zachary Robinson">
   <div class="flex flex-col">
     <h2 class="text-3xl font-bold">Search</h2>
-    <p class="italic dark:text-zinc-500">
+    <p class="italic text-muted-foreground">
       This is a beta site and not all posts are shown here.
     </p>
 
@@ -46,8 +46,8 @@ const results = fuse.search(q);
 
     <div class="flex flex-col gap-4">
       {
-        results.length === 0 && (
-          <p class="text-xl font-bold">No results found.</p>
+        q && results.length === 0 && (
+          <p class="font-semibold">No results found.</p>
         )
       }
 

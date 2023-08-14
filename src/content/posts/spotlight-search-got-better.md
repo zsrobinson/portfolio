@@ -1,7 +1,6 @@
 ---
 title: "I Didn’t Think Spotlight Search Could Get Any Better"
 date: "2023-03-06"
-categories: ["Showcases"]
 tags: ["MacOS", "Productivity"]
 heroSrc: "https://zsrobinson.com/posts/spotlight-search-got-better/images/raycast.jpeg"
 heroAlt: "Screenshot of Raycast"

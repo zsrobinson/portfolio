@@ -1,7 +1,6 @@
 ---
 title: "Is the Future of Computing a Future We Want?"
 date: "2022-06-17"
-categories: ["Opinions"]
 tags: ["Computing"]
 ---
 

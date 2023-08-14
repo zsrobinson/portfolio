@@ -7,7 +7,7 @@ const posts = await getCollection("posts");
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<Root title="Posts · Zachary Robinson">
+<Root title="Posts · Zachary Robinson" noIndex>
   <div class="mx-auto flex max-w-prose flex-col">
     <h2 class="text-3xl font-bold">Posts</h2>
     <p class="pb-4 italic text-muted-foreground">

@@ -1,7 +1,7 @@
 ---
 import { CollectionEntry, getCollection } from "astro:content";
-import Root from "../../layouts/root.astro";
-import { formatDate } from "../../utils";
+import Root from "~/layouts/root.astro";
+import { formatDate } from "~/utils";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -11,11 +11,15 @@ export async function getStaticPaths() {
   }));
 }
 
-const { data, render, slug } = Astro.props as CollectionEntry<"posts">;
+const { data, render, body } = Astro.props as CollectionEntry<"posts">;
 const { Content, remarkPluginFrontmatter } = await render();
 ---
 
-<Root title={data.title + " · Zachary Robinson"}>
+<Root
+  title={data.title + " · Zachary Robinson"}
+  description={body.split(" ").slice(0, 50).join(" ") + "..."}
+  keywords={data.tags}
+>
   <article class="mb-48 flex flex-col items-center">
     <div class="mb-8 w-full max-w-prose">
       <h1 class="text-4xl font-semibold" style="text-wrap: balance;">

@@ -5,20 +5,28 @@ import {
   IconBrandTwitter,
   IconChevronRight,
   IconMail,
+  IconRss,
 } from "@tabler/icons-react";
 import { getCollection } from "astro:content";
 import { LinkButton } from "~/components/link-button";
 import PostCard from "~/components/post-card.astro";
-import ProjectCard from "../components/project-card.astro";
-import Root from "../layouts/root.astro";
-import { IconRss } from "@tabler/icons-react";
+import ProjectCard from "~/components/project-card.astro";
+import Root from "~/layouts/root.astro";
 
 let posts = await getCollection("posts");
+
+const allTags = new Set<string>();
+posts.forEach((p) => p.data.tags?.forEach((t) => allTags.add(t)));
+
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 posts = posts.slice(0, 4);
 ---
 
-<Root title="Zachary Robinson">
+<Root
+  title="Zachary Robinson"
+  description="My name's Zach. I'm a Computer Science major at the University of Maryland who's passionate about learning new technology and building cool stuff. I enjoy occasionally writing about my experiences and projects here on this site."
+  keywords={Array.from(allTags)}
+>
   <div class="relative flex items-center justify-between gap-8">
     <div>
       <p class="text-4xl font-semibold">Hey There! 👋🏻</p>

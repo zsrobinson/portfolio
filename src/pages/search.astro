@@ -5,7 +5,7 @@ import Fuse from "fuse.js";
 import PostCard from "~/components/post-card.astro";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import Root from "../layouts/root.astro";
+import Root from "~/layouts/root.astro";
 
 export const prerender = false;
 const posts = await getCollection("posts");
@@ -23,7 +23,7 @@ const fuse = new Fuse(posts, {
 const results = fuse.search(q);
 ---
 
-<Root title="Search · Zachary Robinson">
+<Root title="Search · Zachary Robinson" noIndex>
   <div class="flex flex-col">
     <h2 class="text-3xl font-bold">Search</h2>
     <p class="italic text-muted-foreground">

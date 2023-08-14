@@ -1,7 +1,6 @@
 ---
 title: "IP Addresses for the Average Person"
 date: "2022-05-10"
-categories: ["Explainers"]
 tags: ["Internet", "Networking"]
 heroSrc: "https://zsrobinson.com/posts/ip-addresses-for-the-average-person/images/ip-address-house.png"
 heroAlt: "Houses with associated IP Addresses"

@@ -1,7 +1,6 @@
 ---
 title: "Simple Steps to Improve Your Online Security"
 date: "2022-08-15"
-categories: ["Explainers"]
 tags: ["Cybersecurity"]
 heroSrc: "https://zsrobinson.com/posts/improve-your-online-security/images/password-on-monitor.png"
 heroAlt: "Password shown on monitor"

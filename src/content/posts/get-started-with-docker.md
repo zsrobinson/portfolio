@@ -1,7 +1,6 @@
 ---
 title: "How to Get Started with Docker"
 date: "2022-06-08"
-categories: ["Tutorials"]
 tags: ["Linux", "Docker"]
 ---
 
@@ -81,7 +80,7 @@ nano index.html
 ```
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -89,8 +88,17 @@ nano index.html
     <title>Sample NGINX Website</title>
     <style>
       body {
-        font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto, Oxygen,
-          Ubuntu, Cantarell, open sans, helvetica neue, sans-serif;
+        font-family:
+          -apple-system,
+          BlinkMacSystemFont,
+          segoe ui,
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          Cantarell,
+          open sans,
+          helvetica neue,
+          sans-serif;
         margin: 0 80px;
         background-color: #1d1e20;
         color: #dadadb;

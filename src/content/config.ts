@@ -11,7 +11,6 @@ const posts = defineCollection({
       .transform((str) => (str ? new Date(str) : undefined)),
     heroSrc: z.string().optional(),
     heroAlt: z.string().optional(),
-    categories: z.string().array().optional(),
     tags: z.string().array().optional(),
   }),
 });

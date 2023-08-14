@@ -1,13 +1,13 @@
-import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-
+import * as React from "react";
 import { cn } from "~/lib/utils";
 
 // Changes from original design:
 // - bg of outline variant is transparent
 // - hover:bg of outline and ghost variants are accent/50 during dark mode
 // - dim the focus-visible ring to 50% transparency
+// - decrease focus-visible ring offset for ghost variant
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -22,7 +22,7 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost:
-          "hover:bg-accent hover:dark:bg-accent/50 hover:text-accent-foreground",
+          "hover:bg-accent hover:dark:bg-accent/50 hover:text-accent-foreground focus-visible:ring-offset-0",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

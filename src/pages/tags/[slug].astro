@@ -1,0 +1,47 @@
+---
+import { CollectionEntry, getCollection } from "astro:content";
+import PostCard from "~/components/post-card.astro";
+import Root from "~/layouts/root.astro";
+import { slugify } from "~/lib/utils";
+
+export const getStaticPaths = async () => {
+  const posts = await getCollection("posts");
+  const tags = new Map<string, CollectionEntry<"posts">[]>();
+
+  posts.forEach((post) =>
+    post.data.tags?.forEach((tag) => {
+      const matches = tags.get(tag) ?? [];
+      tags.set(tag, [...matches, post]);
+    }),
+  );
+
+  return Array.from(tags).map(([tag, posts]) => ({
+    params: { slug: slugify(tag) },
+    props: { tag, posts },
+  }));
+};
+
+const { tag, posts } = Astro.props as {
+  tag: string;
+  posts: CollectionEntry<"posts">[];
+};
+---
+
+<Root title={`${tag} · Zachary Robinson`} parent="Tags" noIndex>
+  <div class="mx-auto flex max-w-prose flex-col">
+    <span class="inline-flex">
+      <h2 class="text-3xl font-semibold">
+        {tag}
+      </h2>
+      <span class="ml-1 text-muted-foreground">{posts.length}</span>
+    </span>
+
+    <p class="pb-4 italic text-muted-foreground">
+      This is a beta site and not all posts are shown here.
+    </p>
+
+    <div class="flex flex-col gap-4">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </div>
+</Root>

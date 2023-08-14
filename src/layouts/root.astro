@@ -7,10 +7,11 @@ export type Props = {
   title: string;
   description?: string;
   keywords?: string[];
+  parent?: string;
   noIndex?: boolean;
 };
 
-const { title, description, keywords, noIndex = false } = Astro.props;
+const { title, description, keywords, parent, noIndex = false } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -57,7 +58,7 @@ const { title, description, keywords, noIndex = false } = Astro.props;
   </head>
 
   <body>
-    <Navbar />
+    <Navbar parent={parent} />
 
     <!-- Gradient at top of page -->
     <div

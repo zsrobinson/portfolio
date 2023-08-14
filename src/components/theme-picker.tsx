@@ -31,7 +31,10 @@ export default function ThemeIcon() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger title="Pick Theme">
+      <DropdownMenuTrigger
+        title="Pick Theme"
+        className="h-6 w-6 rounded-[2px] ring-offset-[#F4F4F5] transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-[3px] dark:ring-offset-[#18181A]"
+      >
         {theme === "dark" ? (
           <IconMoon />
         ) : theme === "light" ? (
@@ -44,21 +47,21 @@ export default function ThemeIcon() {
       <DropdownMenuContent align="end">
         <DropdownMenuCheckboxItem
           checked={theme === "light"}
-          onClick={() => setTheme("light")}
+          onClick={(e) => setTheme("light")}
         >
           Light
         </DropdownMenuCheckboxItem>
 
         <DropdownMenuCheckboxItem
           checked={theme === "dark"}
-          onClick={() => setTheme("dark")}
+          onClick={(e) => setTheme("dark")}
         >
           Dark
         </DropdownMenuCheckboxItem>
 
         <DropdownMenuCheckboxItem
           checked={theme === null}
-          onClick={() => setTheme(null)}
+          onClick={(e) => setTheme(null)}
         >
           System
         </DropdownMenuCheckboxItem>

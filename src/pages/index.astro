@@ -15,8 +15,8 @@ import Root from "~/layouts/root.astro";
 
 let posts = await getCollection("posts");
 
-const allTags = new Set<string>();
-posts.forEach((p) => p.data.tags?.forEach((t) => allTags.add(t)));
+const tags = new Set<string>();
+posts.forEach((p) => p.data.tags?.forEach((t) => tags.add(t)));
 
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 posts = posts.slice(0, 4);
@@ -25,7 +25,7 @@ posts = posts.slice(0, 4);
 <Root
   title="Zachary Robinson"
   description="My name's Zach. I'm a Computer Science major at the University of Maryland who's passionate about learning new technology and building cool stuff. I enjoy occasionally writing about my experiences and projects here on this site."
-  keywords={Array.from(allTags)}
+  keywords={Array.from(tags)}
 >
   <div class="relative flex items-center justify-between gap-8">
     <div>
@@ -34,7 +34,7 @@ posts = posts.slice(0, 4);
       <p class="my-2 max-w-xl">
         My name's Zach. I'm a Computer Science major at the <a
           href="https://umd.edu"
-          class="underline underline-offset-2 transition hover:text-muted-foreground"
+          class="underline underline-offset-2 transition hover:text-muted-foreground focus-visible:text-muted-foreground focus-visible:outline-none"
           target="_blank">University of Maryland</a
         > who's passionate about learning new technology and building cool
         stuff. I enjoy occasionally writing about my experiences and projects

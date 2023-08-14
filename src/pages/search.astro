@@ -36,7 +36,7 @@ const results = fuse.search(q);
         placeholder="Search"
         defaultValue={q}
         className="max-w-xs"
-        autoFocus={q === ""}
+        autoFocus={q === "" || results.length === 0}
       />
 
       <Button type="submit" size="icon" variant="outline">

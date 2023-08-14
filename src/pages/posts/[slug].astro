@@ -1,6 +1,8 @@
 ---
 import { CollectionEntry, getCollection } from "astro:content";
+import { LinkBadge } from "~/components/link-badge";
 import Root from "~/layouts/root.astro";
+import { slugify } from "~/lib/utils";
 import { formatDate } from "~/utils";
 
 export async function getStaticPaths() {
@@ -19,6 +21,7 @@ const { Content, remarkPluginFrontmatter } = await render();
   title={data.title + " · Zachary Robinson"}
   description={body.split(" ").slice(0, 50).join(" ") + "..."}
   keywords={data.tags}
+  parent="Posts"
 >
   <article class="mb-48 flex flex-col items-center">
     <div class="mb-8 w-full max-w-prose">
@@ -33,6 +36,18 @@ const { Content, remarkPluginFrontmatter } = await render();
             : ""}>{formatDate(data.date)}</span
         > · {remarkPluginFrontmatter.minutesRead.split(" ")[0]} min read
       </p>
+
+      {
+        data.tags && (
+          <div class="mt-4 flex gap-2">
+            {data.tags.map((tag) => (
+              <LinkBadge href={`/tags/${slugify(tag)}`} variant="default">
+                {tag}
+              </LinkBadge>
+            ))}
+          </div>
+        )
+      }
     </div>
 
     <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">

@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import { LinkBadge } from "~/components/link-badge";
+import Root from "~/layouts/root.astro";
+import { slugify } from "~/lib/utils";
+
+const posts = await getCollection("posts");
+const tags = new Map<string, number>();
+
+posts.forEach((post) =>
+  post.data.tags?.forEach((tag) => {
+    const count = tags.get(tag) ?? 0;
+    tags.set(tag, count + 1);
+  }),
+);
+---
+
+<Root title="Tags · Zachary Robinson" parent="Tags" noIndex>
+  <div class="mx-auto flex max-w-prose flex-col">
+    <h2 class="text-3xl font-bold">Tags</h2>
+    <p class="pb-4 italic text-muted-foreground">
+      This is a beta site and not all tags are shown here.
+    </p>
+
+    <div class="flex flex-wrap gap-2">
+      {
+        Array.from(tags).map(([tag, occurances]) => (
+          <LinkBadge href={`/tags/${slugify(tag)}`} size="lg">
+            <span>{tag}</span>
+            <span class="mb-1 ml-1 text-xs text-muted-foreground">
+              {occurances}
+            </span>
+          </LinkBadge>
+        ))
+      }
+    </div>
+  </div>
+</Root>

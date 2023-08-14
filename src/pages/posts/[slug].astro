@@ -22,7 +22,7 @@ const { Content, remarkPluginFrontmatter } = await render();
         {data.title}
       </h1>
 
-      <p class="text-muted-foreground" transition:name={slug + "-details"}>
+      <p class="text-muted-foreground">
         <span
           title={data.updatedDate
             ? `Updated ${formatDate(data.updatedDate)}`

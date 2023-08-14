@@ -19,7 +19,7 @@ const posts = defineCollection({
 const tech = z.enum([
   "Astro",
   "React.js",
-  "TailwindCSS",
+  "Tailwind CSS",
   "Next.js",
   "TypeScript",
   "Mafs",

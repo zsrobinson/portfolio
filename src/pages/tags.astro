@@ -2,35 +2,27 @@
 import { getCollection } from "astro:content";
 import { LinkBadge } from "~/components/link-badge";
 import Root from "~/layouts/root.astro";
-import { slugify } from "~/lib/utils";
+import { getSortedTags, slugify } from "~/lib/utils";
 
 const posts = await getCollection("posts");
-const tags = new Map<string, number>();
-
-posts.forEach((post) =>
-  post.data.tags?.forEach((tag) => {
-    const count = tags.get(tag) ?? 0;
-    tags.set(tag, count + 1);
-  }),
-);
-
-// sort by occurance and then alphabetically
-const tagsArray = Array.from(tags).sort((a, b) => {
-  if (a[1] === b[1]) return a[0].localeCompare(b[0]);
-  return b[1] - a[1];
-});
+const tags = getSortedTags(posts);
 ---
 
-<Root title="Tags · Zachary Robinson" parent="Tags" noIndex>
+<Root
+  title="Tags · Zachary Robinson"
+  parent="Tags"
+  ogImage="/og/tags.png"
+  noIndex
+>
   <div class="mx-auto flex max-w-prose flex-col">
     <span class="inline-flex pb-4">
       <h2 class="text-3xl font-bold">Tags</h2>
-      <span class="ml-1 text-muted-foreground">{tagsArray.length}</span>
+      <span class="ml-1 text-muted-foreground">{tags.length}</span>
     </span>
 
     <div class="flex flex-wrap gap-2">
       {
-        tagsArray.map(([tag, occurances]) => (
+        tags.map(([tag, occurances]) => (
           <LinkBadge href={`/tags/${slugify(tag)}`} size="lg">
             <span>{tag}</span>
             <span class="mb-1 ml-1 text-xs text-muted-foreground">

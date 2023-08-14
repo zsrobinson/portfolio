@@ -19,6 +19,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@tabler/icons-react": "^2.30.0",
     "astro": "^2.10.7",
+    "astro-og-canvas": "^0.1.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "fuse.js": "^6.6.2",

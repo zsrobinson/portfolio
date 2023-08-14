@@ -7,7 +7,12 @@ const posts = await getCollection("posts");
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<Root title="Posts · Zachary Robinson" parent="Posts" noIndex>
+<Root
+  title="Posts · Zachary Robinson"
+  parent="Posts"
+  ogImage="/og/posts.png"
+  noIndex
+>
   <div class="mx-auto flex max-w-prose flex-col">
     <span class="inline-flex pb-4">
       <h2 class="text-3xl font-bold">Posts</h2>

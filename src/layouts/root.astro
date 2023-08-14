@@ -1,13 +1,14 @@
 ---
-import Navbar from "../components/navbar.astro";
-import Footer from "../components/footer.astro";
+import "~/styles/globals.css";
+import Footer from "~/components/footer.astro";
+import Navbar from "~/components/navbar.astro";
 
 export type Props = { title: string; gradientBg?: boolean };
-const { title, gradientBg = true } = Astro.props;
+const { title } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="dark" style={{ colorScheme: "dark" }}>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -15,36 +16,46 @@ const { title, gradientBg = true } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
 
-    <style>
-      @font-face {
-        font-family: "WalterTurncoat";
-        src: url("/fonts/WalterTurncoat-Regular.woff2") format("woff2");
-        font-weight: normal;
-        font-style: normal;
-        font-display: block;
-      }
-    </style>
+    <script is:inline>
+      const media = window.matchMedia("(prefers-color-scheme: dark)");
 
-    <script>
-      if (localStorage.getItem("theme") === "light") {
-        document.documentElement.classList.remove("dark");
-        document.documentElement.style.setProperty("color-scheme", "light");
+      // set theme before react loads to avoid flash of incorrect theme
+      const theme = localStorage.getItem("theme");
+
+      if (theme === "dark" || (!theme && media.matches)) {
+        document.documentElement.classList.add("dark");
       }
+
+      // update class when user changes system theme
+      media.addEventListener("change", (e) => {
+        // if user has already set a theme, don't change it
+        if (localStorage.getItem("theme") !== null) return;
+
+        if (e.matches) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      });
     </script>
 
     <link rel="alternate" type="application/rss+xml" href="/index.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
-  <body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+
+  <body>
     <Navbar />
-    {
-      gradientBg && (
-        <div class="h-96 w-full dark:bg-gradient-to-b from-zinc-900 to-transparent fixed top-0 left-0 -z-10" />
-      )
-    }
-    <main class="max-w-4xl mx-auto p-4 py-8 min-h-screen">
+
+    <!-- Gradient at top of page -->
+    <div
+      class="absolute left-0 top-0 -z-10 h-96 w-full from-secondary/30 to-transparent dark:bg-gradient-to-b"
+    >
+    </div>
+
+    <main class="mx-auto min-h-screen max-w-5xl p-4 py-8">
       <slot />
     </main>
+
     <Footer />
   </body>
 </html>

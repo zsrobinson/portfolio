@@ -6,11 +6,13 @@ import { defineConfig } from "astro/config";
 import { remarkReadingTime } from "./src/plugins/remarkReadingTime.mjs";
 
 export default defineConfig({
-  integrations: [tailwind(), react(), sitemap()],
+  integrations: [tailwind({ applyBaseStyles: true }), react(), sitemap()],
+
   markdown: {
     remarkPlugins: [remarkReadingTime],
     shikiConfig: { theme: "material-darker" },
   },
+
   output: "hybrid",
   adapter: vercel(),
   site: "https://beta.zsrobinson.com",

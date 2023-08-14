@@ -1,48 +1,50 @@
 ---
-import { IconRss, IconSearch, IconSun } from "@tabler/icons-react";
-import ThemeIcon from "./theme-icon";
+import { IconSearch, IconSlash, IconSun } from "@tabler/icons-react";
+import ThemeIcon from "./theme-picker";
+import { IconShadow } from "@tabler/icons-react";
+
+const isPostsPage = Astro.url.pathname.includes("/posts");
 ---
 
-<div
-  class="bg-zinc-200 dark:bg-zinc-900 border-b border-zinc-300 dark:border-zinc-800"
->
+<div class="border-b border-border bg-muted dark:bg-muted/30">
   <div
-    class="max-w-4xl mx-auto flex justify-between p-4 items-center flex-wrap gap-2"
+    class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 p-4"
   >
-    <a href="/">
-      <h1 class="font-handwriting text-2xl leading-none">Zachary Robinson</h1>
-    </a>
-    <!-- <nav class="flex gap-2">
-      <NavbarLink href="/">Home</NavbarLink>
-      <NavbarLink href="/about">About</NavbarLink>
-      <NavbarLink href="/blog">Blog</NavbarLink>
-      <NavbarLink href="/gallery">Gallery</NavbarLink>
-    </nav> -->
+    <div class="flex items-center">
+      <a href="/">
+        <h1 class="text-2xl font-bold leading-none">Zachary Robinson</h1>
+      </a>
+
+      {
+        isPostsPage && (
+          <>
+            <IconSlash className="text-muted-foreground/30 ml-0.5 -rotate-12 translate-y-[1px]" />
+            <a
+              href="/posts"
+              class="mt-0.5 font-medium leading-none text-muted-foreground"
+            >
+              Posts
+            </a>
+          </>
+        )
+      }
+    </div>
+
     <div class="flex gap-2">
       <a
         href="/search"
-        class="w-6 h-6 hover:text-zinc-600 hover:dark:text-zinc-300 transition"
+        class="h-6 w-6 transition hover:text-muted-foreground"
         title="Visit Search Page"
       >
         <IconSearch />
       </a>
 
-      <div
-        class="w-6 h-6 hover:text-zinc-600 hover:dark:text-zinc-300 transition"
-      >
+      <div class="h-6 w-6 transition hover:text-muted-foreground">
         <ThemeIcon client:only="react" />
         <noscript title="Please Enable Javascript to Switch Themes">
-          <IconSun />
+          <IconShadow />
         </noscript>
       </div>
-
-      <a
-        href="/index.xml"
-        class="w-6 h-6 hover:text-zinc-600 hover:dark:text-zinc-300 transition"
-        title="Visit RSS Feed"
-      >
-        <IconRss />
-      </a>
     </div>
   </div>
 </div>

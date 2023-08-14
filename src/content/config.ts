@@ -1,7 +1,7 @@
 import type { rssSchema } from "@astrojs/rss";
 import { defineCollection, z } from "astro:content";
 
-const blog = defineCollection({
+const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.string().transform((val) => new Date(val)),
@@ -19,7 +19,7 @@ const blog = defineCollection({
 const tech = z.enum([
   "Astro",
   "React.js",
-  "TailwindCSS",
+  "Tailwind CSS",
   "Next.js",
   "TypeScript",
   "Mafs",
@@ -33,11 +33,11 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    date: z.string().transform((str) => new Date(str)), // Just for Month and Year
+    date: z.string().transform((str) => new Date(str)), // Just to display Month and Year
     deploymentURL: z.string().url().optional(),
     sourceCodeURL: z.string().url().optional(),
     tech: tech.or(z.string()).array(),
   }),
 });
 
-export const collections = { blog, projects };
+export const collections = { posts, projects };

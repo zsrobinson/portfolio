@@ -1,69 +1,151 @@
 ---
+import {
+  IconBrandGithub,
+  IconBrandInstagram,
+  IconBrandTwitter,
+  IconChevronRight,
+  IconMail,
+} from "@tabler/icons-react";
 import { getCollection } from "astro:content";
-import BlogPostCard from "../components/blog-post-card.astro";
-import HomeLinks from "../components/home-links.astro";
+import { LinkButton } from "~/components/link-button";
+import PostCard from "~/components/post-card.astro";
 import ProjectCard from "../components/project-card.astro";
 import Root from "../layouts/root.astro";
-import Button from "../components/button.astro";
-import { IconChevronRight } from "@tabler/icons-react";
+import { IconRss } from "@tabler/icons-react";
 
-let posts = await getCollection("blog");
+let posts = await getCollection("posts");
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 posts = posts.slice(0, 4);
 ---
 
 <Root title="Zachary Robinson">
-  <div class="flex justify-between gap-8 relative items-center">
+  <div class="relative flex items-center justify-between gap-8">
     <div>
-      <p class="font-handwriting font-bold text-5xl mb-2">Hey There! 👋🏻</p>
-      <p class="mb-4">
-        My name's Zach! I'm a rising freshman at the University of Maryland,
-        studying Computer Science. I love all things tech, and I'm especially
-        interested in full-stack web development.
+      <p class="text-4xl font-semibold">Hey There! 👋🏻</p>
+
+      <p class="my-2 max-w-xl">
+        My name's Zach. I'm a Computer Science major at the <a
+          href="https://umd.edu"
+          class="underline underline-offset-2 transition hover:text-muted-foreground"
+          target="_blank">University of Maryland</a
+        > who's passionate about learning new technology and building cool
+        stuff. I enjoy occasionally writing about my experiences and projects
+        here on this site.
       </p>
-      <HomeLinks />
+
+      <div class="flex gap-2">
+        <LinkButton
+          variant="ghost"
+          size="icon"
+          href="https://github.com/zsrobinson"
+          target="_blank"
+          title="GitHub"
+        >
+          <IconBrandGithub />
+        </LinkButton>
+
+        <LinkButton
+          variant="ghost"
+          size="icon"
+          href="https://instagram.com/zsrobinson"
+          target="_blank"
+          title="Instagram"
+        >
+          <IconBrandInstagram />
+        </LinkButton>
+
+        <LinkButton
+          variant="ghost"
+          size="icon"
+          href="https://twitter.com/zsrobinson_"
+          target="_blank"
+          title="Twitter"
+        >
+          <IconBrandTwitter />
+        </LinkButton>
+
+        <LinkButton
+          variant="ghost"
+          size="icon"
+          href="mailto:obfuscated@example.com"
+          id="ZW1haWwtYnV0dG9u"
+          title="Email"
+        >
+          <IconMail />
+        </LinkButton>
+
+        <LinkButton
+          variant="ghost"
+          size="icon"
+          href="/index.xml"
+          target="_blank"
+          title="RSS Feed"
+        >
+          <IconRss />
+        </LinkButton>
+
+        <script>
+          // super sneaky email obfuscation
+          setTimeout(() => {
+            const parts = ["bWVA", "enNyb2JpbnNvbg==", "LmNvbQ=="];
+            const string = parts.map((part) => atob(part)).join("");
+            document.getElementById("ZW1haWwtYnV0dG9u").href =
+              "mailto:" + string;
+          }, 250);
+        </script>
+      </div>
     </div>
 
     <img
       src="https://avatars.githubusercontent.com/zsrobinson"
       alt="my profile picture"
-      class="w-48 rounded-full m-4 peer hidden sm:block"
+      class="peer m-4 hidden w-48 rounded-full sm:block"
     />
+
     <img
       src="https://avatars.githubusercontent.com/zsrobinson"
       alt="my profile picture"
-      class="hidden sm:block absolute right-0 w-48 rounded-full blur-lg -z-10 m-4 peer-hover:blur-xl transition"
+      class="absolute right-0 -z-10 m-4 hidden w-48 rounded-full blur-lg transition peer-hover:blur-xl sm:block"
     />
   </div>
 
   <div class="my-8 flex flex-col gap-4">
-    <div class="flex justify-between gap-2 items-center">
-      <h2 class="text-3xl font-handwriting font-bold">Latest Blog Posts</h2>
-      <Button href="/blog">
-        All Posts
+    <div class="flex items-center justify-between gap-2">
+      <h2 class="text-3xl font-bold">Latest Posts</h2>
+
+      <LinkButton variant="outline" href="/posts" className="group">
+        <span>All Posts</span>
         <IconChevronRight
           size={20}
-          className="-translate-x-0.5 group-hover:translate-x-0.5 transition"
+          className="ml-2 group-hover:translate-x-0.5 transition text-muted-foreground"
         />
-      </Button>
+      </LinkButton>
     </div>
-    <div class="flex flex-col sm:grid grid-cols-2 gap-4">
-      {posts.map((post) => <BlogPostCard post={post} />)}
+
+    <div class="flex grid-cols-2 flex-col gap-4 sm:grid">
+      {posts.map((post) => <PostCard post={post} />)}
     </div>
   </div>
 
   <div class="my-8 flex flex-col gap-4">
-    <div class="flex justify-between gap-2 items-center">
-      <h2 class="text-3xl font-handwriting font-bold">Featured Projects</h2>
-      <Button href="https://github.com/zsrobinson">
-        All Projects
+    <div class="flex items-center justify-between gap-2">
+      <h2 class="text-3xl font-bold">Featured Projects</h2>
+
+      <LinkButton
+        variant="outline"
+        href="https://github.com/zsrobinson"
+        target="_blank"
+        className="group"
+      >
+        <span>All Projects</span>
         <IconChevronRight
           size={20}
-          className="-translate-x-0.5 group-hover:translate-x-0.5 transition"
+          className="ml-2 group-hover:translate-x-0.5 transition text-muted-foreground"
         />
-      </Button>
+      </LinkButton>
     </div>
-    <div class="flex flex-col sm:grid grid-cols-2 gap-4">
+
+    <div class="flex grid-cols-2 flex-col gap-4 sm:grid">
       <ProjectCard project="astro-blog" />
       <ProjectCard project="curvature-demo" />
       <ProjectCard project="pendulum-sim" />

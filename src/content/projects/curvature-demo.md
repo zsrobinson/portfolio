@@ -4,5 +4,5 @@ description: "An interactive tutorial of how to calculate the curvature of param
 date: "2023-05-12"
 deploymentURL: "https://curvature.zsrobinson.com"
 sourceCodeURL: "https://github.com/zsrobinson/curvature"
-tech: ["Next.js", "TypeScript", "TailwindCSS", "Mafs"]
+tech: ["Next.js", "TypeScript", "Tailwind CSS", "Mafs"]
 ---

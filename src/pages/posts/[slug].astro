@@ -4,50 +4,46 @@ import Root from "../../layouts/root.astro";
 import { formatDate } from "../../utils";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const posts = await getCollection("posts");
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: post,
   }));
 }
 
-const { data, render } = Astro.props as CollectionEntry<"blog">;
+const { data, render } = Astro.props as CollectionEntry<"posts">;
 const { Content, remarkPluginFrontmatter } = await render();
 ---
 
 <Root title={data.title + " · Zachary Robinson"}>
-  <article class="flex flex-col items-center">
-    <div class="mb-8 max-w-prose w-full">
-      <h1 class="font-handwriting text-4xl" style="text-wrap: balance;">
+  <article class="mb-48 flex flex-col items-center">
+    <div class="mb-8 w-full max-w-prose">
+      <h1 class="text-4xl font-semibold" style="text-wrap: balance;">
         {data.title}
       </h1>
-      <div class="flex justify-between">
-        <p class="text-zinc-400">
-          {formatDate(data.date)} · {
-            remarkPluginFrontmatter.minutesRead.split(" ")[0]
-          } minute read
-        </p>
-        {
-          data.updatedDate && (
-            <p class="text-zinc-600">Updated {formatDate(data.updatedDate)}</p>
-          )
-        }
-      </div>
+
+      <p class="text-muted-foreground">
+        <span
+          title={data.updatedDate
+            ? `Updated ${formatDate(data.updatedDate)}`
+            : ""}>{formatDate(data.date)}</span
+        > · {remarkPluginFrontmatter.minutesRead.split(" ")[0]} min read
+      </p>
     </div>
 
     <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">
       {
         data.heroAlt && data.heroSrc && (
-          <div class="relative flex">
+          <div class="relative flex pb-4">
             <img
               alt={data.heroAlt}
               src={data.heroSrc}
-              class="rounded-md m-0 peer"
+              class="peer m-0 rounded-md"
             />
             <img
               alt={data.heroAlt}
               src={data.heroSrc}
-              class="rounded-md absolute -z-10 blur-lg m-0 peer-hover:blur-xl transition"
+              class="absolute -z-10 m-0 rounded-md blur-lg transition peer-hover:blur-xl"
             />
           </div>
         )

@@ -1,12 +1,16 @@
 ---
+import { IconSearch } from "@tabler/icons-react";
 import { getCollection } from "astro:content";
-import BlogPostCard from "../components/blog-post-card.astro";
-import Root from "../layouts/root.astro";
 import Fuse from "fuse.js";
+import PostCard from "~/components/post-card.astro";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import Root from "../layouts/root.astro";
 
 export const prerender = false;
-const posts = await getCollection("blog");
+const posts = await getCollection("posts");
 const q = Astro.url.searchParams.get("q") || "";
+
 const fuse = new Fuse(posts, {
   keys: [
     { name: "data.title", weight: 0.7 },
@@ -15,30 +19,39 @@ const fuse = new Fuse(posts, {
     { name: "data.tags", weight: 0.5 },
   ],
 });
+
 const results = fuse.search(q);
 ---
 
 <Root title="Search · Zachary Robinson">
   <div class="flex flex-col">
-    <h2 class="text-3xl font-handwriting font-bold">Search</h2>
-    <p class="dark:text-zinc-500 italic">
+    <h2 class="text-3xl font-bold">Search</h2>
+    <p class="italic text-muted-foreground">
       This is a beta site and not all posts are shown here.
     </p>
 
-    <form>
-      <label for="q" class="sr-only">Search</label>
-      <input
-        type="search"
+    <form class="flex gap-4 py-4">
+      <Input
         name="q"
-        id="q"
-        class="w-full p-2 my-4 border border-zinc-300 dark:border-zinc-700 rounded-md dark:bg-zinc-900 bg-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-zinc-500 ring-offset-2 dark:ring-offset-zinc-900"
         placeholder="Search"
-        value={q}
+        defaultValue={q}
+        className="max-w-xs"
+        autoFocus={q === ""}
       />
+
+      <Button type="submit" size="icon" variant="outline">
+        <IconSearch size={20} />
+      </Button>
     </form>
 
-    <div class="flex flex-col gap-4">
-      {results.map((result) => <BlogPostCard post={result.item} />)}
+    <div class="flex max-w-prose flex-col gap-4">
+      {
+        q && results.length === 0 && (
+          <p class="font-semibold">No results found.</p>
+        )
+      }
+
+      {results.map((result) => <PostCard post={result.item} />)}
     </div>
   </div>
 </Root>

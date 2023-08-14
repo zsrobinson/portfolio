@@ -73,4 +73,14 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* similar code blocks as before, but they have the correct *slight* tint of blue */
+
+  .prose pre {
+    background-color: hsl(240 5.9% 10%) !important;
+  }
+
+  .dark .prose pre {
+    background-color: hsl(240 3.7% 15.9% / 0.5) !important;
+  }
 }

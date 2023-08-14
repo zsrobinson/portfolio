@@ -4,9 +4,9 @@ const currentYear = new Date().getFullYear();
 ---
 
 <!-- slightly closer to bg color than navbar since there's no gradient to ease the transition -->
-<div class="bg-muted dark:bg-muted/30 border-t border-border">
+<div class="border-t border-border bg-muted dark:bg-muted/30">
   <div
-    class="max-w-5xl mx-auto justify-between p-4 items-center flex-wrap gap-2 text-zinc-700 dark:text-zinc-400"
+    class="mx-auto max-w-5xl flex-wrap items-center justify-between gap-2 p-4 text-zinc-700 dark:text-zinc-400"
   >
     <p class="text-center">
       © {currentYear} Zachary Robinson · Created with<IconHeart
@@ -14,7 +14,7 @@ const currentYear = new Date().getFullYear();
         size={20}
       /> using<a
         href="https://astro.build"
-        class="hover:text-zinc-500 dark:hover:text-zinc-300 transition underline underline-offset-2"
+        class="underline underline-offset-2 transition hover:text-zinc-500 dark:hover:text-zinc-300"
         target="_blank"
       >
         Astro

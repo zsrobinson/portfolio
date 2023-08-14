@@ -13,13 +13,13 @@ const { remarkPluginFrontmatter } = await post.render();
     {post.data.title}
   </p>
 
-  <p class="text-zinc-600 dark:text-zinc-400 text-sm pb-2">
+  <p class="pb-2 text-sm text-zinc-600 dark:text-zinc-400">
     {formatDate(post.data.date)} · {
       remarkPluginFrontmatter.minutesRead.split(" ")[0]
     } min read
   </p>
 
-  <p class="text-zinc-600 dark:text-zinc-400 line-clamp-3">
+  <p class="line-clamp-3 text-zinc-600 dark:text-zinc-400">
     {post.body.split(" ").slice(0, 80).join(" ")}
   </p>
 </LinkCard>

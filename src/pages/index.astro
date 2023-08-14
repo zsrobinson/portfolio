@@ -18,9 +18,9 @@ posts = posts.slice(0, 4);
 ---
 
 <Root title="Zachary Robinson">
-  <div class="flex justify-between gap-8 relative items-center">
+  <div class="relative flex items-center justify-between gap-8">
     <div>
-      <p class="font-bold text-5xl mb-2">Hey There! 👋🏻</p>
+      <p class="mb-2 text-5xl font-bold">Hey There! 👋🏻</p>
 
       <p class="mb-4">
         My name's Zach! I'm a rising freshman at the University of Maryland,
@@ -81,18 +81,18 @@ posts = posts.slice(0, 4);
     <img
       src="https://avatars.githubusercontent.com/zsrobinson"
       alt="my profile picture"
-      class="w-48 rounded-full m-4 peer hidden sm:block"
+      class="peer m-4 hidden w-48 rounded-full sm:block"
     />
 
     <img
       src="https://avatars.githubusercontent.com/zsrobinson"
       alt="my profile picture"
-      class="hidden sm:block absolute right-0 w-48 rounded-full blur-lg -z-10 m-4 peer-hover:blur-xl transition"
+      class="absolute right-0 -z-10 m-4 hidden w-48 rounded-full blur-lg transition peer-hover:blur-xl sm:block"
     />
   </div>
 
   <div class="my-8 flex flex-col gap-4">
-    <div class="flex justify-between gap-2 items-center">
+    <div class="flex items-center justify-between gap-2">
       <h2 class="text-3xl font-bold">Latest Posts</h2>
 
       <LinkButton variant="outline" href="/posts" className="group">
@@ -104,13 +104,13 @@ posts = posts.slice(0, 4);
       </LinkButton>
     </div>
 
-    <div class="flex flex-col sm:grid grid-cols-2 gap-4">
+    <div class="flex grid-cols-2 flex-col gap-4 sm:grid">
       {posts.map((post) => <PostCard post={post} />)}
     </div>
   </div>
 
   <div class="my-8 flex flex-col gap-4">
-    <div class="flex justify-between gap-2 items-center">
+    <div class="flex items-center justify-between gap-2">
       <h2 class="text-3xl font-bold">Featured Projects</h2>
 
       <LinkButton
@@ -127,7 +127,7 @@ posts = posts.slice(0, 4);
       </LinkButton>
     </div>
 
-    <div class="flex flex-col sm:grid grid-cols-2 gap-4">
+    <div class="flex grid-cols-2 flex-col gap-4 sm:grid">
       <ProjectCard project="astro-blog" />
       <ProjectCard project="curvature-demo" />
       <ProjectCard project="pendulum-sim" />

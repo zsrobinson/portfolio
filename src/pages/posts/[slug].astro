@@ -17,7 +17,7 @@ const { Content, remarkPluginFrontmatter } = await render();
 
 <Root title={data.title + " · Zachary Robinson"}>
   <article class="flex flex-col items-center">
-    <div class="mb-8 max-w-prose w-full">
+    <div class="mb-8 w-full max-w-prose">
       <h1 class="text-4xl" style="text-wrap: balance;">
         {data.title}
       </h1>
@@ -38,12 +38,12 @@ const { Content, remarkPluginFrontmatter } = await render();
             <img
               alt={data.heroAlt}
               src={data.heroSrc}
-              class="rounded-md m-0 peer"
+              class="peer m-0 rounded-md"
             />
             <img
               alt={data.heroAlt}
               src={data.heroSrc}
-              class="rounded-md absolute -z-10 blur-lg m-0 peer-hover:blur-xl transition"
+              class="absolute -z-10 m-0 rounded-md blur-lg transition peer-hover:blur-xl"
             />
           </div>
         )

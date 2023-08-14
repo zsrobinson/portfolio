@@ -1,10 +1,15 @@
 ---
+import {
+  IconBrandGithub,
+  IconBrandInstagram,
+  IconBrandTwitter,
+  IconMail,
+} from "@tabler/icons-react";
 import { getCollection } from "astro:content";
+import { LinkButton } from "~/components/ui/link-button";
 import BlogPostCard from "../components/blog-post-card.astro";
-import HomeLinks from "../components/home-links.astro";
 import ProjectCard from "../components/project-card.astro";
 import Root from "../layouts/root.astro";
-import Button from "../components/button.astro";
 import { IconChevronRight } from "@tabler/icons-react";
 
 let posts = await getCollection("posts");
@@ -16,12 +21,61 @@ posts = posts.slice(0, 4);
   <div class="flex justify-between gap-8 relative items-center">
     <div>
       <p class="font-bold text-5xl mb-2">Hey There! 👋🏻</p>
+
       <p class="mb-4">
         My name's Zach! I'm a rising freshman at the University of Maryland,
         studying Computer Science. I love all things tech, and I'm especially
         interested in full-stack web development.
       </p>
-      <HomeLinks />
+
+      <div class="flex gap-4">
+        <LinkButton
+          variant="outline"
+          size="icon"
+          href="https://github.com/zsrobinson"
+          title="GitHub"
+        >
+          <IconBrandGithub size={20} />
+        </LinkButton>
+
+        <LinkButton
+          variant="outline"
+          size="icon"
+          href="https://instagram.com/zsrobinson"
+          title="Instagram"
+        >
+          <IconBrandInstagram size={20} />
+        </LinkButton>
+
+        <LinkButton
+          variant="outline"
+          size="icon"
+          href="https://twitter.com/zsrobinson_"
+          title="Twitter"
+        >
+          <IconBrandTwitter size={20} />
+        </LinkButton>
+
+        <LinkButton
+          variant="outline"
+          size="icon"
+          href="mailto:obfuscated@example.com"
+          id="ZW1haWwtYnV0dG9u"
+          title="Email"
+        >
+          <IconMail size={20} />
+        </LinkButton>
+
+        <script>
+          // super sneaky email obfuscation
+          setTimeout(() => {
+            const parts = ["bWVA", "enNyb2JpbnNvbg==", "LmNvbQ=="];
+            const string = parts.map((part) => atob(part)).join("");
+            document.getElementById("ZW1haWwtYnV0dG9u").href =
+              "mailto:" + string;
+          }, 250);
+        </script>
+      </div>
     </div>
 
     <img
@@ -29,6 +83,7 @@ posts = posts.slice(0, 4);
       alt="my profile picture"
       class="w-48 rounded-full m-4 peer hidden sm:block"
     />
+
     <img
       src="https://avatars.githubusercontent.com/zsrobinson"
       alt="my profile picture"
@@ -39,14 +94,16 @@ posts = posts.slice(0, 4);
   <div class="my-8 flex flex-col gap-4">
     <div class="flex justify-between gap-2 items-center">
       <h2 class="text-3xl font-bold">Latest Posts</h2>
-      <Button href="/posts">
+
+      <LinkButton variant="outline" href="/posts" className="group">
         All Posts
         <IconChevronRight
           size={20}
-          className="-translate-x-0.5 group-hover:translate-x-0.5 transition"
+          className="ml-2 group-hover:translate-x-0.5 transition"
         />
-      </Button>
+      </LinkButton>
     </div>
+
     <div class="flex flex-col sm:grid grid-cols-2 gap-4">
       {posts.map((post) => <BlogPostCard post={post} />)}
     </div>
@@ -55,14 +112,21 @@ posts = posts.slice(0, 4);
   <div class="my-8 flex flex-col gap-4">
     <div class="flex justify-between gap-2 items-center">
       <h2 class="text-3xl font-bold">Featured Projects</h2>
-      <Button href="https://github.com/zsrobinson">
+
+      <LinkButton
+        variant="outline"
+        href="https://github.com/zsrobinson"
+        target="_blank"
+        className="group"
+      >
         All Projects
         <IconChevronRight
           size={20}
-          className="-translate-x-0.5 group-hover:translate-x-0.5 transition"
+          className="ml-2 group-hover:translate-x-0.5 transition"
         />
-      </Button>
+      </LinkButton>
     </div>
+
     <div class="flex flex-col sm:grid grid-cols-2 gap-4">
       <ProjectCard project="astro-blog" />
       <ProjectCard project="curvature-demo" />

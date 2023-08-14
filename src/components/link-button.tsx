@@ -1,5 +1,4 @@
-import type { ReactNode } from "react";
-import { Button } from "./button";
+import { Button } from "./ui/button";
 
 // We're unable to take advantage of the Button component's asChild prop from
 // within Astro, so instead we have to use this component for links so that we
@@ -8,7 +7,6 @@ import { Button } from "./button";
 type Props = {
   href: string;
   target?: string;
-  children?: ReactNode;
 } & React.ComponentPropsWithoutRef<typeof Button>;
 
 export function LinkButton({ href, target, children, ...rest }: Props) {

@@ -3,14 +3,14 @@ import {
   IconBrandGithub,
   IconBrandInstagram,
   IconBrandTwitter,
+  IconChevronRight,
   IconMail,
 } from "@tabler/icons-react";
 import { getCollection } from "astro:content";
-import { LinkButton } from "~/components/ui/link-button";
-import BlogPostCard from "../components/blog-post-card.astro";
+import { LinkButton } from "~/components/link-button";
+import PostCard from "~/components/post-card.astro";
 import ProjectCard from "../components/project-card.astro";
 import Root from "../layouts/root.astro";
-import { IconChevronRight } from "@tabler/icons-react";
 
 let posts = await getCollection("posts");
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -96,16 +96,16 @@ posts = posts.slice(0, 4);
       <h2 class="text-3xl font-bold">Latest Posts</h2>
 
       <LinkButton variant="outline" href="/posts" className="group">
-        All Posts
+        <span>All Posts</span>
         <IconChevronRight
           size={20}
-          className="ml-2 group-hover:translate-x-0.5 transition"
+          className="ml-2 group-hover:translate-x-0.5 transition text-muted-foreground"
         />
       </LinkButton>
     </div>
 
     <div class="flex flex-col sm:grid grid-cols-2 gap-4">
-      {posts.map((post) => <BlogPostCard post={post} />)}
+      {posts.map((post) => <PostCard post={post} />)}
     </div>
   </div>
 
@@ -119,10 +119,10 @@ posts = posts.slice(0, 4);
         target="_blank"
         className="group"
       >
-        All Projects
+        <span>All Projects</span>
         <IconChevronRight
           size={20}
-          className="ml-2 group-hover:translate-x-0.5 transition"
+          className="ml-2 group-hover:translate-x-0.5 transition text-muted-foreground"
         />
       </LinkButton>
     </div>

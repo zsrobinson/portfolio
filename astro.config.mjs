@@ -16,6 +16,4 @@ export default defineConfig({
   output: "hybrid",
   adapter: vercel(),
   site: "https://beta.zsrobinson.com",
-
-  experimental: { viewTransitions: true },
 });

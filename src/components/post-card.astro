@@ -9,18 +9,11 @@ const { remarkPluginFrontmatter } = await post.render();
 ---
 
 <LinkCard href={`/posts/${post.slug}`}>
-  <p
-    class="text-2xl font-semibold leading-[1.15]"
-    style="text-wrap: balance;"
-    transition:name={post.slug + "-title"}
-  >
+  <p class="text-2xl font-semibold leading-[1.15]" style="text-wrap: balance;">
     {post.data.title}
   </p>
 
-  <p
-    class="pb-2 text-sm text-muted-foreground"
-    transition:name={post.slug + "-details"}
-  >
+  <p class="pb-2 text-sm text-muted-foreground">
     {formatDate(post.data.date)} · {
       remarkPluginFrontmatter.minutesRead.split(" ")[0]
     } min read

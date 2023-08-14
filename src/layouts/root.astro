@@ -2,7 +2,6 @@
 import "~/styles/globals.css";
 import Footer from "~/components/footer.astro";
 import Navbar from "~/components/navbar.astro";
-import { ViewTransitions } from "astro:transitions";
 
 export type Props = { title: string; gradientBg?: boolean };
 const { title } = Astro.props;
@@ -42,8 +41,6 @@ const { title } = Astro.props;
 
     <link rel="alternate" type="application/rss+xml" href="/index.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-
-    <ViewTransitions fallback="swap" />
   </head>
 
   <body>

@@ -30,7 +30,9 @@ Step 3: Run through the initial Ubuntu Server setup process that will appear whe
 
 Step 4: Once you see a screen that says something like “Ubuntu 22.04 LTS [hostname] tty1”, you’re able to SSH into the machine. The SSH command is the same on Windows, MacOS, and Linux. You may or may not have to install an SSH client on Windows, refer to [this article](https://www.howtogeek.com/336775/how-to-enable-and-use-windows-10s-built-in-ssh-commands/) if the following command doesn’t work.
 
-`ssh [username]@[IP address]`
+```bash
+ssh [username]@[IP address]
+```
 
 Replace `[username]` and `[IP address]` with the right values for your machine. If you forgot your IP address, run `ip addr | grep inet` from the machine itself. It will probably start with `192.168`.
 

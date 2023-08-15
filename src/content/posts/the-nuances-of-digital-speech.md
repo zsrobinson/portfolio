@@ -23,6 +23,4 @@ Respecting people’s time isn’t a new concept – many office workers complai
 
 But not everyone is caught up with these translations – and that’s okay. Most reasonable people will extend empathy to someone learning English as their second language when they don’t quite know all the distinctions we’re used to. Similarly, it’s important for those who _do_ notice these nuances to consider the backgrounds of the people we speak to over the Internet and be flexible with the standards we hold them to.
 
----
-
 For further reading on this topic, I highly recommend _Because Internet: Understanding the New Rules of Language_ by Gretchen McCulloch. It's a great deep-dive into numerous examples of how the English language has adapted to the digital age. You can pick it up [here](https://www.amazon.com/Because-Internet-Understanding-Rules-Language/dp/0735210942/) on Amazon.

@@ -15,7 +15,7 @@ export default defineConfig({
 
   output: "hybrid",
   adapter: vercel(),
-  site: "https://beta.zsrobinson.com",
+  site: "https://zsrobinson.com",
 
   experimental: { assets: true },
 });

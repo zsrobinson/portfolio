@@ -69,6 +69,14 @@ const { Content, remarkPluginFrontmatter } = await render();
         )
       }
 
+      {
+        data.disclaimer && (
+          <blockquote class="italic text-muted-foreground">
+            {data.disclaimer}
+          </blockquote>
+        )
+      }
+
       <Content />
     </div>
   </article>

@@ -10,7 +10,7 @@ import {
   IconRocket,
 } from "@tabler/icons-react";
 import { getEntry, type CollectionEntry } from "astro:content";
-import { formatMonth } from "../utils";
+import { formatMonth } from "~/lib/utils";
 import { LinkCard } from "./link-card";
 
 export type Props = { project: CollectionEntry<"projects">["slug"] };

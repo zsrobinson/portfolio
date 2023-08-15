@@ -20,7 +20,7 @@ const { Content, remarkPluginFrontmatter } = await render();
 
 <Root
   title={data.title + " · Zachary Robinson"}
-  description={body.split(" ").slice(0, 50).join(" ") + "..."}
+  description={body}
   keywords={data.tags}
   parent="Posts"
   ogImage={`/og/posts/${slug}.png`}

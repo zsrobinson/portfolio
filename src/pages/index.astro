@@ -121,7 +121,11 @@ posts = posts.slice(0, 6);
     <div class="flex items-center justify-between gap-2">
       <h2 class="text-3xl font-bold">Latest Posts</h2>
 
-      <LinkButton variant="outline" href="/posts" className="group">
+      <LinkButton
+        variant="outline"
+        href="/posts"
+        className="group whitespace-nowrap"
+      >
         <span>All Posts</span>
         <IconChevronRight
           size={20}
@@ -143,7 +147,7 @@ posts = posts.slice(0, 6);
         variant="outline"
         href="https://github.com/zsrobinson"
         target="_blank"
-        className="group"
+        className="group whitespace-nowrap"
       >
         <span>All Projects</span>
         <IconChevronRight

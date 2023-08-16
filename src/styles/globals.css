@@ -72,6 +72,10 @@
   }
   body {
     @apply bg-background text-foreground;
+
+    /* min-h-screen but with fallback */
+    min-height: 100vh;
+    min-height: 100dvh;
   }
 
   /* similar code blocks as before, but they have the correct *slight* tint of blue */

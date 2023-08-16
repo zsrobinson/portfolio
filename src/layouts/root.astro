@@ -90,7 +90,7 @@ const trimmedDescription =
     </script>
   </head>
 
-  <body>
+  <body class="flex min-h-screen flex-col">
     <Navbar parent={parent} />
 
     <!-- Gradient at top of page -->
@@ -99,7 +99,7 @@ const trimmedDescription =
     >
     </div>
 
-    <main class="mx-auto min-h-screen max-w-5xl p-4 md:py-8">
+    <main class="mx-auto w-full max-w-5xl flex-grow p-4 md:py-8">
       <slot />
     </main>
 

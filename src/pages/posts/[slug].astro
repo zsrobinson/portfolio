@@ -59,11 +59,13 @@ const { Content, remarkPluginFrontmatter } = await render();
               src={data.cover}
               alt={data.coverAlt}
               class="peer m-0 rounded-md"
+              loading="eager"
             />
             <Image
               src={data.cover}
               alt={data.coverAlt}
               class="absolute -z-10 m-0 rounded-md blur-lg transition peer-hover:blur-xl"
+              loading="eager"
             />
           </div>
         )

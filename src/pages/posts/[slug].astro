@@ -24,8 +24,8 @@ const { Content, remarkPluginFrontmatter } = await render();
   parent="Posts"
   ogImage={`/og/posts/${slug}.png`}
 >
-  <article class="mb-24 flex flex-col items-center">
-    <div class="mb-8 w-full max-w-prose">
+  <article class="mx-auto mb-24 max-w-prose">
+    <div class="mb-8 w-full">
       <h1 class="text-4xl font-semibold" style="text-wrap: balance;">
         {data.title}
       </h1>
@@ -51,7 +51,9 @@ const { Content, remarkPluginFrontmatter } = await render();
       }
     </div>
 
-    <div class="prose prose-zinc dark:prose-invert prose-img:rounded-md">
+    <div
+      class="prose prose-zinc max-w-full break-words dark:prose-invert prose-img:rounded-md"
+    >
       {
         data.coverAlt && data.cover && (
           <div class="relative flex pb-4">

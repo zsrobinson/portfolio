@@ -12,11 +12,11 @@ const posts = await getCollection("posts");
 const q = Astro.url.searchParams.get("q") || "";
 
 const fuse = new Fuse(posts, {
+  ignoreLocation: true,
   keys: [
     { name: "data.title", weight: 0.7 },
-    { name: "body", weight: 0.3 },
-    { name: "data.categories", weight: 0.5 },
     { name: "data.tags", weight: 0.5 },
+    { name: "body", weight: 0.3 },
   ],
 });
 

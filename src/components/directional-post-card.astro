@@ -1,0 +1,47 @@
+---
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import type { CollectionEntry } from "astro:content";
+import { formatDate } from "~/lib/utils";
+import { LinkCard } from "./link-card";
+
+type Props = {
+  post: CollectionEntry<"posts">;
+  type: "next" | "previous";
+};
+
+const { post, type } = Astro.props;
+const { remarkPluginFrontmatter } = await post.render();
+---
+
+<LinkCard href={`/posts/${post.slug}`}>
+  {
+    type === "previous" ? (
+      <div class="mb-2 flex items-center gap-1 text-sm text-muted-foreground">
+        <IconChevronLeft
+          size={16}
+          className="group-hover:-translate-x-0.5 transition"
+        />
+        Prior Post
+      </div>
+    ) : (
+      <div class="mb-2 flex items-center gap-1 text-sm text-muted-foreground">
+        Next Post
+        <IconChevronRight
+          size={16}
+          className="group-hover:translate-x-0.5 transition"
+        />
+      </div>
+    )
+  }
+
+  <div>
+    <p class="text-xl font-semibold leading-[1.15]" style="text-wrap: balance;">
+      {post.data.title}
+    </p>
+
+    <p class="text-sm text-muted-foreground">
+      {formatDate(post.data.date)} ·{" "}
+      {remarkPluginFrontmatter.minutesRead.split(" ")[0]} min read
+    </p>
+  </div>
+</LinkCard>

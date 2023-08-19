@@ -2,6 +2,8 @@
 import Image from "astro/components/Image.astro";
 import { CollectionEntry, getCollection } from "astro:content";
 import { LinkBadge } from "~/components/link-badge";
+import DirectionalPostCard from "~/components/directional-post-card.astro";
+import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
 import { formatDate, slugify } from "~/lib/utils";
 
@@ -15,6 +17,13 @@ export async function getStaticPaths() {
 
 const { data, render, body, slug } = Astro.props as CollectionEntry<"posts">;
 const { Content, remarkPluginFrontmatter } = await render();
+
+let posts = await getCollection("posts");
+posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const postIndex = posts.findIndex((post) => post.slug === slug);
+const prevPost = posts[postIndex + 1] as CollectionEntry<"posts"> | undefined;
+const nextPost = posts[postIndex - 1] as CollectionEntry<"posts"> | undefined;
 ---
 
 <Root
@@ -24,7 +33,7 @@ const { Content, remarkPluginFrontmatter } = await render();
   parent="Posts"
   ogImage={`/og/posts/${slug}.png`}
 >
-  <article class="mx-auto mb-24 max-w-prose">
+  <article class="mx-auto max-w-prose">
     <div class="mb-8 w-full">
       <h1 class="text-4xl font-semibold" style="text-wrap: balance;">
         {data.title}
@@ -82,6 +91,46 @@ const { Content, remarkPluginFrontmatter } = await render();
       }
 
       <Content />
+    </div>
+
+    <div class="mt-12 flex flex-col gap-8">
+      <hr class="border-muted" />
+
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="flex flex-wrap items-center gap-4">
+          <div class="group relative">
+            <img
+              src="https://avatars.githubusercontent.com/zsrobinson"
+              alt="my profile picture"
+              class="absolute -z-10 w-16 rounded-full blur transition group-hover:blur-md"
+            />
+
+            <img
+              src="https://avatars.githubusercontent.com/zsrobinson"
+              alt="my profile picture"
+              class="w-16 rounded-full"
+            />
+          </div>
+
+          <div>
+            <p class="text-xs text-muted-foreground">Written By</p>
+            <p class="font-semibold">Zachary Robinson</p>
+          </div>
+        </div>
+
+        <Socials />
+      </div>
+
+      <p class="leading-7 text-muted-foreground">
+        Thanks for reading! If you enjoyed this post, please consider sharing
+        it. If you have any comments, questions, or feedback, don't hesitate to
+        reach out to me.
+      </p>
+
+      <div class="flex grid-cols-2 flex-col gap-4 sm:grid sm:items-start">
+        {prevPost && <DirectionalPostCard post={prevPost} type="previous" />}
+        {nextPost && <DirectionalPostCard post={nextPost} type="next" />}
+      </div>
     </div>
   </article>
 </Root>

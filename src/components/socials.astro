@@ -1,0 +1,71 @@
+---
+import {
+  IconBrandGithub,
+  IconBrandInstagram,
+  IconBrandTwitter,
+  IconMail,
+  IconRss,
+} from "@tabler/icons-react";
+import { LinkButton } from "./link-button";
+---
+
+<div class="flex flex-wrap gap-2">
+  <LinkButton
+    variant="ghost"
+    size="icon"
+    href="https://github.com/zsrobinson"
+    target="_blank"
+    title="GitHub"
+  >
+    <IconBrandGithub />
+  </LinkButton>
+
+  <LinkButton
+    variant="ghost"
+    size="icon"
+    href="mailto:obfuscated@example.com"
+    id="ZW1haWwtYnV0dG9u"
+    title="Email"
+  >
+    <IconMail />
+  </LinkButton>
+
+  <LinkButton
+    variant="ghost"
+    size="icon"
+    href="https://twitter.com/zsrobinson_"
+    target="_blank"
+    title="Twitter"
+  >
+    <IconBrandTwitter />
+  </LinkButton>
+
+  <LinkButton
+    variant="ghost"
+    size="icon"
+    href="https://instagram.com/zsrobinson"
+    target="_blank"
+    title="Instagram"
+  >
+    <IconBrandInstagram />
+  </LinkButton>
+
+  <LinkButton
+    variant="ghost"
+    size="icon"
+    href="/index.xml"
+    target="_blank"
+    title="RSS Feed"
+  >
+    <IconRss />
+  </LinkButton>
+
+  <script>
+    // super sneaky email obfuscation
+    setTimeout(() => {
+      const parts = ["bWVA", "enNyb2JpbnNvbg==", "LmNvbQ=="];
+      const string = parts.map((part) => atob(part)).join("");
+      document.getElementById("ZW1haWwtYnV0dG9u").href = "mailto:" + string;
+    }, 250);
+  </script>
+</div>

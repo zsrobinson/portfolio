@@ -1,16 +1,10 @@
 ---
-import {
-  IconBrandGithub,
-  IconBrandInstagram,
-  IconBrandTwitter,
-  IconChevronRight,
-  IconMail,
-  IconRss,
-} from "@tabler/icons-react";
+import { IconChevronRight } from "@tabler/icons-react";
 import { getCollection } from "astro:content";
 import { LinkButton } from "~/components/link-button";
 import PostCard from "~/components/post-card.astro";
 import ProjectCard from "~/components/project-card.astro";
+import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
 
 let posts = await getCollection("posts");
@@ -41,67 +35,7 @@ posts = posts.slice(0, 6);
         here on this site.
       </p>
 
-      <div class="flex gap-2">
-        <LinkButton
-          variant="ghost"
-          size="icon"
-          href="https://github.com/zsrobinson"
-          target="_blank"
-          title="GitHub"
-        >
-          <IconBrandGithub />
-        </LinkButton>
-
-        <LinkButton
-          variant="ghost"
-          size="icon"
-          href="https://instagram.com/zsrobinson"
-          target="_blank"
-          title="Instagram"
-        >
-          <IconBrandInstagram />
-        </LinkButton>
-
-        <LinkButton
-          variant="ghost"
-          size="icon"
-          href="https://twitter.com/zsrobinson_"
-          target="_blank"
-          title="Twitter"
-        >
-          <IconBrandTwitter />
-        </LinkButton>
-
-        <LinkButton
-          variant="ghost"
-          size="icon"
-          href="mailto:obfuscated@example.com"
-          id="ZW1haWwtYnV0dG9u"
-          title="Email"
-        >
-          <IconMail />
-        </LinkButton>
-
-        <LinkButton
-          variant="ghost"
-          size="icon"
-          href="/index.xml"
-          target="_blank"
-          title="RSS Feed"
-        >
-          <IconRss />
-        </LinkButton>
-
-        <script>
-          // super sneaky email obfuscation
-          setTimeout(() => {
-            const parts = ["bWVA", "enNyb2JpbnNvbg==", "LmNvbQ=="];
-            const string = parts.map((part) => atob(part)).join("");
-            document.getElementById("ZW1haWwtYnV0dG9u").href =
-              "mailto:" + string;
-          }, 250);
-        </script>
-      </div>
+      <Socials />
     </div>
 
     <img

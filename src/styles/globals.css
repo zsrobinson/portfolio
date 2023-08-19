@@ -90,4 +90,27 @@
   .dark .prose pre {
     background-color: hsl(240 3.7% 15.9% / 0.5) !important;
   }
+
+  /* wave animation for home page "hey there" */
+
+  @keyframes wave {
+    0%,
+    100% {
+      transform: none;
+    }
+
+    50% {
+      transform: rotate(20deg);
+    }
+  }
+
+  .animate-wave {
+    animation: wave 1.5s 3;
+  }
+
+  @media (prefers-reduced-motion) {
+    .animate-wave {
+      animation: none;
+    }
+  }
 }

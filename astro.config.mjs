@@ -10,12 +10,10 @@ export default defineConfig({
 
   markdown: {
     remarkPlugins: [remarkReadingTime],
-    shikiConfig: { theme: "material-darker" },
+    shikiConfig: { theme: "material-theme-darker" },
   },
 
   output: "hybrid",
   adapter: vercel(),
   site: "https://zsrobinson.com",
-
-  experimental: { assets: true },
 });

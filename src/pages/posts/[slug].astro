@@ -35,16 +35,24 @@ const nextPost = posts[postIndex - 1] as CollectionEntry<"posts"> | undefined;
 >
   <article class="mx-auto max-w-prose">
     <div class="mb-8 w-full">
-      <h1 class="text-4xl font-semibold" style="text-wrap: balance;">
+      <h1
+        class="text-4xl font-semibold"
+        style="text-wrap: balance;"
+        transition:name={"title:" + slug}
+      >
         {data.title}
       </h1>
 
-      <p class="text-muted-foreground">
-        <span
-          title={data.updatedDate
-            ? `Updated ${formatDate(data.updatedDate)}`
-            : ""}>{formatDate(data.date)}</span
-        > · {remarkPluginFrontmatter.minutesRead.split(" ")[0]} min read
+      <p
+        class="text-muted-foreground"
+        title={data.updatedDate
+          ? `Updated ${formatDate(data.updatedDate)}`
+          : ""}
+        transition:name={"details:" + slug}
+      >
+        {formatDate(data.date)} · {
+          remarkPluginFrontmatter.minutesRead.split(" ")[0]
+        } min read
       </p>
 
       {

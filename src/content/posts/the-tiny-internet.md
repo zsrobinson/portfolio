@@ -1,7 +1,7 @@
 ---
 title: "Why I Love the Tiny Internet"
 date: 2023-09-27
-tags: ["Internet", "Blogging", "Explainer", "Opinion"]
+tags: ["Internet", "Blogging", "Opinion"]
 hackerNews: https://news.ycombinator.com/item?id=37684566
 ---
 

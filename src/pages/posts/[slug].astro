@@ -1,8 +1,8 @@
 ---
-import Image from "astro/components/Image.astro";
-import { CollectionEntry, getCollection } from "astro:content";
-import { LinkBadge } from "~/components/link-badge";
+import { Image } from "astro:assets";
+import { getCollection, type CollectionEntry } from "astro:content";
 import DirectionalPostCard from "~/components/directional-post-card.astro";
+import { LinkBadge } from "~/components/link-badge";
 import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
 import { formatDate, slugify } from "~/lib/utils";
@@ -121,11 +121,27 @@ const nextPost = posts[postIndex - 1] as CollectionEntry<"posts"> | undefined;
         <Socials />
       </div>
 
-      <p class="leading-7 text-muted-foreground">
-        Thanks for reading! If you enjoyed this post, please consider sharing
-        it. If you have any comments, questions, or feedback, don't hesitate to
-        reach out to me.
-      </p>
+      <div class="flex flex-col gap-4">
+        <p class="leading-7 text-muted-foreground">
+          Thanks for reading! If you enjoyed this post, please consider sharing
+          it. If you have any comments, questions, or feedback, don't hesitate
+          to reach out to me.
+        </p>
+
+        {
+          data.hackerNews && (
+            <p class="leading-7 text-muted-foreground">
+              Discuss this post on HackerNews:{" "}
+              <a
+                href={data.hackerNews}
+                class="underline underline-offset-2 transition hover:text-primary focus-visible:text-primary focus-visible:outline-none"
+              >
+                {data.hackerNews.split("https://").join("")}
+              </a>
+            </p>
+          )
+        }
+      </div>
 
       <div class="flex grid-cols-2 flex-col gap-4 sm:grid sm:items-start">
         {prevPost && <DirectionalPostCard post={prevPost} type="previous" />}

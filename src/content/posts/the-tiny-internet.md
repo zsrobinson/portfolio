@@ -2,6 +2,7 @@
 title: "Why I Love the Tiny Internet"
 date: 2023-09-27
 tags: ["Internet", "Blogging", "Explainer", "Opinion"]
+hackerNews: https://news.ycombinator.com/item?id=37684566
 ---
 
 After recently recreating my personal website from the ground up, I've been reflecting a bit more on blogs and the internet more broadly. As someone born after 2000, I never really got to experience the internet in the same way that many talk about what "used to be". I never experienced AOL chat rooms, IRC channels, or when forums used to dominate the internet. The internet that I came to know was one of centralized platforms: Google, YouTube, Facebook, Twitter, Reddit, you name it.

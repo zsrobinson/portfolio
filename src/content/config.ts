@@ -39,4 +39,20 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { posts, projects };
+const aspectRatio = z.enum(["3:2", "2:3", "4:3", "3:4", "16:9", "9:16", "1:1"]);
+
+const galleryPosts = defineCollection({
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.date(),
+      photos: z
+        .object({
+          path: image(),
+          aspectRatio: aspectRatio.or(z.string()),
+        })
+        .array(),
+    }),
+});
+
+export const collections = { posts, projects, "gallery-posts": galleryPosts };

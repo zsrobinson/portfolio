@@ -15,8 +15,18 @@ export async function getStaticPaths() {
 
 const { data, body, slug } = Astro.props as CollectionEntry<"gallery-posts">;
 
+/** Doubt this works more generally but props to trial and error */
 function getFilePath(path: string) {
-  return "src/" + path.split("/src/")[1].split("?")[0];
+  if (path.includes("_astro")) {
+    return (
+      "src/assets/gallery/" +
+      path.split("/")[2].split(".")[0] +
+      "." +
+      path.split("/")[2].split(".")[2]
+    );
+  } else {
+    return "src/" + path.split("/src/")[1].split("?")[0];
+  }
 }
 
 async function getExif(path: string) {

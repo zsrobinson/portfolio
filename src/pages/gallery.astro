@@ -1,0 +1,26 @@
+---
+import { getCollection } from "astro:content";
+import GalleryPostCard from "~/components/gallery-post-card.astro";
+import Root from "~/layouts/root.astro";
+
+const galleryPosts = await getCollection("gallery-posts");
+galleryPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Root
+  title="Gallery · Zachary Robinson"
+  parent="Gallery"
+  ogImage="/og/gallery.png"
+  noIndex
+>
+  <div class="mx-auto flex max-w-prose flex-col">
+    <span class="inline-flex pb-4">
+      <h2 class="text-3xl font-bold">Gallery</h2>
+      <span class="ml-1 text-muted-foreground">{galleryPosts.length}</span>
+    </span>
+
+    <div class="flex flex-col gap-4">
+      {galleryPosts.map((post) => <GalleryPostCard post={post} />)}
+    </div>
+  </div>
+</Root>

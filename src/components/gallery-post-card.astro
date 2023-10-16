@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { formatDate } from "~/lib/utils";
+import { LinkCard } from "./link-card";
+import { Image } from "astro:assets";
+
+type Props = { post: CollectionEntry<"gallery-posts"> };
+const { post } = Astro.props;
+
+const MIN_PHOTOS = 2;
+---
+
+<LinkCard href={`/gallery/${post.slug}`}>
+  <p class="text-2xl font-semibold leading-[1.15]" style="text-wrap: balance;">
+    {post.data.title}
+  </p>
+
+  <p class="pb-2 text-sm text-muted-foreground">
+    {formatDate(post.data.date)} · {post.data.photos.length} photos
+  </p>
+
+  <div class="flex flex-wrap gap-4 overflow-hidden">
+    {
+      post.data.photos
+        .slice(0, MIN_PHOTOS)
+        .map((photo, i) => (
+          <Image
+            src={photo.path}
+            alt={post.slug + "image preview" + i}
+            class="h-36 max-w-fit rounded-md object-contain"
+          />
+        ))
+    }
+
+    {
+      post.data.photos.length > MIN_PHOTOS && (
+        <div class="flex flex-col items-center justify-center">
+          <span class="text-lg leading-none text-muted-foreground">
+            +{post.data.photos.length - MIN_PHOTOS}
+          </span>
+          <span class="text-sm text-muted-foreground">more</span>
+        </div>
+      )
+    }
+  </div>
+
+  <!-- <p class="line-clamp-3 text-secondary-foreground">
+    {post.body.split(" ").slice(0, 80).join(" ")}
+  </p> -->
+</LinkCard>

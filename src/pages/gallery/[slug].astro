@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
 import Root from "~/layouts/root.astro";
 import { formatDate } from "~/lib/utils";
-import { ExifImage, type ExifData } from "exif";
+import Exif from "exif";
 
 export async function getStaticPaths() {
   const posts = await getCollection("gallery-posts");
@@ -20,8 +20,8 @@ function getFilePath(path: string) {
 }
 
 async function getExif(path: string) {
-  return new Promise<ExifData>((resolve, reject) => {
-    new ExifImage({ image: getFilePath(path) }, (error, exif) => {
+  return new Promise<Exif.ExifData>((resolve, reject) => {
+    new Exif.ExifImage({ image: getFilePath(path) }, (error, exif) => {
       error ? reject(error) : resolve(exif);
     });
   });
@@ -32,7 +32,7 @@ const exifData = await Promise.all(
 );
 
 /** get info format for google maps URL */
-function formatGPS(gps: ExifData["gps"]) {
+function formatGPS(gps: Exif.ExifData["gps"]) {
   const latitude = gps.GPSLatitude!;
   const longitude = gps.GPSLongitude!;
 

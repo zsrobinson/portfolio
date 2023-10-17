@@ -1,6 +1,7 @@
 ---
 import { IconChevronRight } from "@tabler/icons-react";
 import { getCollection } from "astro:content";
+import GalleryPostCard from "~/components/gallery-post-card.astro";
 import { LinkButton } from "~/components/link-button";
 import PostCard from "~/components/post-card.astro";
 import ProjectCard from "~/components/project-card.astro";
@@ -8,12 +9,16 @@ import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
 
 let posts = await getCollection("posts");
+let galleryPosts = await getCollection("gallery-posts");
 
 const tags = new Set<string>();
 posts.forEach((p) => p.data.tags?.forEach((t) => tags.add(t)));
 
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 posts = posts.slice(0, 6);
+
+galleryPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+galleryPosts = galleryPosts.slice(0, 6);
 ---
 
 <Root
@@ -72,6 +77,28 @@ posts = posts.slice(0, 6);
 
     <div class="flex grid-cols-2 flex-col gap-4 sm:grid">
       {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </div>
+
+  <div class="my-8 flex flex-col gap-4">
+    <div class="flex items-center justify-between gap-2">
+      <h2 class="text-3xl font-bold">Latest Gallery Posts</h2>
+
+      <LinkButton
+        variant="outline"
+        href="/gallery"
+        className="group whitespace-nowrap"
+      >
+        <span>View Gallery</span>
+        <IconChevronRight
+          size={20}
+          className="ml-2 group-hover:translate-x-0.5 transition text-muted-foreground"
+        />
+      </LinkButton>
+    </div>
+
+    <div class="flex grid-cols-2 flex-col gap-4 sm:grid">
+      {galleryPosts.map((post) => <GalleryPostCard post={post} />)}
     </div>
   </div>
 

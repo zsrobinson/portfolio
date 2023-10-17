@@ -1,9 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
+import { ExifDetails } from "~/components/exif-details";
 import Root from "~/layouts/root.astro";
-import { formatDate } from "~/lib/utils";
-import Exif from "exif";
+import { formatDate, formatGPS, getExif } from "~/lib/utils";
 
 export async function getStaticPaths() {
   const posts = await getCollection("gallery-posts");
@@ -15,46 +15,9 @@ export async function getStaticPaths() {
 
 const { data, body, slug } = Astro.props as CollectionEntry<"gallery-posts">;
 
-/** Doubt this works more generally but props to trial and error */
-function getFilePath(path: string) {
-  if (path.includes("_astro")) {
-    return (
-      "src/assets/gallery/" +
-      path.split("/")[2].split(".")[0] +
-      "." +
-      path.split("/")[2].split(".")[2]
-    );
-  } else {
-    return "src/" + path.split("/src/")[1].split("?")[0];
-  }
-}
-
-async function getExif(path: string) {
-  return new Promise<Exif.ExifData>((resolve, reject) => {
-    new Exif.ExifImage({ image: getFilePath(path) }, (error, exif) => {
-      error ? reject(error) : resolve(exif);
-    });
-  });
-}
-
 const exifData = await Promise.all(
-  data.photos.map((photo) => getExif(photo.path.src)),
+  data.photos.map((photo) => getExif(photo.path)),
 );
-
-/** get info format for google maps URL */
-function formatGPS(gps: Exif.ExifData["gps"]) {
-  const latitude = gps.GPSLatitude!;
-  const longitude = gps.GPSLongitude!;
-
-  let latitudeDecimal = latitude[0] + latitude[1] / 60 + latitude[2] / 3600;
-  let longitudeDecimal = longitude[0] + longitude[1] / 60 + longitude[2] / 3600;
-
-  if (gps.GPSLongitudeRef! === "W") {
-    longitudeDecimal = -longitudeDecimal;
-  }
-
-  return `${latitudeDecimal.toFixed(4)} ${longitudeDecimal.toFixed(4)}`;
-}
 ---
 
 <Root
@@ -77,37 +40,14 @@ function formatGPS(gps: Exif.ExifData["gps"]) {
     <div class="flex max-w-full flex-col gap-4">
       {
         data.photos.map((photo, i) => (
-          <div class="flex gap-4">
+          <div class="flex items-center gap-4">
             <Image
               src={photo.path}
               alt={slug + "image preview" + i}
               class="w-1/2 rounded-lg object-contain"
               quality="max"
             />
-            <div class="flex flex-col">
-              <p class="font-mono">
-                {exifData[i].image.Make + " " + exifData[i].image.Model}
-              </p>
-              <p class="font-mono">
-                {exifData[i].exif.ExifImageWidth} x{" "}
-                {exifData[i].exif.ExifImageHeight}
-              </p>
-              <p class="font-mono">ISO {exifData[i].exif.ISO}</p>
-              <p class="font-mono">
-                {exifData[i].exif.FocalLengthIn35mmFormat} mm
-              </p>
-              <p class="font-mono">f{exifData[i].exif.FNumber}</p>
-              <p class="font-mono">1/{1 / exifData[i].exif.ExposureTime!} s</p>
-              <a
-                class="font-mono underline"
-                href={
-                  "https://www.google.com/maps?q=loc:" +
-                  formatGPS(exifData[i].gps)
-                }
-              >
-                {formatGPS(exifData[i].gps)}
-              </a>
-            </div>
+            <ExifDetails details={exifData[i]} />
           </div>
         ))
       }

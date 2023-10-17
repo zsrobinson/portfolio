@@ -1,19 +1,19 @@
 import {
   IconAngle,
   IconAspectRatio,
+  IconCalendarEvent,
   IconCamera,
+  IconClock,
   IconFunction,
   IconGrain,
   IconMapPin,
   IconRun,
   type Icon,
-  IconCalendar,
-  IconClock,
 } from "@tabler/icons-react";
 import type Exif from "exif";
 import type { ReactNode } from "react";
 import { formatExifDate, formatExifTime, formatGPS } from "~/lib/exif";
-import { aspectRatio, cn, formatDate } from "~/lib/utils";
+import { aspectRatio, cn } from "~/lib/utils";
 
 type ExifDetailsProps = {
   details: Exif.ExifData;
@@ -41,43 +41,61 @@ export function ExifDetails({
         )
       </Detail>
 
-      <Detail Icon={IconCalendar} title="Date">
-        {formatExifDate(details.exif.DateTimeOriginal!)}
-      </Detail>
+      {details.exif.DateTimeOriginal && (
+        <Detail Icon={IconCalendarEvent} title="Date">
+          {formatExifDate(details.exif.DateTimeOriginal)}
+        </Detail>
+      )}
 
-      <Detail Icon={IconClock} title="Time">
-        {formatExifTime(details.exif.DateTimeOriginal!)}
-      </Detail>
+      {details.exif.DateTimeOriginal && (
+        <Detail Icon={IconClock} title="Time">
+          {formatExifTime(details.exif.DateTimeOriginal)}
+        </Detail>
+      )}
 
       {!lessDetails && (
         <>
           <hr className="border-border" />
 
-          <Detail Icon={IconAngle} title="Focal Length">
-            {details.exif.FocalLengthIn35mmFormat} mm
-          </Detail>
+          {details.exif.FocalLengthIn35mmFormat && (
+            <Detail Icon={IconAngle} title="Focal Length">
+              {details.exif.FocalLengthIn35mmFormat} mm
+            </Detail>
+          )}
 
-          <Detail Icon={IconFunction} title="Aperture">
-            f{details.exif.FNumber}
-          </Detail>
+          {details.exif.FNumber && (
+            <Detail Icon={IconFunction} title="Aperture">
+              f{details.exif.FNumber}
+            </Detail>
+          )}
 
-          <Detail Icon={IconRun} title="Shutter Speed">
-            1/{1 / details.exif.ExposureTime!} s
-          </Detail>
+          {details.exif.ExposureTime && (
+            <Detail Icon={IconRun} title="Shutter Speed">
+              1/{1 / details.exif.ExposureTime} s
+            </Detail>
+          )}
 
-          <Detail Icon={IconGrain} title="ISO">
-            ISO {details.exif.ISO}
-          </Detail>
+          {details.exif.ISO && (
+            <Detail Icon={IconGrain} title="ISO">
+              ISO {details.exif.ISO}
+            </Detail>
+          )}
 
-          <hr className="border-border" />
+          {Object.keys(details.gps).length !== 0 && (
+            <>
+              <hr className="border-border" />
 
-          <Detail
-            Icon={IconMapPin}
-            href={"https://www.google.com/maps?q=loc:" + formatGPS(details.gps)}
-            title="GPS"
-          >
-            {formatGPS(details.gps, 4)}
-          </Detail>
+              <Detail
+                Icon={IconMapPin}
+                href={
+                  "https://www.google.com/maps?q=loc:" + formatGPS(details.gps)
+                }
+                title="GPS"
+              >
+                {formatGPS(details.gps, 4)}
+              </Detail>
+            </>
+          )}
         </>
       )}
     </div>

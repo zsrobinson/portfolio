@@ -1,0 +1,11 @@
+---
+photos:
+  - file: "~/assets/gallery/IMG_3598.jpeg"
+  - file: "~/assets/gallery/IMG_3606.jpeg"
+  - file: "~/assets/gallery/IMG_4344.jpeg"
+  - file: "~/assets/gallery/IMG_4345.jpeg"
+  - file: "~/assets/gallery/IMG_4346.jpeg"
+  - file: "~/assets/gallery/IMG_4377.jpeg"
+  - file: "~/assets/gallery/IMG_4378.jpeg"
+  - file: "~/assets/gallery/IMG_4405.jpeg"
+---

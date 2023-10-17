@@ -18,7 +18,7 @@ export function getFilePath(path: string) {
 
 /** Given an Image object, return the metadata embedded in that image */
 export async function getExif(
-  photo: CollectionEntry<"gallery-posts">["data"]["photos"][0]["path"],
+  photo: CollectionEntry<"photos">["data"]["photos"][0]["file"],
 ): Promise<Exif.ExifData> {
   return new Promise<Exif.ExifData>((resolve, reject) => {
     new Exif.ExifImage({ image: getFilePath(photo.src) }, (error, exif) => {
@@ -42,18 +42,24 @@ export function formatGPS(gps: Exif.ExifData["gps"], precision: number = 6) {
   return `${latDecimal.toFixed(precision)}, ${longDecimal.toFixed(precision)}`;
 }
 
+export function getExifDate(str: string) {
+  return new Date(str.split(" ")[0].replaceAll(":", "-"));
+}
+
 export function formatExifDate(str: string) {
-  const date = new Date(str.split(" ")[0].replaceAll(":", "-"));
+  const date = getExifDate(str);
   return formatDate(date);
 }
 
-export function formatExifTime(str: string) {
+export function addExifTime(str: string, date: Date) {
   const parts = str.split(" ")[1].split(":");
-  const date = new Date();
-
   date.setHours(parseInt(parts[0]));
   date.setMinutes(parseInt(parts[1]));
   date.setSeconds(parseInt(parts[2]));
+  return date;
+}
 
+export function formatExifTime(str: string) {
+  const date = addExifTime(str, new Date());
   return formatTime(date);
 }

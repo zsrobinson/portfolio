@@ -61,3 +61,6 @@ export function aspectRatio(width: number, height: number) {
   const gcdResult = gcd(width, height);
   return `${width / gcdResult}:${height / gcdResult}`;
 }
+
+export type AsyncReturnType<T extends (...args: any) => Promise<any>> =
+  T extends (...args: any) => Promise<infer R> ? R : any;

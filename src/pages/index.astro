@@ -1,24 +1,27 @@
 ---
 import { IconChevronRight } from "@tabler/icons-react";
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import GalleryPostCard from "~/components/gallery-post-card.astro";
 import { LinkButton } from "~/components/link-button";
 import PostCard from "~/components/post-card.astro";
 import ProjectCard from "~/components/project-card.astro";
 import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
+import { getPhotos } from "~/lib/photos";
 
 let posts = await getCollection("posts");
-let galleryPosts = await getCollection("gallery-posts");
+let photos = await getPhotos();
 
+// get tags for site-wide metadata tag
 const tags = new Set<string>();
 posts.forEach((p) => p.data.tags?.forEach((t) => tags.add(t)));
 
+// sort posts by date and take the 6 most recent
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 posts = posts.slice(0, 6);
 
-galleryPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-galleryPosts = galleryPosts.slice(0, 6);
+// take the 4 most recent photos
+photos = photos.slice(0, 4);
 ---
 
 <Root
@@ -70,7 +73,7 @@ galleryPosts = galleryPosts.slice(0, 6);
         <span>All Posts</span>
         <IconChevronRight
           size={20}
-          className="ml-2 group-hover:translate-x-0.5 transition text-muted-foreground"
+          className="ml-2 text-muted-foreground transition group-hover:translate-x-0.5"
         />
       </LinkButton>
     </div>
@@ -82,23 +85,36 @@ galleryPosts = galleryPosts.slice(0, 6);
 
   <div class="my-8 flex flex-col gap-4">
     <div class="flex items-center justify-between gap-2">
-      <h2 class="text-3xl font-bold">Latest Gallery Posts</h2>
+      <h2 class="text-3xl font-bold">Latest Photos</h2>
 
       <LinkButton
         variant="outline"
-        href="/gallery"
+        href="/photos"
         className="group whitespace-nowrap"
       >
-        <span>View Gallery</span>
+        <span>View Photos</span>
         <IconChevronRight
           size={20}
-          className="ml-2 group-hover:translate-x-0.5 transition text-muted-foreground"
+          className="ml-2 text-muted-foreground transition group-hover:translate-x-0.5"
         />
       </LinkButton>
     </div>
 
-    <div class="flex grid-cols-2 flex-col gap-4 sm:grid">
-      {galleryPosts.map((post) => <GalleryPostCard post={post} />)}
+    <div class="flex gap-4">
+      {
+        photos.map((photo, i) => (
+          <a href={"/photos/" + i} class="w-1/4">
+            <Image
+              src={photo.file}
+              alt={"image preview for image #" + i}
+              class="rounded-lg bg-zinc-800 object-contain shadow"
+              style="aspect-ratio: 4/3;"
+              height="500"
+              loading="lazy"
+            />
+          </a>
+        ))
+      }
     </div>
   </div>
 
@@ -115,7 +131,7 @@ galleryPosts = galleryPosts.slice(0, 6);
         <span>All Projects</span>
         <IconChevronRight
           size={20}
-          className="ml-2 group-hover:translate-x-0.5 transition text-muted-foreground"
+          className="ml-2 text-muted-foreground transition group-hover:translate-x-0.5"
         />
       </LinkButton>
     </div>

@@ -1,4 +1,6 @@
 ---
+import { IconLoader } from "@tabler/icons-react";
+import { IconLoader2 } from "@tabler/icons-react";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { Image } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
@@ -39,15 +41,28 @@ const exifData = await getExif(photo);
         className="mb-0.5 inline transition-transform group-hover:-translate-x-1"
         size={16}
       />
-       Back to Gallery Grid
+       Back to All Photos
     </a>
-    <Image
-      src={photo}
-      alt={"image preview for image #" + i}
-      class="rounded-lg object-contain"
-      quality="max"
-      loading="eager"
-    />
+
+    <div class="relative">
+      <Image
+        src={photo}
+        alt={"image preview for image #" + i}
+        class="rounded-lg object-contain"
+        quality="max"
+        loading="eager"
+      />
+
+      <div
+        style={`aspect-ratio: ${
+          exifData.exif.ExifImageWidth! / exifData.exif.ExifImageHeight!
+        };`}
+        class="absolute top-0 -z-10 flex w-full items-center justify-center rounded-lg bg-zinc-800"
+      >
+        <IconLoader2 size={48} className="animate-spin text-zinc-100" />
+      </div>
+    </div>
+
     <ExifDetails details={exifData} />
   </article>
 </Root>

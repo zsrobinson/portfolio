@@ -18,9 +18,14 @@ import { aspectRatio, cn, formatDate } from "~/lib/utils";
 type ExifDetailsProps = {
   details: Exif.ExifData;
   className?: string;
+  lessDetails?: boolean;
 };
 
-export function ExifDetails({ details, className }: ExifDetailsProps) {
+export function ExifDetails({
+  details,
+  className,
+  lessDetails = false,
+}: ExifDetailsProps) {
   return (
     <div className={cn("flex flex-col gap-1", className)}>
       <Detail Icon={IconCamera} title="Camera">
@@ -44,33 +49,37 @@ export function ExifDetails({ details, className }: ExifDetailsProps) {
         {formatExifTime(details.exif.DateTimeOriginal!)}
       </Detail>
 
-      <hr className="border-border" />
+      {!lessDetails && (
+        <>
+          <hr className="border-border" />
 
-      <Detail Icon={IconAngle} title="Focal Length">
-        {details.exif.FocalLengthIn35mmFormat} mm
-      </Detail>
+          <Detail Icon={IconAngle} title="Focal Length">
+            {details.exif.FocalLengthIn35mmFormat} mm
+          </Detail>
 
-      <Detail Icon={IconFunction} title="Aperture">
-        f{details.exif.FNumber}
-      </Detail>
+          <Detail Icon={IconFunction} title="Aperture">
+            f{details.exif.FNumber}
+          </Detail>
 
-      <Detail Icon={IconRun} title="Shutter Speed">
-        1/{1 / details.exif.ExposureTime!} s
-      </Detail>
+          <Detail Icon={IconRun} title="Shutter Speed">
+            1/{1 / details.exif.ExposureTime!} s
+          </Detail>
 
-      <Detail Icon={IconGrain} title="ISO">
-        ISO {details.exif.ISO}
-      </Detail>
+          <Detail Icon={IconGrain} title="ISO">
+            ISO {details.exif.ISO}
+          </Detail>
 
-      <hr className="border-border" />
+          <hr className="border-border" />
 
-      <Detail
-        Icon={IconMapPin}
-        href={"https://www.google.com/maps?q=loc:" + formatGPS(details.gps)}
-        title="GPS"
-      >
-        {formatGPS(details.gps, 4)}
-      </Detail>
+          <Detail
+            Icon={IconMapPin}
+            href={"https://www.google.com/maps?q=loc:" + formatGPS(details.gps)}
+            title="GPS"
+          >
+            {formatGPS(details.gps, 4)}
+          </Detail>
+        </>
+      )}
     </div>
   );
 }

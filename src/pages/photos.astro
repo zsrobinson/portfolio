@@ -1,14 +1,11 @@
 ---
+import { IconLoader2 } from "@tabler/icons-react";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import { ExifDetails } from "~/components/exif-details";
 import { LinkButton } from "~/components/link-button";
-import { PhotosSelectView } from "~/components/photos-select-view";
-import { Button } from "~/components/ui/button";
 import Root from "~/layouts/root.astro";
-import { getExif } from "~/lib/exif";
-
-export const prerender = false;
+import { getExif, getFilePath } from "~/lib/exif";
 
 const galleryPosts = await getCollection("gallery-posts");
 galleryPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -19,9 +16,6 @@ const photos = galleryPosts
   .map((x) => x.path);
 
 const exifData = await Promise.all(photos.map((photo) => getExif(photo)));
-
-let view = Astro.url.searchParams.get("view") as "grid" | "list" | null;
-if (!view || (view != "grid" && view != "list")) view = "grid";
 ---
 
 <Root
@@ -36,45 +30,62 @@ if (!view || (view != "grid" && view != "list")) view = "grid";
         <h2 class="text-3xl font-bold">Photos</h2>
         <span class="ml-1 text-muted-foreground">{photos.length}</span>
       </span>
-
-      <PhotosSelectView defaultValue={view} client:only="react" />
     </div>
 
-    {
-      view === "grid" ? (
-        <div class="grid grid-cols-3 gap-4">
-          {photos.map((photo, i) => (
-            <a href={"/photos/" + i}>
+    <div class="flex flex-col gap-4">
+      {
+        photos.map((photo, i) => (
+          <div class="flex gap-4">
+            <a href={"/photos/" + i} class="relative basis-1/2">
               <Image
                 src={photo}
                 alt={"image preview for image #" + i}
-                class="max-h-40 rounded-lg object-contain shadow"
-                height="300"
+                class="rounded-lg object-contain shadow"
+                height="500"
               />
-            </a>
-          ))}
-        </div>
-      ) : (
-        <div class="flex flex-col gap-4">
-          {photos.map((photo, i) => (
-            <div class="flex gap-4">
-              <a href={"/photos/" + i} class="basis-1/2">
-                <Image
-                  src={photo}
-                  alt={"image preview for image #" + i}
-                  class="rounded-lg object-contain shadow"
-                  height="500"
-                />
-              </a>
 
+              <div
+                style={`aspect-ratio: ${
+                  exifData[i].exif.ExifImageWidth! /
+                  exifData[i].exif.ExifImageHeight!
+                };`}
+                class="absolute top-0 -z-10 flex w-full items-center justify-center rounded-lg bg-zinc-800"
+              >
+                <IconLoader2 size={48} className="animate-spin text-zinc-100" />
+              </div>
+            </a>
+
+            <div class="flex basis-1/2 flex-col justify-between rounded-lg border border-border p-4">
               <ExifDetails
                 details={exifData[i]}
-                className="flex basis-1/2 flex-col rounded-lg border border-border p-4 gap-1.5"
+                className="gap-2"
+                lessDetails
               />
+
+              <div class="flex gap-4">
+                <LinkButton
+                  href={"/photos/" + i}
+                  size="sm"
+                  className="basis-1/2"
+                >
+                  More Details
+                </LinkButton>
+
+                <LinkButton
+                  href={`https://raw.githubusercontent.com/zsrobinson/portfolio/gallery-section/${getFilePath(
+                    photo.src,
+                  )}`}
+                  size="sm"
+                  variant="secondary"
+                  className="basis-1/2"
+                >
+                  View Original
+                </LinkButton>
+              </div>
             </div>
-          ))}
-        </div>
-      )
-    }
+          </div>
+        ))
+      }
+    </div>
   </div>
 </Root>

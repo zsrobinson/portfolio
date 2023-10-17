@@ -1,18 +1,17 @@
 import {
+  IconAngle,
   IconAspectRatio,
   IconCamera,
+  IconFunction,
   IconGrain,
   IconMapPin,
-  IconMountain,
-  IconPhotoSensor,
   IconRun,
   type Icon,
-  IconAngle,
-  IconFunction,
 } from "@tabler/icons-react";
 import type Exif from "exif";
 import type { ReactNode } from "react";
-import { aspectRatio, formatGPS } from "~/lib/utils";
+import { formatGPS } from "~/lib/exif";
+import { aspectRatio } from "~/lib/utils";
 
 export function ExifDetails({ details }: { details: Exif.ExifData }) {
   return (

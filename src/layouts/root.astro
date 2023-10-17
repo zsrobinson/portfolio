@@ -1,7 +1,7 @@
 ---
-import "~/styles/globals.css";
 import Footer from "~/components/footer.astro";
 import Navbar from "~/components/navbar.astro";
+import "~/styles/globals.css";
 
 export type Props = {
   title: string;
@@ -33,7 +33,7 @@ const trimmedDescription =
     : description;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <!-- global metadata and links -->
@@ -67,26 +67,26 @@ const trimmedDescription =
 
     <!-- light/dark mode script -->
     <script is:inline>
-      const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
 
-      // set theme before react loads to avoid flash of incorrect theme
-      const theme = localStorage.getItem("theme");
+    // set theme before react loads to avoid flash of incorrect theme
+    const theme = localStorage.getItem("theme");
 
-      if (theme === "dark" || (!theme && media.matches)) {
+    if (theme === "dark" || (!theme && media.matches)) {
+      document.documentElement.classList.add("dark");
+    }
+
+    // update class when user changes system theme
+    media.addEventListener("change", (e) => {
+      // if user has already set a theme, don't change it
+      if (localStorage.getItem("theme") !== null) return;
+
+      if (e.matches) {
         document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
       }
-
-      // update class when user changes system theme
-      media.addEventListener("change", (e) => {
-        // if user has already set a theme, don't change it
-        if (localStorage.getItem("theme") !== null) return;
-
-        if (e.matches) {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      });
+    });
     </script>
   </head>
 

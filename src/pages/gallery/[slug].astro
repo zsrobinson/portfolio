@@ -3,7 +3,8 @@ import { Image } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { ExifDetails } from "~/components/exif-details";
 import Root from "~/layouts/root.astro";
-import { formatDate, formatGPS, getExif } from "~/lib/utils";
+import { getExif } from "~/lib/exif";
+import { formatDate } from "~/lib/utils";
 
 export async function getStaticPaths() {
   const posts = await getCollection("gallery-posts");

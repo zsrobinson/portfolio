@@ -4,7 +4,7 @@ import { Image } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { ExifDetails } from "~/components/exif-details";
 import Root from "~/layouts/root.astro";
-import { formatDate, formatGPS, getExif } from "~/lib/utils";
+import { getExif } from "~/lib/exif";
 
 export async function getStaticPaths() {
   const galleryPosts = await getCollection("gallery-posts");
@@ -45,6 +45,8 @@ const exifData = await getExif(photo);
       alt={"image preview for image #" + i}
       class="rounded-lg object-contain"
       quality="max"
+      transition:name={"gallery-grid-" + i}
+      loading="eager"
     />
     <ExifDetails details={exifData} />
   </article>

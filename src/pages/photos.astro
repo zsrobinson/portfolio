@@ -1,0 +1,80 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { ExifDetails } from "~/components/exif-details";
+import { LinkButton } from "~/components/link-button";
+import { PhotosSelectView } from "~/components/photos-select-view";
+import { Button } from "~/components/ui/button";
+import Root from "~/layouts/root.astro";
+import { getExif } from "~/lib/exif";
+
+export const prerender = false;
+
+const galleryPosts = await getCollection("gallery-posts");
+galleryPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const photos = galleryPosts
+  .map((post) => post.data.photos)
+  .flat()
+  .map((x) => x.path);
+
+const exifData = await Promise.all(photos.map((photo) => getExif(photo)));
+
+let view = Astro.url.searchParams.get("view") as "grid" | "list" | null;
+if (!view || (view != "grid" && view != "list")) view = "grid";
+---
+
+<Root
+  title="Photos · Zachary Robinson"
+  parent="Photos"
+  ogImage="/og/photos.png"
+  noIndex
+>
+  <div class="mx-auto flex max-w-prose flex-col">
+    <div class="flex justify-between gap-4">
+      <span class="inline-flex pb-4">
+        <h2 class="text-3xl font-bold">Photos</h2>
+        <span class="ml-1 text-muted-foreground">{photos.length}</span>
+      </span>
+
+      <PhotosSelectView defaultValue={view} client:only="react" />
+    </div>
+
+    {
+      view === "grid" ? (
+        <div class="grid grid-cols-3 gap-4">
+          {photos.map((photo, i) => (
+            <a href={"/photos/" + i}>
+              <Image
+                src={photo}
+                alt={"image preview for image #" + i}
+                class="max-h-40 rounded-lg object-contain shadow"
+                height="300"
+              />
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="flex flex-col gap-4">
+          {photos.map((photo, i) => (
+            <div class="flex gap-4">
+              <a href={"/photos/" + i} class="basis-1/2">
+                <Image
+                  src={photo}
+                  alt={"image preview for image #" + i}
+                  class="rounded-lg object-contain shadow"
+                  height="500"
+                />
+              </a>
+
+              <ExifDetails
+                details={exifData[i]}
+                className="flex basis-1/2 flex-col rounded-lg border border-border p-4 gap-1.5"
+              />
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</Root>

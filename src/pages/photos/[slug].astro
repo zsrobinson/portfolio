@@ -28,14 +28,15 @@ const exifData = await getExif(photo);
 ---
 
 <Root
-  title={"Gallery Grid Details · Zachary Robinson"}
-  parent="Gallery Grid"
-  ogImage={`/og/gallery-grid/${i}.png`}
+  title={"Photos · Zachary Robinson"}
+  parent="Photos"
+  ogImage={`/og/photos/${i}.png`}
+  noIndex
 >
   <article class="mx-auto flex max-w-prose flex-col gap-4">
-    <a href="/gallery-grid" class="group">
+    <a href="/photos" class="group text-muted-foreground">
       <IconChevronLeft
-        className="inline mb-0.5 group-hover:-translate-x-1 transition-transform"
+        className="mb-0.5 inline transition-transform group-hover:-translate-x-1"
         size={16}
       />
        Back to Gallery Grid
@@ -45,7 +46,6 @@ const exifData = await getExif(photo);
       alt={"image preview for image #" + i}
       class="rounded-lg object-contain"
       quality="max"
-      transition:name={"gallery-grid-" + i}
       loading="eager"
     />
     <ExifDetails details={exifData} />

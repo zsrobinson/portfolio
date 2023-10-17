@@ -31,7 +31,7 @@ for (const post of posts) {
   pages["posts/" + post.slug] = { title, description };
 }
 
-export const { getStaticPaths, get } = OGImageRoute({
+export const { getStaticPaths, GET } = OGImageRoute({
   param: "route",
   pages,
 

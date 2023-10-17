@@ -36,6 +36,13 @@ export function formatDate(date: Date) {
   });
 }
 
+export function formatTime(date: Date) {
+  return date.toLocaleTimeString("en-us", {
+    hour: "numeric",
+    minute: "numeric",
+  });
+}
+
 export function formatMonth(date: Date) {
   return date.toLocaleDateString("en-us", {
     year: "numeric",

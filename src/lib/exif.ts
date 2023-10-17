@@ -1,5 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 import Exif from "exif";
+import { formatDate, formatTime } from "./utils";
 
 /** Doubt this works more generally but props to trial and error */
 export function getFilePath(path: string) {
@@ -27,16 +28,32 @@ export async function getExif(
 }
 
 /** get info format for google maps URL */
-export function formatGPS(gps: Exif.ExifData["gps"]) {
-  const latitude = gps.GPSLatitude!;
-  const longitude = gps.GPSLongitude!;
+export function formatGPS(gps: Exif.ExifData["gps"], precision: number = 6) {
+  const lat = gps.GPSLatitude!;
+  const long = gps.GPSLongitude!;
 
-  let latitudeDecimal = latitude[0] + latitude[1] / 60 + latitude[2] / 3600;
-  let longitudeDecimal = longitude[0] + longitude[1] / 60 + longitude[2] / 3600;
+  let latDecimal = lat[0] + lat[1] / 60 + lat[2] / 3600;
+  let longDecimal = long[0] + long[1] / 60 + long[2] / 3600;
 
   if (gps.GPSLongitudeRef! === "W") {
-    longitudeDecimal = -longitudeDecimal;
+    longDecimal = -longDecimal;
   }
 
-  return `${latitudeDecimal.toFixed(6)}, ${longitudeDecimal.toFixed(6)}`;
+  return `${latDecimal.toFixed(precision)}, ${longDecimal.toFixed(precision)}`;
+}
+
+export function formatExifDate(str: string) {
+  const date = new Date(str.split(" ")[0].replaceAll(":", "-"));
+  return formatDate(date);
+}
+
+export function formatExifTime(str: string) {
+  const parts = str.split(" ")[1].split(":");
+  const date = new Date();
+
+  date.setHours(parseInt(parts[0]));
+  date.setMinutes(parseInt(parts[1]));
+  date.setSeconds(parseInt(parts[2]));
+
+  return formatTime(date);
 }

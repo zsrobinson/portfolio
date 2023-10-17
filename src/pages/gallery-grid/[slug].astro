@@ -1,0 +1,51 @@
+---
+import { IconChevronLeft } from "@tabler/icons-react";
+import { Image } from "astro:assets";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { ExifDetails } from "~/components/exif-details";
+import Root from "~/layouts/root.astro";
+import { formatDate, formatGPS, getExif } from "~/lib/utils";
+
+export async function getStaticPaths() {
+  const galleryPosts = await getCollection("gallery-posts");
+  const galleryPhotos = galleryPosts
+    .map((post) => post.data.photos)
+    .flat()
+    .map((x) => x.path);
+
+  return galleryPhotos.map((photo, i) => ({
+    params: { slug: i },
+    props: { photo, i },
+  }));
+}
+
+const { photo, i } = Astro.props as {
+  photo: CollectionEntry<"gallery-posts">["data"]["photos"][0]["path"];
+  i: number;
+};
+
+const exifData = await getExif(photo);
+---
+
+<Root
+  title={"Gallery Grid Details · Zachary Robinson"}
+  parent="Gallery Grid"
+  ogImage={`/og/gallery-grid/${i}.png`}
+>
+  <article class="mx-auto flex max-w-prose flex-col gap-4">
+    <a href="/gallery-grid" class="group">
+      <IconChevronLeft
+        className="inline mb-0.5 group-hover:-translate-x-1 transition-transform"
+        size={16}
+      />
+       Back to Gallery Grid
+    </a>
+    <Image
+      src={photo}
+      alt={"image preview for image #" + i}
+      class="rounded-lg object-contain"
+      quality="max"
+    />
+    <ExifDetails details={exifData} />
+  </article>
+</Root>

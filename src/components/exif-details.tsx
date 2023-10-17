@@ -8,6 +8,7 @@ import {
   IconRun,
   type Icon,
   IconAngle,
+  IconFunction,
 } from "@tabler/icons-react";
 import type Exif from "exif";
 import type { ReactNode } from "react";
@@ -30,10 +31,10 @@ export function ExifDetails({ details }: { details: Exif.ExifData }) {
       <Detail Icon={IconAngle} title="Focal Length">
         {details.exif.FocalLengthIn35mmFormat} mm
       </Detail>
-      <Detail Icon={IconMountain} title="Aperture">
+      <Detail Icon={IconFunction} title="Aperture">
         f{details.exif.FNumber}
       </Detail>
-      <Detail Icon={IconRun} title="Shutter">
+      <Detail Icon={IconRun} title="Shutter Speed">
         1/{1 / details.exif.ExposureTime!} s
       </Detail>
       <Detail Icon={IconGrain} title="ISO">

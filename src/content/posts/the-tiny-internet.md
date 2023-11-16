@@ -32,7 +32,7 @@ I hope that you're able to see why I've come to love the tiny internet. It's a r
 
 ## See also
 
-- ["The Small Website Discoverability Crisis" by Viktor Lofgren](https://www.marginalia.nu/log/19-website-discoverability-crisis/)
-- ["We Need to Bring Back Webrings" by Arne Bahlo](https://arne.me/articles/we-need-to-bring-back-webrings)
+- [The Small Website Discoverability Crisis](https://www.marginalia.nu/log/19-website-discoverability-crisis/) by Viktor Lofgren
+- [We Need to Bring Back Webrings](https://arne.me/articles/we-need-to-bring-back-webrings) by Arne Bahlo
 
 _Discuss this post on HackerNews: https://news.ycombinator.com/item?id=37684566_

@@ -2,7 +2,6 @@
 title: "Why I Love the Tiny Internet"
 date: 2023-09-27
 tags: ["Internet", "Blogging", "Opinion"]
-hackerNews: https://news.ycombinator.com/item?id=37684566
 ---
 
 After recently recreating my personal website from the ground up, I've been reflecting a bit more on blogs and the internet more broadly. As someone born after 2000, I never really got to experience the internet in the same way that many talk about what "used to be". I never experienced AOL chat rooms, IRC channels, or when forums used to dominate the internet. The internet that I came to know was one of centralized platforms: Google, YouTube, Facebook, Twitter, Reddit, you name it.
@@ -30,3 +29,10 @@ Many social media platforms support RSS Feeds as well, though you might need to 
 If you're considering starting a personal website or blog after hearing about the tiny internet, there are a few easy ways to get started. Many services that will help you create a website, while still preserving the decentralized aspect of the tiny internet. [Bear Blog](https://bearblog.dev/) has got to be the simplest way to spin up a new website, and its creator has [written at length](https://herman.bearblog.dev/building-software-to-last-forever/) about how the platform was designed for sustainability and longevity from the start. You're even able to [set up your own domain name](https://docs.bearblog.dev/custom-domains/) to point to the domain that it automatically creates for you. [WordPress](https://wordpress.com/) is a classic option that might allow for a bit more customization, albeit at the cost of the simplicity of other platforms. And of course, you can always create your own website from scratch using web frameworks like [Astro](https://astro.build/) or [Hugo](https://gohugo.io/) if you want the greatest level of customization (this is what I did a few months ago, and the [code is open source](https://github.com/zsrobinson/portfolio)).
 
 I hope that you're able to see why I've come to love the tiny internet. It's a refreshing change from the social media platforms that we're used to by providing longer-form content, decentralization, and freedom from algorithm-driven content curation. Even if you're not convinced to spin up a website, you still should consider downloading an RSS Reader and getting started exploring the tiny internet.
+
+## See also
+
+- ["The Small Website Discoverability Crisis" by Viktor Lofgren](https://www.marginalia.nu/log/19-website-discoverability-crisis/)
+- ["We Need to Bring Back Webrings" by Arne Bahlo](https://arne.me/articles/we-need-to-bring-back-webrings)
+
+_Discuss this post on HackerNews: https://news.ycombinator.com/item?id=37684566_

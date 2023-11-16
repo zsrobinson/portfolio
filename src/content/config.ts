@@ -7,7 +7,6 @@ const posts = defineCollection({
       date: z.date(),
       updatedDate: z.date().optional(),
       tags: z.string().array().optional(),
-      hackerNews: z.string().url().optional(),
 
       cover: image().optional(),
       coverAlt: z.string().optional(),

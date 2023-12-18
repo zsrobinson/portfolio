@@ -1,4 +1,33 @@
-User-agent: *
-Allow: /
+# Dark Visitors robots.txt
+# https://darkvisitors.com
 
-Sitemap: https://beta.zsrobinson.com/sitemap-index.xml
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: omgilibot
+Disallow: /
+
+User-agent: omgili
+Disallow: /
+
+# Sitemap
+
+Sitemap: https://zsrobinson.com/sitemap-index.xml

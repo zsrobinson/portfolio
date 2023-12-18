@@ -6,7 +6,13 @@ import { defineConfig } from "astro/config";
 import { remarkReadingTime } from "./src/plugins/remarkReadingTime.mjs";
 
 export default defineConfig({
-  integrations: [tailwind({ applyBaseStyles: false }), react(), sitemap()],
+  integrations: [
+    tailwind({ applyBaseStyles: false }),
+    react(),
+    sitemap({
+      filter: (url) => !url.includes("/tags/"),
+    }),
+  ],
 
   markdown: {
     remarkPlugins: [remarkReadingTime],

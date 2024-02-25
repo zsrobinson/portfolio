@@ -35,7 +35,7 @@ const nextPost = posts[postIndex - 1] as CollectionEntry<"posts"> | undefined;
 >
   <article class="mx-auto max-w-prose">
     <div class="mb-8 w-full">
-      <h1 class="text-4xl font-semibold text-balance">
+      <h1 class="text-balance text-4xl font-semibold">
         {data.title}
       </h1>
 
@@ -93,10 +93,10 @@ const nextPost = posts[postIndex - 1] as CollectionEntry<"posts"> | undefined;
       <Content />
     </div>
 
-    <div class="mt-12 flex flex-col gap-8">
+    <div class="mt-12 flex flex-col gap-4 md:gap-8">
       <hr class="border-muted" />
 
-      <div class="flex flex-wrap items-center justify-between gap-2">
+      <div class="flex flex-wrap items-center justify-between gap-4">
         <div class="flex flex-wrap items-center gap-4">
           <div class="group relative">
             <img

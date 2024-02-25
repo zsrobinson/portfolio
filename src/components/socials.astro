@@ -2,12 +2,13 @@
 import {
   IconBrandGithub,
   IconBrandInstagram,
+  IconBrandLinkedin,
+  IconBrandMastodon,
   IconBrandTwitter,
   IconMail,
   IconRss,
 } from "@tabler/icons-react";
 import { LinkButton } from "./link-button";
-import { IconBrandLinkedin } from "@tabler/icons-react";
 ---
 
 <div class="flex flex-wrap gap-2">
@@ -59,6 +60,17 @@ import { IconBrandLinkedin } from "@tabler/icons-react";
     title="Twitter"
   >
     <IconBrandTwitter />
+  </LinkButton>
+
+  <LinkButton
+    variant="ghost"
+    size="icon"
+    href="https://mas.to/@zsrobinson"
+    target="_blank"
+    title="Mastodon"
+    rel="me"
+  >
+    <IconBrandMastodon />
   </LinkButton>
 
   <LinkButton

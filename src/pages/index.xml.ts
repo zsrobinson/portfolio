@@ -14,11 +14,13 @@ export const GET: APIRoute = async (context) => {
     }index.xml" rel="self" type="application/rss+xml"/>`,
     xmlns: { atom: "http://www.w3.org/2005/Atom" },
 
-    items: posts.map((post) => ({
-      title: post.data.title,
-      pubDate: post.data.date,
-      link: `/posts/${post.slug}/`,
-      description: post.body.split(" ").slice(0, 50).join(" ") + "...",
-    })),
+    items: posts
+      .map((post) => ({
+        title: post.data.title,
+        pubDate: post.data.date,
+        link: `/posts/${post.slug}/`,
+        description: post.body.split(" ").slice(0, 50).join(" ") + "...",
+      }))
+      .sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime()),
   });
 };

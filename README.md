@@ -16,6 +16,6 @@ My original portfolio was written with [Hugo](https://gohugo.io/) and used the [
 
 ## License
 
-All rights are reserved for the content of this portfolio. If you use the content of this portfolio in any derivative works, I'd just ask that you give proper attribution by linking back to the original article. The "content of this portfolio" refers to any files stored under `./src/content/posts` in this repository, or any articles on deployments of this portfolio (such as on [`zsrobinson.com`](https://zsrobinson.com)).
+All rights are reserved for the content of this portfolio; please do not use it in ways that do not constitute fair use. If you use the content of this portfolio in any derivative works, I'd ask that you give proper attribution by linking back to the original article. The "content of this portfolio" refers to any files stored under `./src/content/posts` in this repository, or any articles on deployments of this portfolio (such as on [`zsrobinson.com`](https://zsrobinson.com)).
 
 The code for this portfolio is licensed under the MIT license (see [`LICENSE.txt`](https://github.com/zsrobinson/portfolio/blob/main/LICENSE.txt)), with attribution being appreciated.

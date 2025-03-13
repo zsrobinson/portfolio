@@ -1,6 +1,6 @@
 ---
 title: "Designing Products without Databases"
-date: 2024-03-12
+date: 2025-03-12
 tags: ["Software", "Web Development"]
 ---
 

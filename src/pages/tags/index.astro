@@ -1,6 +1,5 @@
 ---
 import { getCollection } from "astro:content";
-import { LinkBadge } from "~/components/link-badge";
 import Root from "~/layouts/root.astro";
 import { getSortedTags, slugify } from "~/lib/utils";
 
@@ -23,12 +22,12 @@ const tags = getSortedTags(posts);
     <div class="flex flex-wrap gap-2">
       {
         tags.map(([tag, occurances]) => (
-          <LinkBadge href={`/tags/${slugify(tag)}`} size="lg">
+          <a href={`/tags/${slugify(tag)}`}>
             <span>{tag}</span>
             <span class="mb-1 ml-1 text-xs text-muted-foreground">
               {occurances}
             </span>
-          </LinkBadge>
+          </a>
         ))
       }
     </div>

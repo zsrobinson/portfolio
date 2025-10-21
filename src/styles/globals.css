@@ -54,6 +54,11 @@ a {
   color: var(--tx-2);
 }
 
+blockquote {
+  margin-right: 32px;
+  color: var(--tx-2);
+}
+
 /* basic page layout, for readability */
 body {
   padding: 16px;

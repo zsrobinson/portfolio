@@ -1,0 +1,26 @@
+---
+import { getCollection } from "astro:content";
+import PostList from "~/components/post-list.astro";
+import Root from "~/layouts/root.astro";
+
+const posts = await getCollection("posts");
+posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Root
+  title="Posts · Zachary Robinson"
+  parent="Posts"
+  ogImage="/og/posts.png"
+  noIndex
+>
+  <h1>Posts</h1>
+  <span>({posts.length})</span>
+  <PostList posts={posts} />
+</Root>
+
+<style>
+  h1 {
+    display: inline;
+    margin-right: 4px;
+  }
+</style>

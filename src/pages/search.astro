@@ -1,10 +1,7 @@
 ---
-import { IconSearch } from "@tabler/icons-react";
 import { getCollection } from "astro:content";
 import Fuse from "fuse.js";
-import PostCard from "~/components/post-card.astro";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
+import PostList from "~/components/post-list.astro";
 import Root from "~/layouts/root.astro";
 
 export const prerender = false;
@@ -24,30 +21,19 @@ const results = fuse.search(q);
 ---
 
 <Root title="Search · Zachary Robinson" noIndex>
-  <div class="mx-auto flex max-w-prose flex-col">
-    <h2 class="text-3xl font-bold">Search</h2>
+  {q ? <h1>Search Results: {q}</h1> : <h1>Search</h1>}
 
-    <form class="flex gap-4 py-4">
-      <Input
-        name="q"
-        placeholder="Search"
-        defaultValue={q}
-        autoFocus={q === "" || results.length === 0}
-      />
+  <form class="flex gap-4 py-4">
+    <input
+      name="q"
+      placeholder="Search"
+      value={q}
+      autofocus={q === "" || results.length === 0}
+    />
 
-      <Button type="submit" size="icon" variant="outline">
-        <IconSearch size={20} />
-      </Button>
-    </form>
+    <button type="submit"> Submit </button>
+  </form>
 
-    <div class="flex flex-col gap-4">
-      {
-        q && results.length === 0 && (
-          <p class="font-semibold">No results found.</p>
-        )
-      }
-
-      {results.map((result) => <PostCard post={result.item} />)}
-    </div>
-  </div>
+  {q && results.length === 0 && <p class="font-semibold">No results found.</p>}
+  <PostList posts={results.map((r) => r.item)} />
 </Root>

@@ -1,7 +1,7 @@
 ---
 import "~/styles/globals.css";
 import Footer from "~/components/footer.astro";
-import Navbar from "~/components/navbar.astro";
+import Header from "~/components/header.astro";
 
 export type Props = {
   title: string;
@@ -102,7 +102,7 @@ const trimmedDescription =
   </head>
 
   <body>
-    <Navbar parent={parent} />
+    <Header parent={parent} />
 
     <main>
       <slot />

@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+export type Props = { posts: CollectionEntry<"posts">[] };
+const { posts } = Astro.props;
+---
+
+<ul>
+  {
+    posts.map((post) => (
+      <li>
+        <time datetime={post.data.date.toISOString()}>
+          {post.data.date.toISOString().split("T")[0]}
+        </time>
+        <a href={`/posts/${post.slug}`}>{post.data.title}</a>
+
+        <blockquote>
+          {post.body.split(" ").slice(0, 30).join(" ")}...
+        </blockquote>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  time {
+    font-family: monospace;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li > a,
+  li > time {
+    font-weight: bold;
+  }
+</style>

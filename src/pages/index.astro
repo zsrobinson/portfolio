@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import ProjectCard from "~/components/project-card.astro";
+import PostList from "~/components/post-list.astro";
+import ProjectList from "~/components/project-list.astro";
 import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
 
@@ -33,42 +34,11 @@ projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
   <Socials />
 
   <h2>Latest Posts</h2>
-
-  <ul>
-    {
-      posts.map((post) => (
-        <li>
-          <time datetime={post.data.date.toISOString()}>
-            {post.data.date.toISOString().split("T")[0]}
-          </time>
-          <a href={`/posts/${post.slug}`}>{post.data.title}</a>
-
-          <p>{post.body.split(" ").slice(0, 30).join(" ")}...</p>
-        </li>
-      ))
-    }
-  </ul>
-
+  <PostList posts={posts} />
   <p>View all posts <a href="/posts">here</a>.</p>
 
   <h2>Featured Projects</h2>
-
-  <ul>
-    {
-      projects.map((project) => (
-        <li>
-          <time datetime={project.data.date.toISOString()}>
-            {project.data.date.toISOString().split("T")[0]}
-          </time>
-          <a href={project.data.deploymentURL} target="_blank">
-            {project.data.title}
-          </a>
-          <p>{project.data.description}</p>
-        </li>
-      ))
-    }
-  </ul>
-
+  <ProjectList projects={projects} />
   <p>
     View all projects <a href="https://github.com/zsrobinson" target="_blank"
       >here</a
@@ -79,19 +49,5 @@ projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 <style>
   h2 {
     margin-top: 32px;
-  }
-  time {
-    font-family: monospace;
-  }
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-  li > p {
-    padding-left: 32px;
-  }
-  li > a,
-  li > time {
-    font-weight: 600;
   }
 </style>

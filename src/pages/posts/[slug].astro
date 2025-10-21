@@ -1,11 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
-import DirectionalPostCard from "~/components/directional-post-card.astro";
-import { LinkBadge } from "~/components/link-badge";
 import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
-import { formatDate, slugify } from "~/lib/utils";
+import { slugify } from "~/lib/utils";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -33,104 +31,68 @@ const nextPost = posts[postIndex - 1] as CollectionEntry<"posts"> | undefined;
   parent="Posts"
   ogImage={`/og/posts/${slug}.png`}
 >
-  <article class="mx-auto max-w-prose">
-    <div class="mb-8 w-full">
-      <h1 class="text-balance text-4xl font-semibold">
-        {data.title}
-      </h1>
+  <article>
+    <h1>{data.title}</h1>
 
-      <p class="text-muted-foreground">
-        <span
-          title={data.updatedDate
-            ? `Updated ${formatDate(data.updatedDate)}`
-            : ""}>{formatDate(data.date)}</span
-        > · {remarkPluginFrontmatter.minutesRead.split(" ")[0]} min read
-      </p>
+    <time datetime={data.date.toISOString()}>
+      {data.date.toISOString().split("T")[0]}
+    </time>
 
-      {
-        data.tags && (
-          <div class="mt-4 flex flex-wrap gap-2">
-            {data.tags.map((tag) => (
-              <LinkBadge href={`/tags/${slugify(tag)}`} variant="default">
-                {tag}
-              </LinkBadge>
-            ))}
-          </div>
-        )
-      }
-    </div>
+    {
+      data.updatedDate && (
+        <time title={data.updatedDate.toISOString()}>
+          {data.date.toISOString().split("T")[0]}
+        </time>
+      )
+    }
 
-    <div
-      class="prose prose-zinc max-w-full break-words dark:prose-invert prose-img:rounded-md"
-    >
-      {
-        data.coverAlt && data.cover && (
-          <div class="relative flex pb-4">
-            <Image
-              src={data.cover}
-              alt={data.coverAlt}
-              class="peer m-0 rounded-md"
-              loading="eager"
-            />
-            <Image
-              src={data.cover}
-              alt={data.coverAlt}
-              class="absolute -z-10 m-0 rounded-md blur-lg transition peer-hover:blur-xl"
-              loading="eager"
-            />
-          </div>
-        )
-      }
+    <p>{remarkPluginFrontmatter.minutesRead.split(" ")[0]} min read</p>
 
-      {
-        data.disclaimer && (
-          <blockquote class="italic text-muted-foreground">
-            {data.disclaimer}
-          </blockquote>
-        )
-      }
-
-      <Content />
-    </div>
-
-    <div class="mt-12 flex flex-col gap-4 md:gap-8">
-      <hr class="border-muted" />
-
-      <div class="flex flex-wrap items-center justify-between gap-4">
-        <div class="flex flex-wrap items-center gap-4">
-          <div class="group relative">
-            <img
-              src="https://avatars.githubusercontent.com/zsrobinson"
-              alt="my profile picture"
-              class="absolute -z-10 w-16 rounded-full blur transition group-hover:blur-md"
-            />
-
-            <img
-              src="https://avatars.githubusercontent.com/zsrobinson"
-              alt="my profile picture"
-              class="w-16 rounded-full"
-            />
-          </div>
-
-          <div>
-            <p class="text-xs text-muted-foreground">Written By</p>
-            <p class="font-semibold">Zachary Robinson</p>
-          </div>
+    {
+      data.tags && (
+        <div class="mt-4 flex flex-wrap gap-2">
+          {data.tags.map((tag) => (
+            <a href={`/tags/${slugify(tag)}`}>{tag}</a>
+          ))}
         </div>
+      )
+    }
 
-        <Socials />
-      </div>
+    {
+      data.coverAlt && data.cover && (
+        <Image src={data.cover} alt={data.coverAlt} loading="eager" />
+      )
+    }
 
-      <p class="leading-7 text-muted-foreground">
-        Thanks for reading! If you enjoyed this post, please consider sharing
-        it. If you have any comments, questions, or feedback, don't hesitate to
-        reach out to me.
-      </p>
+    {data.disclaimer && <blockquote>{data.disclaimer}</blockquote>}
 
-      <div class="flex grid-cols-2 flex-col gap-4 sm:grid sm:items-start">
-        {prevPost && <DirectionalPostCard post={prevPost} type="previous" />}
-        {nextPost && <DirectionalPostCard post={nextPost} type="next" />}
-      </div>
-    </div>
+    <Content />
   </article>
+
+  <p>Written By Zachary Robinson</p>
+  <Socials />
+  <p>
+    Thanks for reading! If you enjoyed this post, please consider sharing it. If
+    you have any comments, questions, or feedback, don't hesitate to reach out
+    to me.
+  </p>
+
+  <div class="flex grid-cols-2 flex-col gap-4 sm:grid sm:items-start">
+    {prevPost && <a href={`/posts/${prevPost.slug}`}>Previous Post</a>}
+    {nextPost && <a href={`/posts/${nextPost.slug}`}>Previous Post</a>}
+  </div>
 </Root>
+
+<style>
+  article :global(*) {
+    line-height: 1.5;
+  }
+  time {
+    font-family: monospace;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+</style>

@@ -1,10 +1,4 @@
 import type { CollectionEntry } from "astro:content";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
 
 export function slugify(str: string) {
   return str.split(" ").join("-").toLowerCase();
@@ -13,12 +7,11 @@ export function slugify(str: string) {
 export function getSortedTags(posts: CollectionEntry<"posts">[]) {
   const tags = new Map<string, number>();
 
-  posts.forEach(
-    (post) =>
-      post.data.tags?.forEach((tag) => {
-        const count = tags.get(tag) ?? 0;
-        tags.set(tag, count + 1);
-      }),
+  posts.forEach((post) =>
+    post.data.tags?.forEach((tag) => {
+      const count = tags.get(tag) ?? 0;
+      tags.set(tag, count + 1);
+    }),
   );
 
   // sort by occurrence and then alphabetically

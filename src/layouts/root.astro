@@ -101,16 +101,10 @@ const trimmedDescription =
     }
   </head>
 
-  <body class="flex min-h-screen flex-col">
+  <body>
     <Navbar parent={parent} />
 
-    <!-- Gradient at top of page -->
-    <div
-      class="absolute left-0 top-0 -z-10 h-96 w-full from-secondary/30 to-transparent dark:bg-gradient-to-b"
-    >
-    </div>
-
-    <main class="mx-auto w-full max-w-5xl flex-grow p-4 md:py-8">
+    <main>
       <slot />
     </main>
 

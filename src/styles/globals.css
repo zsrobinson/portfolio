@@ -1,116 +1,62 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
-
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-
-    color-scheme: dark;
-  }
+/* define base colors from flexoki theme (see https://stephango.com/flexoki) */
+html {
+  --flexoki-black: #100f0f;
+  --flexoki-base-950: #1c1b1a;
+  --flexoki-base-900: #282726;
+  --flexoki-base-850: #343331;
+  --flexoki-base-800: #403e3c;
+  --flexoki-base-700: #575653;
+  --flexoki-base-600: #6f6e69;
+  --flexoki-base-500: #878580;
+  --flexoki-base-400: #9f9d96;
+  --flexoki-base-300: #b7b5ac;
+  --flexoki-base-200: #cecdc3;
+  --flexoki-base-150: #dad8ce;
+  --flexoki-base-100: #e6e4d9;
+  --flexoki-base-50: #f2f0e5;
+  --flexoki-paper: #fffcf0;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+/* define utility colors from flexoki theme */
+html {
+  --tx: var(--flexoki-black);
+  --tx-2: var(--flexoki-base-600);
+  --tx-3: var(--flexoki-base-300);
+  --ui-3: var(--flexoki-base-200);
+  --ui-2: var(--flexoki-base-150);
+  --ui: var(--flexoki-base-100);
+  --bg-2: var(--flexoki-base-50);
+  --bg: var(--flexoki-paper);
+}
 
-  body {
-    @apply bg-background text-foreground;
+.dark {
+  --bg: var(--flexoki-black);
+  --bg-2: var(--flexoki-base-950);
+  --ui: var(--flexoki-base-900);
+  --ui-2: var(--flexoki-base-850);
+  --ui-3: var(--flexoki-base-800);
+  --tx-3: var(--flexoki-base-700);
+  --tx-2: var(--flexoki-base-500);
+  --tx: var(--flexoki-base-200);
+}
 
-    /* min-h-screen but with fallback */
-    min-height: 100vh;
-    min-height: 100dvh;
-  }
+html {
+  color: var(--tx);
+  background-color: var(--bg);
+}
 
-  /* similar code blocks as before, but they have the correct *slight* tint of blue */
+hr {
+  border-style: solid;
+  color: var(--ui);
+}
 
-  .prose pre {
-    background-color: hsl(240 5.9% 10%) !important;
-  }
+a {
+  color: var(--tx-2);
+}
 
-  .dark .prose pre {
-    background-color: hsl(240 3.7% 15.9% / 0.5) !important;
-  }
-
-  /* wave animation for home page "hey there" */
-
-  @keyframes wave {
-    0%,
-    100% {
-      transform: none;
-    }
-
-    50% {
-      transform: rotate(20deg);
-    }
-  }
-
-  .animate-wave {
-    animation: wave 1.5s 3;
-  }
-
-  @media (prefers-reduced-motion) {
-    .animate-wave {
-      animation: none;
-    }
-  }
+/* basic page layout, for readability */
+body {
+  padding: 16px;
+  margin: 0 auto;
+  max-width: 600px;
 }

@@ -1,33 +1,22 @@
 ---
-import { IconHeart } from "@tabler/icons-react";
 const currentYear = new Date().getFullYear();
 ---
 
-<!-- slightly closer to bg color than navbar since there's no gradient to ease the transition -->
-<footer class="mt-16 border-t border-border bg-muted dark:bg-muted/30">
-  <div
-    class="mx-auto max-w-5xl flex-wrap items-center justify-between gap-2 p-4 text-muted-foreground"
-  >
-    <p class="text-center">
-      <span class="whitespace-nowrap">
-        © {currentYear}
-        {" "}
-        <a
-          href="/"
-          class="underline underline-offset-2 transition hover:text-primary focus-visible:text-primary focus-visible:outline-none"
-          >Zachary Robinson</a
-        >
-      </span>
-      <span class="whitespace-nowrap">
-        · Made with <IconHeart className="mb-1 inline" size={20} /> using <a
-          href="https://astro.build"
-          class="underline underline-offset-2 transition hover:text-primary focus-visible:text-primary focus-visible:outline-none"
-          target="_blank"
-        >
-          Astro
-        </a>
-      </span>
-      <a rel="me" href="https://mas.to/@zsrobinson"></a>
-    </p>
-  </div>
+<hr />
+
+<footer>
+  <p>
+    © {currentYear} Zachary Robinson. Made with ♡ using <a
+      href="https://astro.build"
+      target="_blank"
+    >
+      Astro</a
+    >.
+  </p>
 </footer>
+
+<style>
+  hr {
+    margin-top: 32px;
+  }
+</style>

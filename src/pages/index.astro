@@ -1,19 +1,18 @@
 ---
-import { IconChevronRight } from "@tabler/icons-react";
 import { getCollection } from "astro:content";
-import { LinkButton } from "~/components/link-button";
-import PostCard from "~/components/post-card.astro";
 import ProjectCard from "~/components/project-card.astro";
 import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
 
-let posts = await getCollection("posts");
-
 const tags = new Set<string>();
-posts.forEach((p) => p.data.tags?.forEach((t) => tags.add(t)));
 
+let posts = await getCollection("posts");
+posts.forEach((p) => p.data.tags?.forEach((t) => tags.add(t)));
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 posts = posts.slice(0, 6);
+
+const projects = await getCollection("projects");
+projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <Root
@@ -21,83 +20,78 @@ posts = posts.slice(0, 6);
   description="My name's Zach. I'm a Computer Science major at the University of Maryland who's passionate about learning new technology and building cool stuff."
   keywords={Array.from(tags)}
 >
-  <div class="relative flex items-center justify-between gap-8">
-    <div>
-      <p class="text-4xl font-semibold">
-        Hey There! <span class="animate-wave inline-block">👋🏻</span>
-      </p>
+  <p>Hey There!</p>
 
-      <p class="my-2 max-w-xl">
-        My name's Zach. I'm a Computer Science major at the <a
-          href="https://umd.edu"
-          class="underline underline-offset-2 transition hover:text-muted-foreground focus-visible:text-muted-foreground focus-visible:outline-none"
-          target="_blank">University of Maryland</a
-        > who's passionate about learning new technology and building cool
-        stuff. I enjoy occasionally writing about my experiences and projects
-        here on this site.
-      </p>
+  <p>
+    My name's Zach. I'm a Computer Science major at the <a
+      href="https://umd.edu"
+      target="_blank">University of Maryland</a
+    > who's passionate about learning new technology and building cool stuff. I enjoy
+    occasionally writing about my experiences and projects here on this site.
+  </p>
 
-      <Socials />
-    </div>
+  <Socials />
 
-    <img
-      src="https://avatars.githubusercontent.com/zsrobinson"
-      alt="my profile picture"
-      class="peer m-4 hidden w-48 rounded-full sm:block"
-    />
+  <h2>Latest Posts</h2>
 
-    <img
-      src="https://avatars.githubusercontent.com/zsrobinson"
-      alt="my profile picture"
-      class="absolute right-0 -z-10 m-4 hidden w-48 rounded-full blur-lg transition peer-hover:blur-xl sm:block"
-    />
-  </div>
+  <ul>
+    {
+      posts.map((post) => (
+        <li>
+          <time datetime={post.data.date.toISOString()}>
+            {post.data.date.toISOString().split("T")[0]}
+          </time>
+          <a href={`/posts/${post.slug}`}>{post.data.title}</a>
 
-  <div class="my-8 flex flex-col gap-4">
-    <div class="flex items-center justify-between gap-2">
-      <h2 class="text-3xl font-bold">Latest Posts</h2>
+          <p>{post.body.split(" ").slice(0, 30).join(" ")}...</p>
+        </li>
+      ))
+    }
+  </ul>
 
-      <LinkButton
-        variant="outline"
-        href="/posts"
-        className="group whitespace-nowrap"
-      >
-        <span>All Posts</span>
-        <IconChevronRight
-          size={20}
-          className="ml-2 text-muted-foreground transition group-hover:translate-x-0.5"
-        />
-      </LinkButton>
-    </div>
+  <p>View all posts <a href="/posts">here</a>.</p>
 
-    <div class="flex grid-cols-2 flex-col gap-4 sm:grid">
-      {posts.map((post) => <PostCard post={post} />)}
-    </div>
-  </div>
+  <h2>Featured Projects</h2>
 
-  <div class="my-8 flex flex-col gap-4">
-    <div class="flex items-center justify-between gap-2">
-      <h2 class="text-3xl font-bold">Featured Projects</h2>
+  <ul>
+    {
+      projects.map((project) => (
+        <li>
+          <time datetime={project.data.date.toISOString()}>
+            {project.data.date.toISOString().split("T")[0]}
+          </time>
+          <a href={project.data.deploymentURL} target="_blank">
+            {project.data.title}
+          </a>
+          <p>{project.data.description}</p>
+        </li>
+      ))
+    }
+  </ul>
 
-      <LinkButton
-        variant="outline"
-        href="https://github.com/zsrobinson"
-        target="_blank"
-        className="group whitespace-nowrap"
-      >
-        <span>All Projects</span>
-        <IconChevronRight
-          size={20}
-          className="ml-2 text-muted-foreground transition group-hover:translate-x-0.5"
-        />
-      </LinkButton>
-    </div>
-
-    <div class="flex grid-cols-2 flex-col gap-4 sm:grid">
-      <ProjectCard project="astro-blog" />
-      <ProjectCard project="curvature-demo" />
-      <ProjectCard project="pendulum-sim" />
-      <ProjectCard project="circular-sleep" />
-    </div>
-  </div>
+  <p>
+    View all projects <a href="https://github.com/zsrobinson" target="_blank"
+      >here</a
+    >.
+  </p>
 </Root>
+
+<style>
+  h2 {
+    margin-top: 32px;
+  }
+  time {
+    font-family: monospace;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li > p {
+    padding-left: 32px;
+  }
+  li > a,
+  li > time {
+    font-weight: 600;
+  }
+</style>

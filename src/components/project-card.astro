@@ -1,75 +1,15 @@
 ---
-import {
-  IconBrandJavascript,
-  IconBrandNextjs,
-  IconBrandReact,
-  IconBrandSvelte,
-  IconBrandTailwind,
-  IconBrandTypescript,
-  IconCode,
-  IconRocket,
-} from "@tabler/icons-react";
 import { getEntry, type CollectionEntry } from "astro:content";
 import { formatMonth } from "~/lib/utils";
-import { LinkCard } from "./link-card";
 
 export type Props = { project: CollectionEntry<"projects">["slug"] };
 const { project: projectName } = Astro.props;
 const project = await getEntry("projects", projectName);
 ---
 
-<LinkCard href={project.data.deploymentURL ?? "https://github.com/zsrobinson"}>
-  <p class="text-2xl font-semibold leading-[1.15]">{project.data.title}</p>
-  <p class="pb-2 text-sm text-muted-foreground">
-    Developed in {formatMonth(project.data.date)}
-  </p>
-
-  <p class="line-clamp-3 pb-2 text-secondary-foreground">
-    {project.data.description}
-  </p>
-
-  <div class="flex gap-2">
-    {
-      project.data.tech?.map((t) => (
-        <span class="flex items-center gap-1 text-sm text-secondary-foreground">
-          {t === "Next.js" ? (
-            <IconBrandNextjs
-              className="inline text-muted-foreground"
-              size={18}
-            />
-          ) : t === "TypeScript" ? (
-            <IconBrandTypescript
-              className="inline text-muted-foreground"
-              size={18}
-            />
-          ) : t === "Astro" ? (
-            <IconRocket className="inline text-muted-foreground" size={18} />
-          ) : t === "React" ? (
-            <IconBrandReact
-              className="inline text-muted-foreground"
-              size={18}
-            />
-          ) : t === "JavaScript" ? (
-            <IconBrandJavascript
-              className="inline text-muted-foreground"
-              size={18}
-            />
-          ) : t === "Tailwind CSS" ? (
-            <IconBrandTailwind
-              className="inline text-muted-foreground"
-              size={18}
-            />
-          ) : t === "Svelte" ? (
-            <IconBrandSvelte
-              className="inline text-muted-foreground"
-              size={18}
-            />
-          ) : (
-            <IconCode className="inline text-muted-foreground" size={18} />
-          )}
-          {t}
-        </span>
-      ))
-    }
-  </div>
-</LinkCard>
+<a href={project.data.deploymentURL ?? "https://github.com/zsrobinson"}>
+  <p>{project.data.title}</p>
+  <p>Developed in {formatMonth(project.data.date)}</p>
+  <p>{project.data.description}</p>
+  <div>{project.data.tech?.map((t) => <span>{t}</span>)}</div>
+</a>

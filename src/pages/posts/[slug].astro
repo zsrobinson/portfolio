@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
+import PostList from "~/components/post-list.astro";
 import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
 import { slugify } from "~/lib/utils";
@@ -15,13 +16,12 @@ export async function getStaticPaths() {
 
 const { data, render, body, slug } = Astro.props as CollectionEntry<"posts">;
 const { Content, remarkPluginFrontmatter } = await render();
+const mins = remarkPluginFrontmatter.minutesRead.split(" ")[0];
 
 let posts = await getCollection("posts");
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-
-const postIndex = posts.findIndex((post) => post.slug === slug);
-const prevPost = posts[postIndex + 1] as CollectionEntry<"posts"> | undefined;
-const nextPost = posts[postIndex - 1] as CollectionEntry<"posts"> | undefined;
+posts.filter((x) => x.slug !== slug);
+posts.splice(3);
 ---
 
 <Root
@@ -34,29 +34,21 @@ const nextPost = posts[postIndex - 1] as CollectionEntry<"posts"> | undefined;
   <article>
     <h1>{data.title}</h1>
 
-    <time datetime={data.date.toISOString()}>
-      {data.date.toISOString().split("T")[0]}
-    </time>
+    <p class="byline">
+      <time datetime={data.date.toISOString()}>
+        {data.date.toISOString().split("T")[0]}
+      </time>
 
-    {
-      data.updatedDate && (
-        <time title={data.updatedDate.toISOString()}>
-          {data.date.toISOString().split("T")[0]}
-        </time>
-      )
-    }
+      {
+        data.updatedDate && (
+          <time title={data.updatedDate.toISOString()}>
+            | Updated {data.date.toISOString().split("T")[0]}
+          </time>
+        )
+      }
 
-    <p>{remarkPluginFrontmatter.minutesRead.split(" ")[0]} min read</p>
-
-    {
-      data.tags && (
-        <div class="mt-4 flex flex-wrap gap-2">
-          {data.tags.map((tag) => (
-            <a href={`/tags/${slugify(tag)}`}>{tag}</a>
-          ))}
-        </div>
-      )
-    }
+      | By Zachary Robinson | {mins} minute read
+    </p>
 
     {
       data.coverAlt && data.cover && (
@@ -64,35 +56,49 @@ const nextPost = posts[postIndex - 1] as CollectionEntry<"posts"> | undefined;
       )
     }
 
-    {data.disclaimer && <blockquote>{data.disclaimer}</blockquote>}
-
     <Content />
   </article>
 
-  <p>Written By Zachary Robinson</p>
-  <Socials />
+  <hr />
+
+  <p>Written by Zachary Robinson, find me on <Socials />.</p>
+
   <p>
     Thanks for reading! If you enjoyed this post, please consider sharing it. If
     you have any comments, questions, or feedback, don't hesitate to reach out
     to me.
   </p>
 
-  <div class="flex grid-cols-2 flex-col gap-4 sm:grid sm:items-start">
-    {prevPost && <a href={`/posts/${prevPost.slug}`}>Previous Post</a>}
-    {nextPost && <a href={`/posts/${nextPost.slug}`}>Previous Post</a>}
-  </div>
+  <h2>Recent Posts</h2>
+  <PostList posts={posts} />
 </Root>
 
 <style>
-  article :global(*) {
+  /* apply line height to child elements */
+  article > :global(*) {
     line-height: 1.5;
   }
-  time {
+  article * {
+    line-height: unset;
+  }
+
+  .byline {
     font-family: monospace;
   }
-  img {
+
+  article :global(img) {
     width: 100%;
     height: 100%;
     object-fit: contain;
+  }
+
+  article :global(:not(pre) > code) {
+    background-color: var(--ui);
+  }
+
+  article :global(pre) {
+    background-color: var(--ui);
+    padding: 16px;
+    overflow-x: scroll;
   }
 </style>

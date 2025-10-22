@@ -4,15 +4,11 @@ import { defineConfig } from "astro/config";
 import { remarkReadingTime } from "./src/plugins/remarkReadingTime.mjs";
 
 export default defineConfig({
-  integrations: [
-    sitemap({
-      filter: (url) => !url.includes("/tags/"),
-    }),
-  ],
+  integrations: [sitemap({ filter: (url) => !url.includes("/tags/") })],
 
   markdown: {
     remarkPlugins: [remarkReadingTime],
-    shikiConfig: { theme: "material-theme-darker" },
+    syntaxHighlight: false,
   },
 
   output: "hybrid",

@@ -2,9 +2,9 @@
 title: "Docker Networking"
 date: 2022-08-14
 tags: ["Projects", "Docker", "Networking", "Homelab", "Cybersecurity"]
-
-disclaimer: "This was a draft post I found when upgrading my site from Hugo, and it may be a bit verbose. I figured I'd make it public because what I talked about here was still pretty interesting."
 ---
+
+> This was a draft post I found when upgrading my site from Hugo, and it may be a bit verbose. I figured I'd make it public because what I talked about here was still pretty interesting.
 
 As I’ve talked about in other posts, Docker is an amazing tool to virtualize applications without the traditional overhead associated with virtual machines. Naturally, the networking options in Docker are just as amazing. There are many different options for networking in Docker, such as bridge, host, overlay, ipvlan, macvlan, or even none. For a great rundown on these types, consider watching [this video by NetworkChuck](https://youtu.be/bKFMS5C4CG0). But today, I’d like to walk you through how I’ve addressed [^1] Docker networking in my own home lab.
 

@@ -7,29 +7,28 @@ const posts = await getCollection("posts");
 const tags = getSortedTags(posts);
 ---
 
-<Root
-  title="Tags · Zachary Robinson"
-  parent="Tags"
-  ogImage="/og/tags.png"
-  noIndex
->
-  <div class="mx-auto flex max-w-prose flex-col">
-    <span class="inline-flex pb-4">
-      <h2 class="text-3xl font-bold">Tags</h2>
-      <span class="ml-1 text-muted-foreground">{tags.length}</span>
-    </span>
+<Root title="Tags - zsrobinson" parent="Tags" ogImage="/og/tags.png" noIndex>
+  <h1>Tags</h1>
+  <span>({tags.length})</span>
 
-    <div class="flex flex-wrap gap-2">
-      {
-        tags.map(([tag, occurances]) => (
-          <a href={`/tags/${slugify(tag)}`}>
-            <span>{tag}</span>
-            <span class="mb-1 ml-1 text-xs text-muted-foreground">
-              {occurances}
-            </span>
-          </a>
-        ))
-      }
-    </div>
-  </div>
+  <ul>
+    {
+      tags.map(([tag, occurrences]) => (
+        <li>
+          <a href={`/tags/${slugify(tag)}`}>{tag}</a>
+          <span>({occurrences})</span>
+        </li>
+      ))
+    }
+  </ul>
 </Root>
+
+<style>
+  h1 {
+    display: inline;
+    margin-right: 4px;
+  }
+  ul {
+    line-height: 1.5;
+  }
+</style>

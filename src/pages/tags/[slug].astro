@@ -1,6 +1,5 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import PostCard from "~/components/post-card.astro";
 import PostList from "~/components/post-list.astro";
 import Root from "~/layouts/root.astro";
 import { slugify } from "~/lib/utils";
@@ -32,6 +31,7 @@ const { tag, posts } = Astro.props as {
   <h1>{tag}</h1>
   <span>({posts.length})</span>
   <PostList posts={posts} />
+  <p>View all tags <a href="/tags">here</a>.</p>
 </Root>
 
 <style>

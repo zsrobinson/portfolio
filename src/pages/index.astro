@@ -18,20 +18,22 @@ projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 <Root
   title="Zachary Robinson"
-  description="My name's Zach. I'm a Computer Science major at the University of Maryland who's passionate about learning new technology and building cool stuff."
+  description="My name’s Zach. I’m a Computer Science major at the University of Maryland who’s passionate about learning new technology and building cool stuff."
   keywords={Array.from(tags)}
 >
   <p>Hey There!</p>
 
   <p>
-    My name's Zach. I'm a Computer Science major at the <a
+    My name’s Zach. I’m a Computer Science major at the <a
       href="https://umd.edu"
       target="_blank">University of Maryland</a
-    > who's passionate about learning new technology and building cool stuff. I enjoy
+    > who’s passionate about learning new technology and building cool stuff. I enjoy
     occasionally writing about my experiences and projects here on this site.
   </p>
 
-  <Socials />
+  <p>
+    You can contact me or view my work via <Socials />.
+  </p>
 
   <h2>Latest Posts</h2>
   <PostList posts={posts} />

@@ -1,12 +1,14 @@
 ---
+import HorizontalRule from "./horizontal-rule.astro";
+
 const currentYear = new Date().getFullYear();
 ---
 
-<hr />
-
 <footer>
+  <HorizontalRule />
+
   <p>
-    © {currentYear} Zachary Robinson. Made with ♡ using <a
+    (c) {currentYear} Zachary Robinson. Made with &lt;3 using <a
       href="https://astro.build"
       target="_blank"
     >
@@ -16,10 +18,7 @@ const currentYear = new Date().getFullYear();
 </footer>
 
 <style>
-  hr {
-    margin-top: 32px;
-  }
-  p {
-    text-align: center;
+  footer > :global(.hr) {
+    margin-top: 2rem;
   }
 </style>

@@ -74,31 +74,11 @@ posts.splice(3);
 </Root>
 
 <style>
-  /* apply line height to child elements */
-  article > :global(*) {
-    line-height: 1.5;
-  }
-  article * {
-    line-height: unset;
-  }
-
   .byline {
-    font-family: monospace;
+    margin: 1rem 0 2rem 0;
   }
 
-  article :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
-  article :global(:not(pre) > code) {
-    background-color: var(--ui);
-  }
-
-  article :global(pre) {
-    background-color: var(--ui);
-    padding: 16px;
-    overflow-x: scroll;
+  article > .byline + :global(blockquote) {
+    margin-bottom: 2rem;
   }
 </style>

@@ -33,6 +33,9 @@ html {
   --flexoki-blue-400: #4385be;
   --flexoki-purple-400: #8b7ec8;
   --flexoki-magenta-400: #ce5d97;
+
+  --flexoki-cyan-800: #164f4a;
+  --flexoki-cyan-850: #143f3c;
 }
 
 /* define utility colors from flexoki theme */
@@ -54,6 +57,8 @@ html {
   --bl: var(--flexoki-blue-600);
   --pu: var(--flexoki-purple-600);
   --ma: var(--flexoki-magenta-600);
+
+  --cy-bg: var(--flexoki-cyan-400);
 }
 
 .dark {
@@ -74,11 +79,23 @@ html {
   --bl: var(--flexoki-blue-400);
   --pu: var(--flexoki-purple-400);
   --ma: var(--flexoki-magenta-400);
+
+  --cy-bg: var(--flexoki-cyan-800);
 }
 
 html {
+  font-family: monospace;
+  font-size: 16px;
+  background-color: var(--cy-bg);
+}
+
+body {
   color: var(--tx);
   background-color: var(--bg);
+
+  padding: 1rem 4ch;
+  margin: 0 auto;
+  max-width: 76ch;
 }
 
 hr {
@@ -87,23 +104,108 @@ hr {
 }
 
 a {
-  color: var(--bl);
-}
-a:visited {
-  color: var(--pu);
-}
-a:active {
-  color: var(--re);
+  color: var(--cy);
 }
 
 blockquote {
-  margin-right: 32px;
+  padding-left: 4ch;
+  margin: 1rem 0 1rem 0;
   color: var(--tx-2);
+  position: relative;
 }
 
-/* basic page layout, for readability */
-body {
+blockquote::before {
+  content: ">";
+  position: absolute;
+  top: 0;
+  left: 2ch;
+}
+
+blockquote * {
+  color: var(--tx-2) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 1rem;
+  margin: 2rem 1rem 0 0;
+}
+
+h1:not(header > *)::before {
+  content: "# ";
+}
+
+h2::before {
+  content: "## ";
+}
+
+h3::before {
+  content: "### ";
+}
+
+h4::before {
+  content: "#### ";
+}
+
+h5::before {
+  content: "##### ";
+}
+
+h6::before {
+  content: "###### ";
+}
+
+sup {
+  font-size: unset;
+  vertical-align: unset;
+}
+
+sup::before {
+  content: "[^";
+}
+sup::after {
+  content: "]";
+}
+
+p {
+  margin: 1rem 0;
+  color: var(--tx);
+}
+
+ol,
+ul {
+  padding-left: 4ch;
+}
+
+@media (max-width: 550px) {
+  body {
+    padding: 1rem 2ch;
+  }
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin: 1rem 0 2rem 0;
+}
+
+:not(pre) > code {
+  background-color: var(--ui);
+}
+
+:not(pre) > code::before,
+:not(pre) > code::after {
+  content: "`";
+}
+
+pre:has(code) {
+  background-color: var(--ui);
   padding: 16px;
-  margin: 0 auto;
-  max-width: 600px;
+  overflow-x: scroll;
 }

@@ -3,35 +3,46 @@ import type { CollectionEntry } from "astro:content";
 
 export type Props = { posts: CollectionEntry<"posts">[] };
 const { posts } = Astro.props;
+
+const asdf = posts.map((post) => {
+  const lines = post.body.split("\n\n");
+  if (lines.at(0)?.trim().startsWith(">")) lines.shift();
+  return lines
+    .join("\n\n")
+    .replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1")
+    .split(" ")
+    .slice(0, 200)
+    .join(" ");
+});
 ---
 
 <ul>
   {
-    posts.map((post) => (
+    posts.map((post, i) => (
       <li>
         <time datetime={post.data.date.toISOString()}>
           {post.data.date.toISOString().split("T")[0]}
         </time>
         <a href={`/posts/${post.slug}`}>{post.data.title}</a>
 
-        <blockquote>
-          {post.body.split(" ").slice(0, 30).join(" ")}...
-        </blockquote>
+        <blockquote>{asdf[i]}</blockquote>
       </li>
     ))
   }
 </ul>
 
 <style>
-  time {
-    font-family: monospace;
-  }
   ul {
     list-style: none;
     padding: 0;
   }
-  li > a,
-  li > time {
+  li > a {
     font-weight: bold;
+  }
+  blockquote {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
   }
 </style>

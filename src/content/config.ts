@@ -10,6 +10,7 @@ const posts = defineCollection({
 
       cover: image().optional(),
       coverAlt: z.string().optional(),
+      hackernews: z.number().optional(),
     }),
 });
 

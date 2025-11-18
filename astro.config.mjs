@@ -1,5 +1,5 @@
 import sitemap from "@astrojs/sitemap";
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel";
 import { defineConfig } from "astro/config";
 import { remarkReadingTime } from "./src/plugins/remarkReadingTime.mjs";
 
@@ -11,7 +11,7 @@ export default defineConfig({
     syntaxHighlight: false,
   },
 
-  output: "hybrid",
+  output: "static",
   adapter: vercel(),
   site: "https://zsrobinson.com",
 });

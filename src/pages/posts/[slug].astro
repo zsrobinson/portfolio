@@ -1,6 +1,8 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
+import Comments from "~/components/comments.astro";
+import HorizontalRule from "~/components/horizontal-rule.astro";
 import PostList from "~/components/post-list.astro";
 import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
@@ -18,10 +20,10 @@ const { data, render, body, slug } = Astro.props as CollectionEntry<"posts">;
 const { Content, remarkPluginFrontmatter } = await render();
 const mins = remarkPluginFrontmatter.minutesRead.split(" ")[0];
 
-let posts = await getCollection("posts");
-posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-posts.filter((x) => x.slug !== slug);
-posts.splice(3);
+const posts = (await getCollection("posts"))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .filter((x) => x.slug !== slug)
+  .toSpliced(3);
 ---
 
 <Root
@@ -59,7 +61,7 @@ posts.splice(3);
     <Content />
   </article>
 
-  <hr />
+  <HorizontalRule />
 
   <p>Written by Zachary Robinson, find me on <Socials />.</p>
 
@@ -68,6 +70,11 @@ posts.splice(3);
     you have any comments, questions, or feedback, don't hesitate to reach out
     to me.
   </p>
+
+  <h2 id="comments">Comments</h2>
+
+  {!data.hackernews && <p>Comments have not been enabled for this post.</p>}
+  {data.hackernews && <Comments id={data.hackernews} server:defer />}
 
   <h2>Recent Posts</h2>
   <PostList posts={posts} />
@@ -80,5 +87,9 @@ posts.splice(3);
 
   article > .byline + :global(blockquote) {
     margin-bottom: 2rem;
+  }
+
+  article + :global(.hr) {
+    margin: 2rem 0 2rem 0;
   }
 </style>

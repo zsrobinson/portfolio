@@ -11,7 +11,7 @@ const asdf = posts.map((post) => {
     .join("\n\n")
     .replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1")
     .split(" ")
-    .slice(0, 200)
+    .slice(0, 100)
     .join(" ");
 });
 ---
@@ -43,6 +43,6 @@ const asdf = posts.map((post) => {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 3;
   }
 </style>

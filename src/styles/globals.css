@@ -84,9 +84,9 @@ html {
 }
 
 html {
-  font-family: monospace;
+  font-family: "Menlo", serif;
   font-size: 16px;
-  background-color: var(--cy-bg);
+  line-height: 1.5;
 }
 
 body {
@@ -104,7 +104,15 @@ hr {
 }
 
 a {
-  color: var(--cy);
+  color: var(--bl);
+}
+
+a:visited {
+  color: var(--pu);
+}
+
+a:active {
+  color: var(--re);
 }
 
 blockquote {
@@ -173,7 +181,6 @@ sup::after {
 
 p {
   margin: 1rem 0;
-  color: var(--tx);
 }
 
 ol,
@@ -195,17 +202,23 @@ img {
   margin: 1rem 0 2rem 0;
 }
 
-:not(pre) > code {
+article :not(pre) > code {
   background-color: var(--ui);
 }
 
-:not(pre) > code::before,
-:not(pre) > code::after {
+article :not(pre) > code::before,
+article :not(pre) > code::after {
   content: "`";
 }
 
-pre:has(code) {
+article pre:has(code) {
   background-color: var(--ui);
   padding: 16px;
   overflow-x: scroll;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
 }

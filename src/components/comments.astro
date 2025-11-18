@@ -1,0 +1,31 @@
+---
+type Props = { id: number };
+const { id } = Astro.props;
+export const API = "https://hacker-news.firebaseio.com/v0";
+
+import { z } from "astro/zod";
+import Comment from "./comment.astro";
+const res = await fetch(`${API}/item/${id}.json`);
+const json: unknown = await res.json();
+
+const schema = z.object({
+  type: z.literal("story"),
+  url: z.string().url(),
+  title: z.string(),
+  time: z.number().transform((num) => new Date(num * 1000)),
+  score: z.number(),
+  kids: z.number().array().optional(),
+  id: z.number(),
+  descendants: z.number(),
+  by: z.string(),
+});
+console.log(id, json);
+const data = schema.parse(json);
+---
+
+<p>
+  {data.descendants} comments have been left on HackerNews. Join the discussion <a
+    href={`https://news.ycombinator.com/item?id=${id}`}>here</a
+  >.
+</p>
+{data.kids?.map((kid) => <Comment id={kid} />)}

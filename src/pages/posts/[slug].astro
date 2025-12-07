@@ -6,6 +6,7 @@ import HorizontalRule from "~/components/horizontal-rule.astro";
 import PostList from "~/components/post-list.astro";
 import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
+import { slugify } from "~/lib/utils";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -48,7 +49,13 @@ const posts = (await getCollection("posts"))
         )
       }
 
-      · By Zachary Robinson · {mins} minute read
+      · By Zachary Robinson · {mins} minute read<br />{
+        data.tags?.map((t) => (
+          <span>
+            <a href={`/tags/${slugify(t)}`}>{slugify(t)}</a>
+          </span>
+        ))
+      }
     </p>
 
     {
@@ -93,5 +100,12 @@ const posts = (await getCollection("posts"))
 
   article + :global(.hr) {
     margin: 2rem 0 2rem 0;
+  }
+
+  .byline a {
+    display: inline-block;
+  }
+  .byline a::before {
+    content: "#";
   }
 </style>

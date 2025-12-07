@@ -4,8 +4,8 @@ import type { CollectionEntry } from "astro:content";
 export type Props = { posts: CollectionEntry<"posts">[] };
 const { posts } = Astro.props;
 
-const asdf = posts.map((post) => {
-  const lines = post.body.split("\n\n");
+const descriptions = posts.map((post) => {
+  const lines = post.body.replaceAll("\r\n", "\n\n").split("\n\n");
   if (lines.at(0)?.trim().startsWith(">")) lines.shift();
   return lines
     .join("\n\n")
@@ -25,7 +25,7 @@ const asdf = posts.map((post) => {
         </time>
         <a href={`/posts/${post.slug}`}>{post.data.title}</a>
 
-        <blockquote>{asdf[i]}</blockquote>
+        <blockquote>{descriptions[i]}</blockquote>
       </li>
     ))
   }

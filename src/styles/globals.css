@@ -1,97 +1,18 @@
-/* define base colors from flexoki theme (see https://stephango.com/flexoki) */
+/* define other variables */
 html {
-  --flexoki-black: #100f0f;
-  --flexoki-base-950: #1c1b1a;
-  --flexoki-base-900: #282726;
-  --flexoki-base-850: #343331;
-  --flexoki-base-800: #403e3c;
-  --flexoki-base-700: #575653;
-  --flexoki-base-600: #6f6e69;
-  --flexoki-base-500: #878580;
-  --flexoki-base-400: #9f9d96;
-  --flexoki-base-300: #b7b5ac;
-  --flexoki-base-200: #cecdc3;
-  --flexoki-base-150: #dad8ce;
-  --flexoki-base-100: #e6e4d9;
-  --flexoki-base-50: #f2f0e5;
-  --flexoki-paper: #fffcf0;
-
-  --flexoki-red-600: #af3029;
-  --flexoki-orange-600: #bc5215;
-  --flexoki-yellow-600: #ad8301;
-  --flexoki-green-600: #66800b;
-  --flexoki-cyan-600: #24837b;
-  --flexoki-blue-600: #205ea6;
-  --flexoki-purple-600: #5e409d;
-  --flexoki-magenta-600: #a02f6f;
-
-  --flexoki-red-400: #d14d41;
-  --flexoki-orange-400: #da702c;
-  --flexoki-yellow-400: #d0a215;
-  --flexoki-green-400: #879a39;
-  --flexoki-cyan-400: #3aa99f;
-  --flexoki-blue-400: #4385be;
-  --flexoki-purple-400: #8b7ec8;
-  --flexoki-magenta-400: #ce5d97;
-
-  --flexoki-cyan-800: #164f4a;
-  --flexoki-cyan-850: #143f3c;
-}
-
-/* define utility colors from flexoki theme */
-html {
-  --tx: var(--flexoki-black);
-  --tx-2: var(--flexoki-base-600);
-  --tx-3: var(--flexoki-base-300);
-  --ui-3: var(--flexoki-base-200);
-  --ui-2: var(--flexoki-base-150);
-  --ui: var(--flexoki-base-100);
-  --bg-2: var(--flexoki-base-50);
-  --bg: var(--flexoki-paper);
-
-  --re: var(--flexoki-red-600);
-  --or: var(--flexoki-orange-600);
-  --ye: var(--flexoki-yellow-600);
-  --gr: var(--flexoki-green-600);
-  --cy: var(--flexoki-cyan-600);
-  --bl: var(--flexoki-blue-600);
-  --pu: var(--flexoki-purple-600);
-  --ma: var(--flexoki-magenta-600);
-
-  --cy-bg: var(--flexoki-cyan-400);
-}
-
-.dark {
-  --bg: var(--flexoki-black);
-  --bg-2: var(--flexoki-base-950);
-  --ui: var(--flexoki-base-900);
-  --ui-2: var(--flexoki-base-850);
-  --ui-3: var(--flexoki-base-800);
-  --tx-3: var(--flexoki-base-700);
-  --tx-2: var(--flexoki-base-500);
-  --tx: var(--flexoki-base-200);
-
-  --re: var(--flexoki-red-400);
-  --or: var(--flexoki-orange-400);
-  --ye: var(--flexoki-yellow-400);
-  --gr: var(--flexoki-green-400);
-  --cy: var(--flexoki-cyan-400);
-  --bl: var(--flexoki-blue-400);
-  --pu: var(--flexoki-purple-400);
-  --ma: var(--flexoki-magenta-400);
-
-  --cy-bg: var(--flexoki-cyan-800);
+  --font-mono: "Menlo", monospace;
+  --font-display: "Apple Garamond", "Times New Roman", serif;
 }
 
 html {
-  font-family: "Menlo", serif;
+  font-family: "Menlo", monospace;
   font-size: 16px;
   line-height: 1.5;
 }
 
 body {
-  color: var(--tx);
-  background-color: var(--bg);
+  /* color: var(--tx);
+  background-color: var(--bg); */
 
   padding: 1rem 4ch;
   margin: 0 auto;
@@ -100,10 +21,10 @@ body {
 
 hr {
   border-style: solid;
-  color: var(--ui);
+  /* color: var(--ui); */
 }
 
-a {
+/* a {
   color: var(--bl);
 }
 
@@ -113,7 +34,7 @@ a:visited {
 
 a:active {
   color: var(--re);
-}
+} */
 
 blockquote {
   padding-left: 4ch;
@@ -129,9 +50,9 @@ blockquote::before {
   left: 2ch;
 }
 
-blockquote * {
+/* blockquote * {
   color: var(--tx-2) !important;
-}
+} */
 
 h1,
 h2,
@@ -139,32 +60,11 @@ h3,
 h4,
 h5,
 h6 {
-  font-size: 1rem;
+  font-family: var(--font-display);
+  font-weight: normal;
+  /* font-size: 1rem; */
   margin: 2rem 1rem 0 0;
-}
-
-h1:not(header > *)::before {
-  content: "# ";
-}
-
-h2::before {
-  content: "## ";
-}
-
-h3::before {
-  content: "### ";
-}
-
-h4::before {
-  content: "#### ";
-}
-
-h5::before {
-  content: "##### ";
-}
-
-h6::before {
-  content: "###### ";
+  line-height: 1;
 }
 
 sup {
@@ -202,9 +102,9 @@ img {
   margin: 1rem 0 2rem 0;
 }
 
-article :not(pre) > code {
+/* article :not(pre) > code {
   background-color: var(--ui);
-}
+} */
 
 article :not(pre) > code::before,
 article :not(pre) > code::after {
@@ -212,7 +112,7 @@ article :not(pre) > code::after {
 }
 
 article pre:has(code) {
-  background-color: var(--ui);
+  /* background-color: var(--ui); */
   padding: 16px;
   overflow-x: scroll;
 }
@@ -221,4 +121,23 @@ article pre:has(code) {
   html {
     color-scheme: dark;
   }
+}
+
+h1 {
+  font-size: 2.25rem;
+}
+h2 {
+  font-size: 1.875rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1.25rem;
+}
+h5 {
+  font-size: 1.125rem;
+}
+h6 {
+  font-size: 1rem;
 }

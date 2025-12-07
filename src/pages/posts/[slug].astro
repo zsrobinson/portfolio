@@ -6,7 +6,6 @@ import HorizontalRule from "~/components/horizontal-rule.astro";
 import PostList from "~/components/post-list.astro";
 import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
-import { slugify } from "~/lib/utils";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -44,12 +43,12 @@ const posts = (await getCollection("posts"))
       {
         data.updatedDate && (
           <time title={data.updatedDate.toISOString()}>
-            | Updated {data.date.toISOString().split("T")[0]}
+            · Updated {data.date.toISOString().split("T")[0]}
           </time>
         )
       }
 
-      | By Zachary Robinson | {mins} minute read
+      · By Zachary Robinson · {mins} minute read
     </p>
 
     {
@@ -63,13 +62,12 @@ const posts = (await getCollection("posts"))
 
   <HorizontalRule />
 
-  <p>Written by Zachary Robinson, find me on <Socials />.</p>
-
   <p>
     Thanks for reading! If you enjoyed this post, please consider sharing it. If
-    you have any comments, questions, or feedback, don't hesitate to reach out
-    to me.
+    you have any comments, questions, or feedback, don't hesitate to reach out.
   </p>
+
+  <Socials />
 
   <h2 id="comments">Comments</h2>
 
@@ -86,6 +84,10 @@ const posts = (await getCollection("posts"))
   }
 
   article > .byline + :global(blockquote) {
+    margin-bottom: 2rem;
+  }
+
+  article > img + :global(blockquote) {
     margin-bottom: 2rem;
   }
 

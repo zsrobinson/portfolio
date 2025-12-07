@@ -1,116 +1,143 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* define other variables */
+html {
+  --font-mono: "Menlo", monospace;
+  --font-display: "Apple Garamond", "Times New Roman", serif;
+}
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+html {
+  font-family: "Menlo", monospace;
+  font-size: 16px;
+  line-height: 1.5;
+}
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+body {
+  /* color: var(--tx);
+  background-color: var(--bg); */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+  padding: 1rem 4ch;
+  margin: 0 auto;
+  max-width: 76ch;
+}
 
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
+hr {
+  border-style: solid;
+  /* color: var(--ui); */
+}
 
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+/* a {
+  color: var(--bl);
+}
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+a:visited {
+  color: var(--pu);
+}
 
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+a:active {
+  color: var(--re);
+} */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+blockquote {
+  padding-left: 4ch;
+  margin: 1rem 0 1rem 0;
+  color: var(--tx-2);
+  position: relative;
+}
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
+blockquote::before {
+  content: ">";
+  position: absolute;
+  top: 0;
+  left: 2ch;
+}
 
-    --radius: 0.5rem;
+/* blockquote * {
+  color: var(--tx-2) !important;
+} */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: normal;
+  /* font-size: 1rem; */
+  margin: 2rem 1rem 0 0;
+  line-height: 1;
+}
+
+sup {
+  font-size: unset;
+  vertical-align: unset;
+}
+
+sup::before {
+  content: "[^";
+}
+sup::after {
+  content: "]";
+}
+
+p {
+  margin: 1rem 0;
+}
+
+ol,
+ul {
+  padding-left: 4ch;
+}
+
+@media (max-width: 550px) {
+  body {
+    padding: 1rem 2ch;
   }
+}
 
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin: 1rem 0 2rem 0;
+}
 
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
+/* article :not(pre) > code {
+  background-color: var(--ui);
+} */
 
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+article :not(pre) > code::before,
+article :not(pre) > code::after {
+  content: "`";
+}
 
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
+article pre:has(code) {
+  /* background-color: var(--ui); */
+  padding: 16px;
+  overflow-x: scroll;
+}
 
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-
+@media (prefers-color-scheme: dark) {
+  html {
     color-scheme: dark;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-
-    /* min-h-screen but with fallback */
-    min-height: 100vh;
-    min-height: 100dvh;
-  }
-
-  /* similar code blocks as before, but they have the correct *slight* tint of blue */
-
-  .prose pre {
-    background-color: hsl(240 5.9% 10%) !important;
-  }
-
-  .dark .prose pre {
-    background-color: hsl(240 3.7% 15.9% / 0.5) !important;
-  }
-
-  /* wave animation for home page "hey there" */
-
-  @keyframes wave {
-    0%,
-    100% {
-      transform: none;
-    }
-
-    50% {
-      transform: rotate(20deg);
-    }
-  }
-
-  .animate-wave {
-    animation: wave 1.5s 3;
-  }
-
-  @media (prefers-reduced-motion) {
-    .animate-wave {
-      animation: none;
-    }
-  }
+h1 {
+  font-size: 2.25rem;
+}
+h2 {
+  font-size: 1.875rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1.25rem;
+}
+h5 {
+  font-size: 1.125rem;
+}
+h6 {
+  font-size: 1rem;
 }

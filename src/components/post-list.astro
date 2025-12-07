@@ -1,0 +1,48 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+export type Props = { posts: CollectionEntry<"posts">[] };
+const { posts } = Astro.props;
+
+const descriptions = posts.map((post) => {
+  const lines = post.body.replaceAll("\r\n", "\n\n").split("\n\n");
+  if (lines.at(0)?.trim().startsWith(">")) lines.shift();
+  return lines
+    .join("\n\n")
+    .replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1")
+    .split(" ")
+    .slice(0, 100)
+    .join(" ");
+});
+---
+
+<ul>
+  {
+    posts.map((post, i) => (
+      <li>
+        <time datetime={post.data.date.toISOString()}>
+          {post.data.date.toISOString().split("T")[0]}
+        </time>
+        <a href={`/posts/${post.slug}`}>{post.data.title}</a>
+
+        <blockquote>{descriptions[i]}</blockquote>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li > a {
+    font-weight: bold;
+  }
+  blockquote {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+</style>

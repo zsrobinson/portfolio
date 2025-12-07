@@ -1,0 +1,50 @@
+---
+import HorizontalRule from "./horizontal-rule.astro";
+---
+
+<header>
+  <a href="/">
+    <pre>                _    _                   
+  _______ _ ___| |__(_)_ _  ___ ___ _ _  
+ |_ (_-&lt; `_/ _ \  _ \ | ` \(_-&lt;/ _ \ ` \ 
+ /__/__/_| \___/_,__/_|_||_/__/\___/_||_|</pre></a
+  >
+
+  <nav>
+    <a href="/posts">posts</a>
+    <a href="/index.xml" target="_blank">rss</a>
+    <a href="/search">search</a>
+  </nav>
+</header>
+
+<HorizontalRule />
+
+<style>
+  div {
+    margin: 0;
+    text-align: right;
+    padding-right: 1ch;
+  }
+  pre {
+    margin: 0;
+  }
+  nav > * {
+    display: block;
+    margin-right: 1ch;
+    text-align: right;
+  }
+
+  header + :global(.hr) {
+    margin-bottom: 2rem;
+  }
+  a:has(pre) {
+    text-decoration: none;
+    color: unset;
+  }
+  header {
+    line-height: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+export type Props = { projects: CollectionEntry<"projects">[] };
+const { projects } = Astro.props;
+---
+
+<ul>
+  {
+    projects.map((project) => (
+      <li>
+        <time datetime={project.data.date.toISOString()}>
+          {project.data.date.toISOString().split("T")[0]}
+        </time>
+        <a href={project.data.deploymentURL} target="_blank">
+          {project.data.title}
+        </a>
+        <blockquote>{project.data.description}</blockquote>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li > a,
+  li > time {
+    font-weight: bold;
+  }
+</style>

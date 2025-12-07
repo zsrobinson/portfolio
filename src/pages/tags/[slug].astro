@@ -1,6 +1,6 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import PostCard from "~/components/post-card.astro";
+import PostList from "~/components/post-list.astro";
 import Root from "~/layouts/root.astro";
 import { slugify } from "~/lib/utils";
 
@@ -28,16 +28,15 @@ const { tag, posts } = Astro.props as {
 ---
 
 <Root title={`${tag} · Zachary Robinson`} parent="Tags" noIndex>
-  <div class="mx-auto flex max-w-prose flex-col">
-    <span class="inline-flex pb-4">
-      <h2 class="text-3xl font-semibold">
-        {tag}
-      </h2>
-      <span class="ml-1 text-muted-foreground">{posts.length}</span>
-    </span>
-
-    <div class="flex flex-col gap-4">
-      {posts.map((post) => <PostCard post={post} />)}
-    </div>
-  </div>
+  <h1>{tag}</h1>
+  <span>({posts.length})</span>
+  <PostList posts={posts} />
+  <p>View all tags <a href="/tags">here</a>.</p>
 </Root>
+
+<style>
+  h1 {
+    display: inline;
+    margin-right: 4px;
+  }
+</style>

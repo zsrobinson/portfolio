@@ -5,8 +5,9 @@ tags: ["Internet"]
 
 cover: "~/assets/dial-up-prompt.jpg"
 coverAlt: "Dial-Up Internet Prompt"
-disclaimer: "This post was adapted from a project for my AP Lang class during my junior year of high school."
 ---
+
+> This post was adapted from a project for my AP Lang class during my junior year of high school.
 
 The Internet is the way of the future. We use it for everything: chatting with friends, completing assignments at school, and watching our favorite TV shows at the end of the day. But we don’t typically don’t think of how the Internet has negatively affected our lives because of how ingrained it is in society. How do we fix these issues? Slow down the internet.
 

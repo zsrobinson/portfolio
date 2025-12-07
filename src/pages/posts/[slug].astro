@@ -1,11 +1,12 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
-import DirectionalPostCard from "~/components/directional-post-card.astro";
-import { LinkBadge } from "~/components/link-badge";
+import Comments from "~/components/comments.astro";
+import HorizontalRule from "~/components/horizontal-rule.astro";
+import PostList from "~/components/post-list.astro";
 import Socials from "~/components/socials.astro";
 import Root from "~/layouts/root.astro";
-import { formatDate, slugify } from "~/lib/utils";
+import { slugify } from "~/lib/utils";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -17,13 +18,12 @@ export async function getStaticPaths() {
 
 const { data, render, body, slug } = Astro.props as CollectionEntry<"posts">;
 const { Content, remarkPluginFrontmatter } = await render();
+const mins = remarkPluginFrontmatter.minutesRead.split(" ")[0];
 
-let posts = await getCollection("posts");
-posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-
-const postIndex = posts.findIndex((post) => post.slug === slug);
-const prevPost = posts[postIndex + 1] as CollectionEntry<"posts"> | undefined;
-const nextPost = posts[postIndex - 1] as CollectionEntry<"posts"> | undefined;
+const posts = (await getCollection("posts"))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .filter((x) => x.slug !== slug)
+  .toSpliced(3);
 ---
 
 <Root
@@ -33,104 +33,79 @@ const nextPost = posts[postIndex - 1] as CollectionEntry<"posts"> | undefined;
   parent="Posts"
   ogImage={`/og/posts/${slug}.png`}
 >
-  <article class="mx-auto max-w-prose">
-    <div class="mb-8 w-full">
-      <h1 class="text-balance text-4xl font-semibold">
-        {data.title}
-      </h1>
+  <article>
+    <h1>{data.title}</h1>
 
-      <p class="text-muted-foreground">
-        <span
-          title={data.updatedDate
-            ? `Updated ${formatDate(data.updatedDate)}`
-            : ""}>{formatDate(data.date)}</span
-        > · {remarkPluginFrontmatter.minutesRead.split(" ")[0]} min read
-      </p>
+    <p class="byline">
+      <time datetime={data.date.toISOString()}>
+        {data.date.toISOString().split("T")[0]}
+      </time>
 
       {
-        data.tags && (
-          <div class="mt-4 flex flex-wrap gap-2">
-            {data.tags.map((tag) => (
-              <LinkBadge href={`/tags/${slugify(tag)}`} variant="default">
-                {tag}
-              </LinkBadge>
-            ))}
-          </div>
-        )
-      }
-    </div>
-
-    <div
-      class="prose prose-zinc max-w-full break-words dark:prose-invert prose-img:rounded-md"
-    >
-      {
-        data.coverAlt && data.cover && (
-          <div class="relative flex pb-4">
-            <Image
-              src={data.cover}
-              alt={data.coverAlt}
-              class="peer m-0 rounded-md"
-              loading="eager"
-            />
-            <Image
-              src={data.cover}
-              alt={data.coverAlt}
-              class="absolute -z-10 m-0 rounded-md blur-lg transition peer-hover:blur-xl"
-              loading="eager"
-            />
-          </div>
+        data.updatedDate && (
+          <time title={data.updatedDate.toISOString()}>
+            · Updated {data.date.toISOString().split("T")[0]}
+          </time>
         )
       }
 
-      {
-        data.disclaimer && (
-          <blockquote class="italic text-muted-foreground">
-            {data.disclaimer}
-          </blockquote>
-        )
+      · By Zachary Robinson · {mins} minute read<br />{
+        data.tags?.map((t) => (
+          <span>
+            <a href={`/tags/${slugify(t)}`}>{slugify(t)}</a>
+          </span>
+        ))
       }
+    </p>
 
-      <Content />
-    </div>
+    {
+      data.coverAlt && data.cover && (
+        <Image src={data.cover} alt={data.coverAlt} loading="eager" />
+      )
+    }
 
-    <div class="mt-12 flex flex-col gap-4 md:gap-8">
-      <hr class="border-muted" />
-
-      <div class="flex flex-wrap items-center justify-between gap-4">
-        <div class="flex flex-wrap items-center gap-4">
-          <div class="group relative">
-            <img
-              src="https://avatars.githubusercontent.com/zsrobinson"
-              alt="my profile picture"
-              class="absolute -z-10 w-16 rounded-full blur transition group-hover:blur-md"
-            />
-
-            <img
-              src="https://avatars.githubusercontent.com/zsrobinson"
-              alt="my profile picture"
-              class="w-16 rounded-full"
-            />
-          </div>
-
-          <div>
-            <p class="text-xs text-muted-foreground">Written By</p>
-            <p class="font-semibold">Zachary Robinson</p>
-          </div>
-        </div>
-
-        <Socials />
-      </div>
-
-      <p class="leading-7 text-muted-foreground">
-        Thanks for reading! If you enjoyed this post, please consider sharing
-        it. If you have any comments, questions, or feedback, don't hesitate to
-        reach out to me.
-      </p>
-
-      <div class="flex grid-cols-2 flex-col gap-4 sm:grid sm:items-start">
-        {prevPost && <DirectionalPostCard post={prevPost} type="previous" />}
-        {nextPost && <DirectionalPostCard post={nextPost} type="next" />}
-      </div>
-    </div>
+    <Content />
   </article>
+
+  <HorizontalRule />
+
+  <p>
+    Thanks for reading! If you enjoyed this post, please consider sharing it. If
+    you have any comments, questions, or feedback, don't hesitate to reach out.
+  </p>
+
+  <Socials />
+
+  <h2 id="comments">Comments</h2>
+
+  {!data.hackernews && <p>Comments have not been enabled for this post.</p>}
+  {data.hackernews && <Comments id={data.hackernews} server:defer />}
+
+  <h2>Recent Posts</h2>
+  <PostList posts={posts} />
 </Root>
+
+<style>
+  .byline {
+    margin: 1rem 0 2rem 0;
+  }
+
+  article > .byline + :global(blockquote) {
+    margin-bottom: 2rem;
+  }
+
+  article > img + :global(blockquote) {
+    margin-bottom: 2rem;
+  }
+
+  article + :global(.hr) {
+    margin: 2rem 0 2rem 0;
+  }
+
+  .byline a {
+    display: inline-block;
+  }
+  .byline a::before {
+    content: "#";
+  }
+</style>

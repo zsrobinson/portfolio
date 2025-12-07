@@ -4,7 +4,7 @@ import { getCollection } from "astro:content";
 const posts = await getCollection("posts");
 const pages: Record<string, { title: string; description: string }> = {
   index: {
-    title: "Hey there, my name's Zach!",
+    title: "Hey there, my name’s Zach!",
     description:
       "I'm a Computer Science major at the University of Maryland who's passionate about learning new technology and building cool stuff. I enjoy occasionally writing about my experiences and projects here on this site.",
   },
@@ -36,43 +36,30 @@ export const { getStaticPaths, GET } = OGImageRoute({
   pages,
 
   getImageOptions: (_, post) => ({
-    title: post.title,
+    title: "# " + post.title,
     description: post.description,
-    logo: { path: "./public/logo.png" },
 
-    // zinc-900 to zinc-950
-    bgGradient: [
-      [39, 39, 42],
-      [9, 9, 11],
-    ],
-
-    // blue-900
-    border: {
-      color: [30, 58, 138],
-      width: 50,
-    },
-
-    padding: 50,
+    bgGradient: [[255, 255, 255]],
 
     font: {
       title: {
-        families: ["Inter"],
-        weight: "SemiBold",
+        families: ["DejaVu Sans Mono"],
+        weight: "Bold",
         lineHeight: 1.1,
-        color: [250, 250, 250],
+        color: [0, 0, 0],
       },
 
       description: {
-        families: ["Inter"],
+        families: ["DejaVu Sans Mono"],
         weight: "Normal",
         lineHeight: 1.5,
-        color: [212, 212, 216],
+        color: [0, 0, 0],
       },
     },
 
     fonts: [
-      "https://api.fontsource.org/v1/fonts/inter/latin-400-normal.ttf",
-      "https://api.fontsource.org/v1/fonts/inter/latin-600-normal.ttf",
+      "https://cdn.jsdelivr.net/fontsource/fonts/dejavu-mono@latest/latin-400-normal.ttf",
+      "https://cdn.jsdelivr.net/fontsource/fonts/dejavu-mono@latest/latin-700-normal.ttf",
     ],
   }),
 });

@@ -5,8 +5,9 @@ tags: ["Explainer", "Astronomy"]
 
 cover: "~/assets/voyager2-interstellar-blue-poster-cropped.jpg"
 coverAlt: "Voyager 2 Interstellar Blue Poster"
-disclaimer: "This post was adapted from a project for my Honors World History class during my junior year of high school."
 ---
+
+> This post was adapted from a project for my Honors World History class during my junior year of high school.
 
 07:56 AM, September 5, 1977. Shortly before Voyager 1’s launch, a few strips of aluminum foil were just added for extra radiation shielding – the same stuff you’d use in your kitchen. But on that date, history was being made. The first probe to cross into interstellar space was launched, and humans might not be the only ones that know about it. Attached to the probe is a twelve-inch gold-plated copper disk with information about Earth. Its audience wasn’t for any of us, but rather for intelligent life on other planets. But to truly understand the Voyager Golden Records, we first need to take a look at our previous attempts to communicate with other beings.
 

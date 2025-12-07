@@ -2,6 +2,7 @@
 title: "Why I Love the Tiny Internet"
 date: 2023-09-27
 tags: ["Internet", "Blogging", "Opinion"]
+hackernews: 37684566
 ---
 
 After recently recreating my personal website from the ground up, I've been reflecting a bit more on blogs and the internet more broadly. As someone born after 2000, I never really got to experience the internet in the same way that many talk about what "used to be". I never experienced AOL chat rooms, IRC channels, or when forums used to dominate the internet. The internet that I came to know was one of centralized platforms: Google, YouTube, Facebook, Twitter, Reddit, you name it.
@@ -34,5 +35,3 @@ I hope that you're able to see why I've come to love the tiny internet. It's a r
 
 - [The Small Website Discoverability Crisis](https://www.marginalia.nu/log/19-website-discoverability-crisis/) by Viktor Lofgren
 - [We Need to Bring Back Webrings](https://arne.me/articles/we-need-to-bring-back-webrings) by Arne Bahlo
-
-_Discuss this post on HackerNews: https://news.ycombinator.com/item?id=37684566_

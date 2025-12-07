@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import Root from "~/layouts/root.astro";
+import { getSortedTags, slugify } from "~/lib/utils";
+
+const posts = await getCollection("posts");
+const tags = getSortedTags(posts);
+---
+
+<Root title="Tags - zsrobinson" parent="Tags" ogImage="/og/tags.png" noIndex>
+  <h1>Tags</h1>
+  <span>({tags.length})</span>
+
+  <ul>
+    {
+      tags.map(([tag, occurrences]) => (
+        <li>
+          <a href={`/tags/${slugify(tag)}`}>{tag}</a>
+          <span>({occurrences})</span>
+        </li>
+      ))
+    }
+  </ul>
+</Root>
+
+<style>
+  h1 {
+    display: inline;
+    margin-right: 4px;
+  }
+  ul {
+    line-height: 1.5;
+  }
+</style>

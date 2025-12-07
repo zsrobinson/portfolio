@@ -2,9 +2,9 @@
 title: "DHCP Spoofing Attacks"
 date: 2022-01-26
 tags: ["Explainer", "Networking", "Cybersecurity"]
-
-disclaimer: "This post was adapted from an assignment for my Honors Cisco Academy class during my junior year of high school."
 ---
+
+> This post was adapted from an assignment for my Honors Cisco Academy class during my junior year of high school.
 
 Dynamic Host Configuration Protocol, or DHCP for short, is one of the most useful protocols for a network admin. For large networks with hundreds or thousands of end devices, configuring each one manually with an IP Address would be tedious and error-prone. DHCP allows admins to define a range of IP Addresses and specify other configuration info for devices to obtain automatically. However, like most protocols, it has a security downfall: DHCP Spoofing.
 

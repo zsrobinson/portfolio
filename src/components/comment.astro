@@ -1,0 +1,80 @@
+---
+type Props = { id: number };
+const { id } = Astro.props;
+
+import { z } from "astro/zod";
+import { API } from "./comments.astro";
+const res = await fetch(`${API}/item/${id}.json`);
+const json: unknown = await res.json();
+
+const schema = z.object({
+  type: z.literal("comment"),
+  time: z.number().transform((num) => new Date(num * 1000)),
+  text: z.string(),
+  parent: z.number(),
+  kids: z.number().array().optional(),
+  id: z.number(),
+  by: z.string(),
+});
+console.log(id, json);
+
+const { success, data } = schema.safeParse(json);
+
+if (!success) return;
+
+data.text = data.text.replaceAll("<a href", '<a target="blank" href');
+---
+
+<details open>
+  <summary>
+    <span class="close-icon">[-]</span>
+    <span class="open-icon">[+]</span>
+    from <a
+      href=`https://news.ycombinator.com/user?id=${data.by}`
+      target="_blank">{data.by}</a
+    > on {data.time.toISOString().split("T")[0]}:
+  </summary>
+
+  <div class="comment-content" set:html={data.text} />
+  {data.kids?.map((kid) => <Astro.self id={kid} />)}
+</details>
+
+<style>
+  summary {
+    cursor: pointer;
+  }
+
+  summary::marker {
+    content: "";
+  }
+
+  details {
+    margin: 1rem 0;
+  }
+
+  details[open] > summary {
+    margin: 1rem 0;
+  }
+
+  .comment-content {
+    /* color: var(--tx-2); */
+  }
+
+  ::details-content {
+    padding-left: calc(4ch - 2px);
+    border-left: solid var(--ui-3) 2px;
+  }
+
+  details .close-icon {
+    display: none;
+  }
+  details .open-icon {
+    display: inline;
+  }
+  details[open] > summary > .close-icon {
+    display: inline;
+  }
+  details[open] > summary > .open-icon {
+    display: none;
+  }
+</style>

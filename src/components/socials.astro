@@ -1,95 +1,22 @@
----
-import {
-  IconBrandGithub,
-  IconBrandInstagram,
-  IconBrandLinkedin,
-  IconBrandMastodon,
-  IconBrandTwitter,
-  IconMail,
-  IconRss,
-} from "@tabler/icons-react";
-import { LinkButton } from "./link-button";
----
+<script>
+  // super sneaky email obfuscation
+  setTimeout(() => {
+    const parts = ["bWVA", "enNyb2JpbnNvbg==", "LmNvbQ=="];
+    const string = parts.map((part) => atob(part)).join("");
+    const anchor = document.querySelector<HTMLAnchorElement>("#aGkgdGhlcmUh");
+    if (anchor) anchor.href = "mailto:" + string;
+  }, 250);
+</script>
 
-<div class="flex flex-wrap gap-2">
-  <LinkButton
-    variant="ghost"
-    size="icon"
-    href="mailto:obfuscated@example.com"
-    id="aGkgdGhlcmUh"
-    title="Email"
-  >
-    <IconMail />
-  </LinkButton>
-
-  <LinkButton
-    variant="ghost"
-    size="icon"
+<p>
+  My personal projects are hosted on <a
     href="https://github.com/zsrobinson"
-    target="_blank"
-    title="GitHub"
-  >
-    <IconBrandGithub />
-  </LinkButton>
-
-  <LinkButton
-    variant="ghost"
-    size="icon"
+    target="_blank">GitHub</a
+  >, and my work experience is listed on <a
     href="https://www.linkedin.com/in/zsrobinson05"
-    target="_blank"
-    title="LinkedIn"
-  >
-    <IconBrandLinkedin />
-  </LinkButton>
-
-  <LinkButton
-    variant="ghost"
-    size="icon"
-    href="https://instagram.com/zsrobinson"
-    target="_blank"
-    title="Instagram"
-  >
-    <IconBrandInstagram />
-  </LinkButton>
-
-  <LinkButton
-    variant="ghost"
-    size="icon"
-    href="https://twitter.com/zsrobinson_"
-    target="_blank"
-    title="Twitter"
-  >
-    <IconBrandTwitter />
-  </LinkButton>
-
-  <LinkButton
-    variant="ghost"
-    size="icon"
-    href="https://mas.to/@zsrobinson"
-    target="_blank"
-    title="Mastodon"
-    rel="me"
-  >
-    <IconBrandMastodon />
-  </LinkButton>
-
-  <LinkButton
-    variant="ghost"
-    size="icon"
-    href="/index.xml"
-    target="_blank"
-    title="RSS Feed"
-  >
-    <IconRss />
-  </LinkButton>
-
-  <script>
-    // super sneaky email obfuscation
-    setTimeout(() => {
-      const parts = ["bWVA", "enNyb2JpbnNvbg==", "LmNvbQ=="];
-      const string = parts.map((part) => atob(part)).join("");
-      const anchor = document.querySelector<HTMLAnchorElement>("#aGkgdGhlcmUh");
-      if (anchor) anchor.href = "mailto:" + string;
-    }, 250);
-  </script>
-</div>
+    target="_blank">LinkedIn</a
+  >. I’m also able to be reached via <a
+    href="mailto:obfuscated@example.com"
+    id="aGkgdGhlcmUh">email</a
+  >.
+</p>

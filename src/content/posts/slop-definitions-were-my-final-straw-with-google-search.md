@@ -2,6 +2,7 @@
 title: "Slop Definitions Were My Final Straw with Google Search"
 date: 2026-03-02
 tags: ["google", "search", "ai"]
+hackernews: 47225694
 
 cover: "~/assets/slop.png"
 coverAlt: 'The "AI Overview" response to searching "slop definition" on Google.'

@@ -16,16 +16,12 @@ const schema = z.object({
   id: z.number(),
   by: z.string(),
 });
-console.log(id, json);
 
 const { success, data } = schema.safeParse(json);
-
 if (!success) return;
-
-data.text = data.text.replaceAll("<a href", '<a target="blank" href');
 ---
 
-<details open>
+<details open class="comment">
   <summary>
     <span class="close-icon">[-]</span>
     <span class="open-icon">[+]</span>
@@ -78,3 +74,16 @@ data.text = data.text.replaceAll("<a href", '<a target="blank" href');
     display: none;
   }
 </style>
+
+<script>
+  const comments =
+    document.querySelectorAll<HTMLAnchorElement>(".comment-content a");
+  for (let comment of comments) {
+    comment.target = "_blank";
+    comment.onclick = () => {
+      return window.confirm(
+        "This link was provided by a user on HackerNews and not by the author of this site. Would you like to continue?",
+      );
+    };
+  }
+</script>

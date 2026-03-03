@@ -19,7 +19,6 @@ const schema = z.object({
   descendants: z.number(),
   by: z.string(),
 });
-console.log(id, json);
 const data = schema.parse(json);
 ---
 

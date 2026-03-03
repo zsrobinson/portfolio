@@ -24,7 +24,8 @@ const data = schema.parse(json);
 ---
 
 <p>
-  {data.descendants} comments have been left on HackerNews. Join the discussion <a
+  {data.descendants} comment{data.descendants === 1 ? " has" : "s have"} been left
+  on HackerNews. Join the discussion <a
     href={`https://news.ycombinator.com/item?id=${id}`}>here</a
   >.
 </p>

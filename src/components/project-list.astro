@@ -3,6 +3,12 @@ import type { CollectionEntry } from "astro:content";
 
 export type Props = { projects: CollectionEntry<"projects">[] };
 const { projects } = Astro.props;
+
+projects.sort((a, b) => {
+  if (a.data.ongoing === b.data.ongoing)
+    return b.data.date.getTime() - a.data.date.getTime();
+  return a.data.ongoing ? -1 : 1;
+});
 ---
 
 <ul>
@@ -12,6 +18,8 @@ const { projects } = Astro.props;
         <time datetime={project.data.date.toISOString()}>
           {project.data.date.toISOString().split("T")[0]}
         </time>
+        {project.data.ongoing && <span>(ongoing)</span>}
+        <span>|</span>
         <a href={project.data.deploymentURL} target="_blank">
           {project.data.title}
         </a>
@@ -26,8 +34,7 @@ const { projects } = Astro.props;
     list-style: none;
     padding: 0;
   }
-  li > a,
-  li > time {
+  li > :not(blockquote) {
     font-weight: bold;
   }
 </style>

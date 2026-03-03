@@ -23,6 +23,7 @@ const descriptions = posts.map((post) => {
         <time datetime={post.data.date.toISOString()}>
           {post.data.date.toISOString().split("T")[0]}
         </time>
+        <span>|</span>
         <a href={`/posts/${post.slug}`}>{post.data.title}</a>
 
         <blockquote>{descriptions[i]}</blockquote>
@@ -36,7 +37,7 @@ const descriptions = posts.map((post) => {
     list-style: none;
     padding: 0;
   }
-  li > a {
+  li > :not(blockquote) {
     font-weight: bold;
   }
   blockquote {

@@ -31,7 +31,8 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    date: z.string().transform((str) => new Date(str)), // Just to display Month and Year
+    date: z.date(),
+    ongoing: z.boolean().optional(),
     deploymentURL: z.string().url().optional(),
     sourceCodeURL: z.string().url().optional(),
     tech: tech.or(z.string()).array(),

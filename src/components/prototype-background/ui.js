@@ -15,7 +15,8 @@ const DEFAULTS = {
   preset: "",
   px: 3,
   intensity: 1,
-  calm: 0.35,
+  // on a phone the text column is the whole screen, so keep more of the effect
+  calm: window.matchMedia("(max-width: 700px)").matches ? 0.55 : 0.35,
   speed: 1,
   fps: 60,
   motion: "auto",

@@ -132,7 +132,7 @@ ul.list li > :not(blockquote) { font-weight: bold; }
 ul.posts blockquote { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
 .proto-note { font-size: 12px; color: var(--tx-2); margin: 0 0 1.5rem; }
 .proto-note kbd { font: inherit; border: 1px solid var(--tx-3); padding: 0 4px; }
-@media (max-width: 550px) { body { padding: 1rem 2ch; } header pre { font-size: 9px; } }
+@media (max-width: 550px) { body { padding: 1rem 2ch; } header pre { font-size: min(16px, 2.8vw); } }
 ${read("prototype.css")}
 </style>
 

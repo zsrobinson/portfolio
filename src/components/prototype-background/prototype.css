@@ -21,6 +21,14 @@ html[data-proto-bg] .hr {
   color: var(--tx-3);
 }
 
+/* the ascii-art header is ~41ch wide, which makes phones scroll sideways and
+   pushes fixed UI off-centre; scale it to fit (the live site has this too) */
+@media (max-width: 550px) {
+  html[data-proto-bg] header pre {
+    font-size: min(16px, 2.8vw);
+  }
+}
+
 #proto-bg-canvas {
   position: fixed;
   left: 0;
@@ -74,8 +82,10 @@ html[data-proto-bg] .hr {
   color: inherit;
   cursor: pointer;
 }
-.proto-bar button:hover {
-  background: color-mix(in srgb, var(--bg) 18%, transparent);
+@media (hover: hover) {
+  .proto-bar button:hover {
+    background: color-mix(in srgb, var(--bg) 18%, transparent);
+  }
 }
 .proto-bar button:focus-visible,
 .proto-panel :focus-visible {
@@ -167,6 +177,33 @@ html[data-proto-bg] .hr {
   cursor: pointer;
 }
 
+/* phones: 44px targets, 16px selects (smaller ones make iOS zoom the page),
+   and a panel that scrolls instead of running off a short screen */
+@media (pointer: coarse) {
+  .proto-bar button {
+    min-width: 44px;
+    height: 44px;
+  }
+  .proto-panel {
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    max-height: calc(100dvh - 96px - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .proto-panel select {
+    font-size: 16px;
+  }
+  .proto-panel > label {
+    min-height: 36px;
+  }
+  .proto-checks label {
+    padding: 6px 0;
+  }
+  #proto-reset {
+    padding: 10px 14px;
+  }
+}
+
 .proto-hud {
   position: fixed;
   left: 16px;
@@ -193,7 +230,7 @@ html[data-proto-bg] .hr {
 @media (max-width: 700px) {
   .proto-hud {
     left: 8px;
-    bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
     font-size: 10px;
     width: auto;
   }

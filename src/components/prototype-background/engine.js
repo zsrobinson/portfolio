@@ -495,6 +495,12 @@ export function createDitherBackground(canvas, initial = {}) {
     ...initial,
   };
 
+  const lvhProbe = document.createElement("div");
+  lvhProbe.setAttribute("aria-hidden", "true");
+  lvhProbe.style.cssText =
+    "position:fixed;left:0;top:0;width:0;height:100vh;height:100lvh;visibility:hidden;pointer-events:none";
+  document.body.append(lvhProbe);
+
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const mouse = { x: -1e4, y: -1e4, px: -1e4, py: -1e4, down: 0, last: -1e9 };
   const size = { W: 0, H: 0, gw: 0, gh: 0, cell: 1, css: 1, dev: 1 };
@@ -848,7 +854,9 @@ export function createDitherBackground(canvas, initial = {}) {
   // ----- sizing
   function measure() {
     const W = window.innerWidth;
-    const H = window.innerHeight;
+    // size to the *largest* viewport (mobile URL bar hidden) so scrolling on
+    // a phone never resizes the canvas or resets the sim
+    const H = Math.max(window.innerHeight, lvhProbe.offsetHeight);
     const dpr = Math.min(window.devicePixelRatio || 1, 3);
     let gw, gh, cw, ch, css, cellDev, styleW, styleH;
     if (opts.dither === "ascii") {
@@ -1103,6 +1111,17 @@ export function createDitherBackground(canvas, initial = {}) {
   function onLeave() {
     mouse.last = -1e9;
   }
+  // touchmove keeps firing while the page scrolls under a finger, unlike
+  // pointermove (which is cancelled), so phones can still stir the effect
+  function onTouch(e) {
+    const t = e.touches[0];
+    if (t) onMove(t);
+  }
+  function onTouchEnd(e) {
+    if (e.touches.length) return;
+    mouse.down = 0;
+    mouse.last = -1e9;
+  }
   let resizeQueued = false;
   function onResize() {
     if (resizeQueued) return;
@@ -1137,6 +1156,10 @@ export function createDitherBackground(canvas, initial = {}) {
   window.addEventListener("pointerup", onUp, passive);
   window.addEventListener("pointercancel", onUp, passive);
   document.documentElement.addEventListener("pointerleave", onLeave, passive);
+  window.addEventListener("touchstart", onTouch, passive);
+  window.addEventListener("touchmove", onTouch, passive);
+  window.addEventListener("touchend", onTouchEnd, passive);
+  window.addEventListener("touchcancel", onTouchEnd, passive);
   window.addEventListener("resize", onResize, passive);
   document.addEventListener("visibilitychange", onVisibility);
   window.addEventListener("pagehide", stop);
@@ -1193,7 +1216,12 @@ export function createDitherBackground(canvas, initial = {}) {
         onLeave,
         passive,
       );
+      window.removeEventListener("touchstart", onTouch, passive);
+      window.removeEventListener("touchmove", onTouch, passive);
+      window.removeEventListener("touchend", onTouchEnd, passive);
+      window.removeEventListener("touchcancel", onTouchEnd, passive);
       window.removeEventListener("resize", onResize, passive);
+      lvhProbe.remove();
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("pagehide", stop);
       window.removeEventListener("pageshow", onVisibility);

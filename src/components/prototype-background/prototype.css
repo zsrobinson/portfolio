@@ -1,0 +1,203 @@
+/* PROTOTYPE: styles for the dithered background experiment. */
+
+/* the theme picker drives the page colours too, so text and background agree */
+html[data-proto-bg] {
+  background: var(--bg);
+  color: var(--tx);
+}
+html[data-proto-bg] body {
+  background: transparent;
+}
+html[data-proto-bg] a {
+  color: var(--link);
+}
+html[data-proto-bg] a:visited {
+  color: var(--link-visited);
+}
+html[data-proto-bg] blockquote {
+  color: var(--tx-2);
+}
+html[data-proto-bg] .hr {
+  color: var(--tx-3);
+}
+
+#proto-bg-canvas {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+  contain: strict;
+}
+
+/* ---- prototype chrome: deliberately inverted so it never reads as the design */
+.proto-ui {
+  font:
+    12px/1.4 Menlo,
+    ui-monospace,
+    "DejaVu Sans Mono",
+    monospace;
+}
+.proto-ui [hidden] {
+  display: none !important;
+}
+.proto-ui button,
+.proto-ui select,
+.proto-ui input {
+  font: inherit;
+}
+
+.proto-bar {
+  position: fixed;
+  left: 50%;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  background: var(--tx);
+  color: var(--bg);
+  border-radius: 999px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.25);
+  white-space: nowrap;
+}
+.proto-bar button {
+  min-width: 36px;
+  height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.proto-bar button:hover {
+  background: color-mix(in srgb, var(--bg) 18%, transparent);
+}
+.proto-bar button:focus-visible,
+.proto-panel :focus-visible {
+  outline: 2px solid var(--proto-accent);
+  outline-offset: 1px;
+}
+.proto-label {
+  min-width: 13ch;
+  padding: 0 6px;
+  text-align: center;
+  font-weight: bold;
+}
+#proto-tweaks {
+  border-left: 1px solid color-mix(in srgb, var(--bg) 35%, transparent);
+  border-radius: 0 999px 999px 0;
+}
+#proto-tweaks[aria-expanded="true"] {
+  background: var(--bg);
+  color: var(--tx);
+}
+
+.proto-panel {
+  position: fixed;
+  left: 50%;
+  bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: min(360px, calc(100vw - 32px));
+  box-sizing: border-box;
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px 14px;
+  background: var(--bg);
+  color: var(--tx);
+  border: 1px solid var(--tx);
+  box-shadow: 4px 4px 0 var(--tx);
+}
+.proto-panel-head {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  border-bottom: 1px dashed var(--tx-3);
+  padding-bottom: 6px;
+}
+.proto-panel-head span {
+  font-weight: normal;
+  color: var(--tx-2);
+}
+.proto-panel > label {
+  display: grid;
+  grid-template-columns: 11ch 1fr 5ch;
+  align-items: center;
+  gap: 8px;
+}
+.proto-panel select {
+  grid-column: 2 / 4;
+  min-width: 0;
+  padding: 3px 4px;
+  background: var(--bg);
+  color: var(--tx);
+  border: 1px solid var(--tx-3);
+  border-radius: 0;
+}
+.proto-panel input[type="range"] {
+  min-width: 0;
+  accent-color: var(--tx);
+}
+.proto-panel output {
+  text-align: right;
+  color: var(--tx-2);
+  font-variant-numeric: tabular-nums;
+}
+.proto-checks {
+  display: grid;
+  gap: 2px;
+  padding-top: 4px;
+}
+.proto-checks input {
+  accent-color: var(--tx);
+  margin: 0 6px 0 0;
+  vertical-align: -2px;
+}
+#proto-reset {
+  justify-self: start;
+  padding: 3px 10px;
+  background: transparent;
+  color: var(--tx);
+  border: 1px solid var(--tx-3);
+  cursor: pointer;
+}
+
+.proto-hud {
+  position: fixed;
+  left: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 999;
+  margin: 0;
+  padding: 8px 10px;
+  width: 50ch;
+  max-width: calc(100vw - 32px);
+  box-sizing: border-box;
+  white-space: pre;
+  overflow: hidden;
+  font-size: 11px;
+  background: var(--bg);
+  color: var(--tx-2);
+  border: 1px solid var(--tx-3);
+  pointer-events: none;
+}
+@media (max-width: 1100px) {
+  .proto-hud {
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+}
+@media (max-width: 700px) {
+  .proto-hud {
+    left: 8px;
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+    font-size: 10px;
+    width: auto;
+  }
+  .proto-ui:has(.proto-panel:not([hidden])) .proto-hud {
+    display: none;
+  }
+}

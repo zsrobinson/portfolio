@@ -1,0 +1,13 @@
+---
+// Game of Life background with a small settings popover.
+import { PANEL_HTML } from "./panel.js";
+import "./background.css";
+---
+
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<Fragment set:html={PANEL_HTML} />
+
+<script>
+  import { mountBackground } from "./controls.js";
+  mountBackground();
+</script>

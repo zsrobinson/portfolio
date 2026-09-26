@@ -3,11 +3,18 @@
 </p>
 
 <style>
+  /* the dividers are where the background shows through between sections
+     (see components/dither-background), so they get some height */
   p {
-    height: 1rem;
-    /* overflow-wrap: break-word; */
+    height: 4rem;
+    line-height: 4rem;
     overflow: hidden;
-    /* color: var(--tx-3); */
+    color: var(--tx-3);
     width: 100%;
+  }
+
+  /* once the background is running, the pattern is the divider */
+  :global(html.bg-live) p {
+    color: transparent;
   }
 </style>

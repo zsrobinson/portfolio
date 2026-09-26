@@ -4,6 +4,31 @@ html {
   --font-display: "Apple Garamond", "Times New Roman", serif;
 }
 
+/* 1-bit colours from flexoki (see https://stephango.com/flexoki). the theme
+   script in root.astro sets .dark before first paint, and the background
+   settings set --accent to the reader's chosen colour */
+html {
+  --bg: #fffcf0; /* paper */
+  --tx: #100f0f; /* black */
+  --tx-2: #6f6e69; /* base-600 */
+  --tx-3: #b7b5ac; /* base-300 */
+  --ui-3: #cecdc3; /* base-200 */
+  --accent: #24837b; /* cyan-600 */
+  color-scheme: light;
+  background: var(--bg);
+  color: var(--tx);
+}
+
+html.dark {
+  --bg: #100f0f;
+  --tx: #cecdc3; /* base-200 */
+  --tx-2: #878580; /* base-500 */
+  --tx-3: #575653; /* base-700 */
+  --ui-3: #403e3c; /* base-800 */
+  --accent: #3aa99f; /* cyan-400 */
+  color-scheme: dark;
+}
+
 html {
   font-family: "Menlo", monospace;
   font-size: 16px;
@@ -11,9 +36,7 @@ html {
 }
 
 body {
-  /* color: var(--tx);
-  background-color: var(--bg); */
-
+  /* transparent so the fixed background canvas shows through */
   padding: 1rem 4ch;
   margin: 0 auto;
   max-width: 76ch;
@@ -24,17 +47,13 @@ hr {
   /* color: var(--ui); */
 }
 
-/* a {
-  color: var(--bl);
+a {
+  color: inherit;
 }
 
-a:visited {
-  color: var(--pu);
+a:hover {
+  color: var(--accent);
 }
-
-a:active {
-  color: var(--re);
-} */
 
 blockquote {
   padding-left: 4ch;
@@ -116,12 +135,6 @@ article pre:has(code) {
   /* background-color: var(--ui); */
   padding: 16px;
   overflow-x: scroll;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
 
 h1 {

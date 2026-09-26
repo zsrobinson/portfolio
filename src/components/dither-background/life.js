@@ -2,13 +2,17 @@
 //
 // Renders at a low grid resolution (one cell = `pixel` CSS px, snapped to
 // whole device pixels) and lets CSS upscale it with `image-rendering:
-// pixelated`. The sim runs at half that resolution, ticks at a fixed rate,
-// and the canvas only redraws when the sim ticked, the cursor painted or the
-// page scrolled, so an idle page costs ~10 tiny draws a second.
+// pixelated`. The sim runs at half that resolution and ticks at a fixed rate.
 //
-// Text stays readable through a mask: the host passes the page's content
-// blocks (document coordinates) and the shader fades the pattern out around
-// them. The mask is a soft ramp, so the ordered dither itself draws the fade.
+// Heat: every sim cell carries a heat value that cools over time. Tiles of
+// cells only advance a generation with probability heat², so the page starts
+// lively and gradually freezes, neighbourhood by neighbourhood. Drawing on the
+// page reheats just the area around the cursor. Once everything is frozen the
+// sim stops entirely and the canvas only redraws on scroll.
+//
+// Text stays readable through a mask: the host passes the page's lines of
+// text and other content (document coordinates), and the pattern stays clear
+// of them by a margin, then dissolves back in cell by cell in a Bayer order.
 
 const VERT = `#version 300 es
 void main() {
@@ -27,9 +31,12 @@ float hash12(vec2 p) {
   p3 += dot(p3, p3.yzx + 33.33);
   return fract((p3.x + p3.y) * p3.z);
 }
+float bayer2(vec2 a) { a = floor(a); return fract(a.x / 2.0 + a.y * a.y * 0.75); }
+float bayer4(vec2 a) { return bayer2(0.5 * a) * 0.25 + bayer2(a); }
+float bayer8(vec2 a) { return bayer4(0.5 * a) * 0.25 + bayer2(a); }
 `;
 
-// state: r = alive, g = trail, b = accent lineage
+// state: r = alive, g = trail, b = accent lineage, a = heat
 const SEED = `
 uniform float uSeed, uDensity;
 void main() {
@@ -40,41 +47,57 @@ void main() {
 const STEP = `
 uniform sampler2D uState;
 uniform vec3 uDrop;
+uniform float uStep, uCool;
 void main() {
   ivec2 sz = textureSize(uState, 0);
   ivec2 c = ivec2(gl_FragCoord.xy);
   vec4 s = texelFetch(uState, c, 0);
-  float n = 0.0, lin = 0.0;
+  float n = 0.0, lin = 0.0, warm = 0.0;
   for (int y = -1; y <= 1; y++)
     for (int x = -1; x <= 1; x++) {
-      if (x == 0 && y == 0) continue;
-      vec4 q = texelFetch(uState, (c + ivec2(x, y) + sz) % sz, 0);
+      ivec2 at = c + ivec2(x, y);
+      // hard edges (not a torus), so warming one side never wakes the other
+      if ((x == 0 && y == 0) || any(lessThan(at, ivec2(0))) ||
+          any(greaterThanEqual(at, sz))) continue;
+      vec4 q = texelFetch(uState, at, 0);
       n += q.r;
       lin = max(lin, q.b * q.r);
+      warm = max(warm, q.a);
     }
+  // cool down, but stay within reach of warmer neighbours so heat has a
+  // soft edge (and no cell can keep itself warm)
+  float heat = clamp(max(s.a - uCool, warm - 0.1), 0.0, 1.0);
+  // whole 4x4 tiles tick together so Life stays coherent inside them
+  vec2 tile = floor(gl_FragCoord.xy / 4.0);
+  if (hash12(tile + vec2(uStep * 17.13, uStep * 3.71)) >= heat * heat) {
+    o = vec4(s.rgb, heat);
+    return;
+  }
   bool was = s.r > 0.5;
   bool alive = was ? (n > 1.5 && n < 3.5) : (n > 2.5 && n < 3.5);
-  if (length(gl_FragCoord.xy - uDrop.xy) < uDrop.z &&
+  if (heat > 0.3 && length(gl_FragCoord.xy - uDrop.xy) < uDrop.z &&
       hash12(gl_FragCoord.xy + uTime) < 0.4) alive = true;
   o = vec4(
     alive ? 1.0 : 0.0,
     alive ? 1.0 : max(s.g - 0.07, 0.0),
     alive ? (was ? s.b : lin * 0.97) : s.b * 0.85,
-    1.0);
+    heat);
 }`;
 
-// cells the cursor spawns carry the accent, and pass it to their offspring
+// cells the cursor spawns carry the accent (and pass it on); the area
+// around the cursor is reheated
 const PAINT = `
 uniform sampler2D uState;
 uniform vec2 uFrom, uTo;
-uniform float uRadius;
+uniform float uRadius, uHeatRadius;
 void main() {
   vec4 s = texelFetch(uState, ivec2(gl_FragCoord.xy), 0);
   vec2 p = gl_FragCoord.xy, ba = uTo - uFrom;
   float h = clamp(dot(p - uFrom, ba) / max(dot(ba, ba), 1e-4), 0.0, 1.0);
   float d = length(p - uFrom - ba * h);
   if (d < uRadius && hash12(p + fract(uTime * 7.13) * 91.0) < 0.35)
-    s = vec4(1.0);
+    s.rgb = vec3(1.0);
+  s.a = max(s.a, 1.0 - smoothstep(uHeatRadius * 0.5, uHeatRadius, d));
   o = s;
 }`;
 
@@ -85,20 +108,21 @@ uniform int uDither;
 uniform float uCss, uViewH, uScroll, uHasMask;
 uniform vec2 uMaskSize;
 
-float bayer2(vec2 a) { a = floor(a); return fract(a.x / 2.0 + a.y * a.y * 0.75); }
-float bayer4(vec2 a) { return bayer2(0.5 * a) * 0.25 + bayer2(a); }
-float bayer8(vec2 a) { return bayer4(0.5 * a) * 0.25 + bayer2(a); }
-
 void main() {
   vec2 c = floor(gl_FragCoord.xy);
-  vec4 s = texelFetch(uState, ivec2(c * 0.5), 0);
+  vec2 cell = floor(c * 0.5);
+  // the mask is judged per Life cell, at its centre on the page, and cells
+  // near content drop out in Bayer order: the fade is a dither, not a blend
+  vec2 page = vec2((cell.x * 2.0 + 1.0) * uCss,
+                   uViewH - (cell.y * 2.0 + 1.0) * uCss + uScroll);
+  float keep = 1.0 - uHasMask * texture(uMask, page / uMaskSize).r;
+  if (keep <= bayer4(cell) + 0.03125) {
+    o = vec4(uBg, 1.0);
+    return;
+  }
+  vec4 s = texelFetch(uState, ivec2(cell), 0);
   float tone = s.r > 0.5 ? 1.0 : s.g * 0.5;
   float acc = s.b * max(s.r, s.g * 0.8);
-  // this cell's position on the page, in CSS px from the document top
-  vec2 page = vec2((c.x + 0.5) * uCss, uViewH - (c.y + 0.5) * uCss + uScroll);
-  float keep = 1.0 - uHasMask * texture(uMask, page / uMaskSize).r;
-  tone *= keep;
-  acc *= keep;
   float t = uDither == 2 ? bayer8(c) + 0.0078125
           : uDither == 1 ? bayer4(c) + 0.03125
           : 0.5;
@@ -110,6 +134,11 @@ void main() {
 const DITHER = { none: 0, bayer4: 1, bayer8: 2 };
 const MAX_CELLS = 300_000;
 const MASK_PX = 8; // CSS px per mask texel
+// heat loses one 8-bit step every COOL_EVERY generations: ~50s from hot to
+// frozen at 10 generations a second
+const COOL_EVERY = 2;
+const FROZEN_AFTER = 255 * COOL_EVERY + 20; // generations, with slack
+const HEAT_RADIUS = 120; // CSS px reheated around the cursor
 
 function rgb(hex) {
   const n = parseInt(hex.slice(1), 16);
@@ -144,21 +173,20 @@ export function createLifeBackground(canvas, options) {
   };
   const size = { gw: 0, gh: 0, sw: 0, sh: 0, css: 1 };
   const ptr = { x: 0, y: 0, px: 0, py: 0, live: false, burst: false };
-  let progs,
-    state,
-    maskTex,
-    raf = 0,
-    running = false,
-    lost = false;
-  let dirty = true,
-    acc = 0,
-    last = 0,
-    lastScroll = -1,
-    ticks = 0;
-  let maskSize = [1, 1],
-    hasMask = 0,
-    pendingMask = null,
-    zones = [];
+  let progs, state, maskTex;
+  let raf = 0;
+  let running = false;
+  let lost = false;
+  let dirty = true;
+  let acc = 0;
+  let last = 0;
+  let lastScroll = -1;
+  let generation = 0;
+  let lastHeat = 0; // generation of the last reheat
+  let maskSize = [1, 1];
+  let hasMask = 0;
+  let pendingMask = null;
+  let zones = [];
 
   const lvh = document.createElement("div");
   lvh.setAttribute("aria-hidden", "true");
@@ -223,7 +251,7 @@ export function createLifeBackground(canvas, options) {
     return { tex, fbo };
   }
 
-  function draw(p, dest, w, h) {
+  function draw(dest, w, h) {
     gl.bindFramebuffer(gl.FRAMEBUFFER, dest ? dest.fbo : null);
     gl.viewport(0, 0, w, h);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -244,7 +272,7 @@ export function createLifeBackground(canvas, options) {
   // one sim pass: read a, write b, swap
   function pass(p) {
     bindState(p);
-    draw(p, state.b, size.sw, size.sh);
+    draw(state.b, size.sw, size.sh);
     const t = state.a;
     state.a = state.b;
     state.b = t;
@@ -286,32 +314,40 @@ export function createLifeBackground(canvas, options) {
     reseed();
   }
 
+  // a fresh soup, everywhere hot
   function reseed() {
     const p = use(progs.seed);
     gl.uniform1f(p.u("uSeed"), Math.random() * 100);
     gl.uniform1f(p.u("uDensity"), 0.14);
-    draw(p, state.a, size.sw, size.sh);
+    draw(state.a, size.sw, size.sh);
+    lastHeat = generation;
     // a few generations so the first frame already has trails
     for (let i = 0; i < 12; i++) step(false);
     dirty = true;
   }
 
+  const frozen = () => generation - lastHeat > FROZEN_AFTER;
+
   let sprinkle = 0;
   function step(seedMore = true) {
     const p = use(progs.step);
-    let z = 0,
-      x = 0,
-      y = 0;
+    let z = 0;
+    let x = 0;
+    let y = 0;
     if (seedMore && --sprinkle <= 0) {
       [x, y, z] = sprinklePoint();
       sprinkle = 8;
     }
     gl.uniform3f(p.u("uDrop"), x, y, z);
+    gl.uniform1f(p.u("uStep"), generation % 4096);
+    gl.uniform1f(p.u("uCool"), generation % COOL_EVERY ? 0 : 1 / 255);
     pass(p);
+    generation++;
   }
 
   // Keep the parts you can actually see alive: most sprinkles land in a
-  // visible zone (the strips between sections, wide side margins).
+  // visible zone (the strips between sections, wide side margins). They only
+  // take where the sim is still warm.
   const visible = [];
   function sprinklePoint() {
     const cell = size.css * 2;
@@ -337,15 +373,18 @@ export function createLifeBackground(canvas, options) {
 
   function paint() {
     const p = use(progs.paint);
-    // ~22 CSS px brush, bigger on a tap or click
-    const r = (ptr.burst ? 40 : 18) / (size.css * 2);
+    const cell = size.css * 2;
+    // ~18 CSS px brush, bigger on a tap or click
+    const r = (ptr.burst ? 40 : 18) / cell;
     gl.uniform2f(p.u("uFrom"), ptr.px, ptr.py);
     gl.uniform2f(p.u("uTo"), ptr.x, ptr.y);
     gl.uniform1f(p.u("uRadius"), Math.max(1.5, r));
+    gl.uniform1f(p.u("uHeatRadius"), HEAT_RADIUS / cell);
     pass(p);
     ptr.px = ptr.x;
     ptr.py = ptr.y;
     ptr.burst = false;
+    lastHeat = generation;
   }
 
   const colors = { bg: [0, 0, 0], ink: [0, 0, 0], accent: [0, 0, 0] };
@@ -371,22 +410,21 @@ export function createLifeBackground(canvas, options) {
     gl.uniform1f(p.u("uScroll"), lastScroll);
     gl.uniform1f(p.u("uHasMask"), hasMask);
     gl.uniform2f(p.u("uMaskSize"), maskSize[0], maskSize[1]);
-    draw(p, null, size.gw, size.gh);
+    draw(null, size.gw, size.gh);
   }
 
-  // ---- text mask
+  // ---- mask
+  // Each rect is drawn as N additive layers, each a little larger: the mask
+  // is 1 out to `margin`, then ramps to 0 over `fade`. Overlapping ramps add
+  // up, which keeps narrow gaps (between lines, paragraphs) fully clear.
   const maskCanvas = document.createElement("canvas");
-  // Each rect is drawn as N additive layers, each a little larger, so the
-  // mask ramps from 1 at the rect's edge to 0 at `fade` px out. Overlapping
-  // halos add up, which keeps small gaps (between paragraphs) fully clear.
   const LAYERS = 8;
-  function uploadMask(m) {
-    const [rects, docW, docH, fadeX, fadeY] = m;
+  function uploadMask({ rects, width, height, margin, fade }) {
     const max = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-    const sx = Math.max(MASK_PX, docW / max);
-    const sy = Math.max(MASK_PX, docH / max);
-    maskCanvas.width = Math.max(1, Math.ceil(docW / sx));
-    maskCanvas.height = Math.max(1, Math.ceil(docH / sy));
+    const sx = Math.max(MASK_PX, width / max);
+    const sy = Math.max(MASK_PX, height / max);
+    maskCanvas.width = Math.max(1, Math.ceil(width / sx));
+    maskCanvas.height = Math.max(1, Math.ceil(height / sy));
     const x = maskCanvas.getContext("2d");
     x.globalCompositeOperation = "source-over";
     x.fillStyle = "#000";
@@ -395,8 +433,8 @@ export function createLifeBackground(canvas, options) {
     const v = Math.ceil(255 / LAYERS);
     x.fillStyle = `rgb(${v},${v},${v})`;
     for (let k = 0; k < LAYERS; k++) {
-      const ex = (fadeX * k) / LAYERS;
-      const ey = (fadeY * k) / LAYERS;
+      const ex = margin[0] + (fade[0] * k) / LAYERS;
+      const ey = margin[1] + (fade[1] * k) / LAYERS;
       for (let i = 0; i < rects.length; i += 4)
         x.fillRect(
           (rects[i] - ex) / sx,
@@ -429,7 +467,13 @@ export function createLifeBackground(canvas, options) {
       dirty = true;
     }
     if (opts.motion) {
-      acc += Math.min(now - last, 250);
+      if (ptr.burst || (ptr.live && (ptr.x !== ptr.px || ptr.y !== ptr.py))) {
+        paint();
+        dirty = true;
+      }
+      // fully frozen: no sim work at all until something reheats it
+      if (frozen()) acc = 0;
+      else acc += Math.min(now - last, 250);
       const stepMs = 1000 / opts.speed;
       let n = 0;
       while (acc >= stepMs && n < 3) {
@@ -438,12 +482,7 @@ export function createLifeBackground(canvas, options) {
         n++;
       }
       if (n === 3) acc = 0;
-      if (ptr.live && (ptr.x !== ptr.px || ptr.y !== ptr.py || ptr.burst)) {
-        paint();
-        dirty = true;
-      }
       if (n) dirty = true;
-      ticks += n;
     }
     last = now;
     if (dirty) {
@@ -474,20 +513,32 @@ export function createLifeBackground(canvas, options) {
     ptr.x = x;
     ptr.y = y;
     ptr.live = true;
-    dirty = true;
   }
+  // Mouse and pen draw as they move. Touch only draws on a tap: a finger
+  // scrolling the page is reading, and shouldn't wake the pattern up.
+  const tap = { x: 0, y: 0, t: 0 };
   const on = {
-    pointermove: (e) => e.pointerType !== "touch" && move(e.clientX, e.clientY),
+    pointermove: (e) => {
+      if (e.pointerType !== "touch") move(e.clientX, e.clientY);
+    },
     pointerdown: (e) => {
+      if (e.pointerType === "touch") {
+        tap.x = e.clientX;
+        tap.y = e.clientY;
+        tap.t = e.timeStamp;
+        return;
+      }
       move(e.clientX, e.clientY, true);
       ptr.burst = true;
     },
-    // touchmove keeps firing while the page scrolls under a finger
-    touchstart: (e) =>
-      e.touches[0] && move(e.touches[0].clientX, e.touches[0].clientY, true),
-    touchmove: (e) =>
-      e.touches[0] && move(e.touches[0].clientX, e.touches[0].clientY),
-    touchend: (e) => !e.touches.length && (ptr.live = false),
+    pointerup: (e) => {
+      if (e.pointerType !== "touch") return;
+      const still = Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 10;
+      if (!still || e.timeStamp - tap.t > 400) return;
+      move(e.clientX, e.clientY, true);
+      ptr.live = false;
+      ptr.burst = true;
+    },
     resize: () => requestAnimationFrame(build),
     visibilitychange: () => (document.hidden ? stop() : start()),
     pagehide: stop,
@@ -495,14 +546,13 @@ export function createLifeBackground(canvas, options) {
   };
   const docOn = { mouseleave: () => (ptr.live = false) };
   const passive = { passive: true };
-  for (const k in on)
-    (k === "visibilitychange" ? document : window).addEventListener(
-      k,
-      on[k],
-      passive,
-    );
-  for (const k in docOn)
-    document.documentElement.addEventListener(k, docOn[k], passive);
+  const listen = (add) => {
+    const verb = add ? "addEventListener" : "removeEventListener";
+    for (const k in on)
+      (k === "visibilitychange" ? document : window)[verb](k, on[k], passive);
+    for (const k in docOn) document.documentElement[verb](k, docOn[k], passive);
+  };
+  listen(true);
 
   function init() {
     progs = {
@@ -555,32 +605,38 @@ export function createLifeBackground(canvas, options) {
       }
     },
     /**
-     * Fade the pattern out behind content. All rects are flat
-     * [x, y, w, h, ...] arrays in document CSS px.
+     * Keep the pattern clear of content. All rects are flat [x, y, w, h, ...]
+     * arrays in document CSS px.
      * @param {{rects: number[], width: number, height: number,
-     *   fade?: [number, number], zones?: number[]}} mask
-     *   `fade` is the ramp width [x, y]; `zones` are where to keep seeding.
+     *   margin?: [number, number], fade?: [number, number], zones?: number[]}} mask
+     *   `margin` stays fully clear, then the pattern dissolves back in over
+     *   `fade`; `zones` are where to keep sprinkling new cells.
      */
-    setMask({ rects, width, height, fade = [48, 32], zones: z = [] }) {
+    setMask({
+      rects,
+      width,
+      height,
+      margin = [16, 12],
+      fade = [24, 24],
+      zones: z = [],
+    }) {
       zones = [];
       for (let i = 0; i < z.length; i += 4) zones.push(z.slice(i, i + 4));
-      pendingMask = [rects, width, height, fade[0], fade[1]];
+      pendingMask = { rects, width, height, margin, fade };
       if (!lost) uploadMask(pendingMask);
     },
     reseed() {
       if (!lost) reseed();
     },
-    stats: () => ({ grid: [size.gw, size.gh], sim: [size.sw, size.sh], ticks }),
+    stats: () => ({
+      grid: [size.gw, size.gh],
+      sim: [size.sw, size.sh],
+      generation,
+      frozen: frozen(),
+    }),
     destroy() {
       stop();
-      for (const k in on)
-        (k === "visibilitychange" ? document : window).removeEventListener(
-          k,
-          on[k],
-          passive,
-        );
-      for (const k in docOn)
-        document.documentElement.removeEventListener(k, docOn[k], passive);
+      listen(false);
       lvh.remove();
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     },

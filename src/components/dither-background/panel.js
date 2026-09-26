@@ -2,14 +2,14 @@
 // string so the Astro component and the standalone preview share it.
 
 export const ACCENTS = [
+  { id: "red", light: "#AF3029", dark: "#D14D41" },
+  { id: "orange", light: "#BC5215", dark: "#DA702C" },
+  { id: "yellow", light: "#AD8301", dark: "#D0A215" },
   { id: "green", light: "#66800B", dark: "#879A39" },
   { id: "cyan", light: "#24837B", dark: "#3AA99F" },
   { id: "blue", light: "#205EA6", dark: "#4385BE" },
   { id: "purple", light: "#5E409D", dark: "#8B7EC8" },
   { id: "magenta", light: "#A02F6F", dark: "#CE5D97" },
-  { id: "red", light: "#AF3029", dark: "#D14D41" },
-  { id: "orange", light: "#BC5215", dark: "#DA702C" },
-  { id: "yellow", light: "#AD8301", dark: "#D0A215" },
 ];
 
 const radios = (name, items) =>
@@ -33,7 +33,7 @@ export const PANEL_HTML = `
     <span class="bg-label">colour</span>
     ${ACCENTS.map(
       (a) =>
-        `<label title="${a.id}"><input type="radio" name="bg-accent" value="${a.id}" aria-label="${a.id}"><span style="--sw-light:${a.light};--sw-dark:${a.dark}"></span></label>`,
+        `<label title="${a.id === "cyan" ? "teal" : a.id}"><input type="radio" name="bg-accent" value="${a.id}" aria-label="${a.id === "cyan" ? "teal" : a.id}"><span style="--sw-light:${a.light};--sw-dark:${a.dark}"></span></label>`,
     ).join("")}
   </div>
   <div class="bg-row" role="radiogroup" aria-label="theme"><span class="bg-label">theme</span>${radios(

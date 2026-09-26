@@ -1,39 +1,4 @@
-/* 1-bit Flexoki page colours; the background canvas paints the same bg */
-:root {
-  --bg: #fffcf0;
-  --tx: #100f0f;
-  --tx-2: #6f6e69;
-  --tx-3: #b7b5ac;
-  --accent: #66800b;
-  color-scheme: light;
-}
-:root.dark {
-  --bg: #100f0f;
-  --tx: #cecdc3;
-  --tx-2: #878580;
-  --tx-3: #575653;
-  --accent: #879a39;
-  color-scheme: dark;
-}
-html {
-  background: var(--bg);
-  color: var(--tx);
-}
-body {
-  background: transparent;
-}
-a {
-  color: inherit;
-}
-a:hover {
-  color: var(--accent);
-}
-blockquote {
-  color: var(--tx-2);
-}
-.hr {
-  color: var(--tx-3);
-}
+/* page colours (--bg, --tx, --accent, ...) live in styles/globals.css */
 
 #bg-canvas {
   position: fixed;
@@ -196,12 +161,5 @@ blockquote {
   }
   #bg-reseed {
     padding: 10px 14px;
-  }
-}
-
-/* the ascii-art header is ~41ch wide; scale it so phones don't scroll sideways */
-@media (max-width: 550px) {
-  header pre {
-    font-size: min(16px, 2.8vw);
   }
 }

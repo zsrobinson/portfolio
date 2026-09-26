@@ -1,7 +1,7 @@
 ---
 import Footer from "~/components/footer.astro";
 import Header from "~/components/header.astro";
-import PrototypeBackground from "~/components/prototype-background/PrototypeBackground.astro";
+import DitherBackground from "~/components/dither-background/DitherBackground.astro";
 import "~/styles/globals.css";
 import "~/styles/fonts.css";
 
@@ -22,10 +22,6 @@ const {
   noIndex = false,
   ogImage = "/og/index.png",
 } = Astro.props;
-
-// PROTOTYPE: never ship the background experiment to production
-const showPrototype =
-  import.meta.env.DEV || process.env.VERCEL_ENV === "preview";
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site);
@@ -108,7 +104,7 @@ const trimmedDescription =
   </head>
 
   <body>
-    {showPrototype && <PrototypeBackground />}
+    <DitherBackground />
     <Header parent={parent} />
 
     <main>

@@ -1,5 +1,5 @@
 // Wires the Life background to the page: settings popover, theme, and the
-// text mask that keeps the pattern out from behind anything you read.
+// mask that keeps the pattern out from behind anything you read.
 
 import { createLifeBackground } from "./life.js";
 import { ACCENTS } from "./panel.js";
@@ -9,11 +9,15 @@ const TONES = {
   dark: { bg: "#100F0F", ink: "#878580" },
 };
 const KEY = "background";
-// Everything a reader reads. The pattern is blanked behind these boxes;
-// anything else can opt in with a data-bg-mask attribute.
-const TEXT =
-  "header, .hr, [data-bg-mask], main :is(p, li, h1, h2, h3, h4, h5, h6, pre, blockquote, table, img, figure, hr), footer p";
-const PAD = 4;
+// Content the pattern fades out around (anything else can opt in with a
+// data-bg-mask attribute). The .hr dividers are left open, so between
+// header, main and footer the pattern runs the full width of the page.
+const CONTENT = "header, main > :not(.hr), footer > :not(.hr), [data-bg-mask]";
+const SEAMS = ".hr";
+// how far the dithered fade reaches out from content, in CSS px [x, y]
+const FADE = [48, 40];
+// side margins narrower than this (phones) are masked completely
+const MIN_MARGIN = 64;
 
 function load() {
   try {
@@ -50,7 +54,7 @@ export function mountBackground({ allowSoftware = false } = {}) {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const settings = {
-    accent: "green",
+    accent: "cyan",
     pixel: 4,
     dither: "bayer4",
     motion: reduced ? "off" : "on",
@@ -68,8 +72,11 @@ export function mountBackground({ allowSoftware = false } = {}) {
 
   function colors() {
     const dark = isDark();
-    const a = ACCENTS.find((x) => x.id === settings.accent) || ACCENTS[0];
+    const a =
+      ACCENTS.find((x) => x.id === settings.accent) ||
+      ACCENTS.find((x) => x.id === "cyan");
     html.classList.toggle("dark", dark);
+    html.style.setProperty("--accent", dark ? a.dark : a.light);
     return {
       ...TONES[dark ? "dark" : "light"],
       accent: dark ? a.dark : a.light,
@@ -138,30 +145,45 @@ export function mountBackground({ allowSoftware = false } = {}) {
     () => settings.theme === "system" && apply(),
   );
 
-  // ---- text mask, in document coordinates so scrolling only moves a uniform
+  // ---- mask, in document coordinates so scrolling only moves a uniform
   let queued = false;
   function measureText() {
     queued = false;
     if (!engine) return;
     const sx = window.scrollX;
     const sy = window.scrollY;
+    const d = document.documentElement;
+    const width = Math.max(d.scrollWidth, window.innerWidth);
+    const height = Math.max(d.scrollHeight, window.innerHeight);
     const rects = [];
-    for (const el of document.querySelectorAll(TEXT)) {
+    let left = width;
+    let right = 0;
+    for (const el of document.querySelectorAll(CONTENT)) {
       const r = el.getBoundingClientRect();
       if (!r.width || !r.height) continue;
-      rects.push(
-        r.left + sx - PAD,
-        r.top + sy - PAD,
-        r.width + PAD * 2,
-        r.height + PAD * 2,
-      );
+      rects.push(r.left + sx, r.top + sy, r.width, r.height);
+      left = Math.min(left, r.left + sx);
+      right = Math.max(right, r.right + sx);
     }
-    const d = document.documentElement;
-    engine.setMask(
-      rects,
-      Math.max(d.scrollWidth, window.innerWidth),
-      Math.max(d.scrollHeight, window.innerHeight),
-    );
+    // no room on the sides (phones): run the mask edge to edge, so the pattern
+    // only shows in the strips between sections
+    if (left < MIN_MARGIN || width - right < MIN_MARGIN) {
+      for (let i = 0; i < rects.length; i += 4) {
+        rects[i] = -FADE[0];
+        rects[i + 2] = width + FADE[0] * 2;
+      }
+    }
+    // places worth keeping alive: the strips between sections, and the side
+    // margins when there's room for them
+    const zones = [];
+    for (const el of document.querySelectorAll(SEAMS)) {
+      const r = el.getBoundingClientRect();
+      if (r.height) zones.push(0, r.top + sy, width, r.height);
+    }
+    if (left - FADE[0] > 32) zones.push(0, 0, left - FADE[0], height);
+    if (width - right - FADE[0] > 32)
+      zones.push(right + FADE[0], 0, width - right - FADE[0], height);
+    engine.setMask({ rects, width, height, fade: FADE, zones });
   }
   const queueMeasure = () => {
     if (queued) return;
@@ -176,6 +198,7 @@ export function mountBackground({ allowSoftware = false } = {}) {
       allowSoftware,
     });
     if (!engine) return; // no WebGL2 (or software only): the flat page background stays
+    html.classList.add("bg-live");
     measureText();
     document.fonts?.ready.then(queueMeasure);
     new ResizeObserver(queueMeasure).observe(document.body);

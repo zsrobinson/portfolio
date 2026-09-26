@@ -28,6 +28,12 @@ import HorizontalRule from "./horizontal-rule.astro";
   pre {
     margin: 0;
   }
+  /* the ascii art is ~41ch wide; scale it so phones don't scroll sideways */
+  @media (max-width: 550px) {
+    pre {
+      font-size: min(16px, 2.8vw);
+    }
+  }
   nav > * {
     display: block;
     margin-right: 1ch;

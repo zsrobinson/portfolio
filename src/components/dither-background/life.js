@@ -6,8 +6,9 @@
 // and the canvas only redraws when the sim ticked, the cursor painted or the
 // page scrolled, so an idle page costs ~10 tiny draws a second.
 //
-// Text stays readable through a mask: the host passes the page's text blocks
-// (document coordinates) and the shader blanks the pattern behind them.
+// Text stays readable through a mask: the host passes the page's content
+// blocks (document coordinates) and the shader fades the pattern out around
+// them. The mask is a soft ramp, so the ordered dither itself draws the fade.
 
 const VERT = `#version 300 es
 void main() {
@@ -156,7 +157,8 @@ export function createLifeBackground(canvas, options) {
     ticks = 0;
   let maskSize = [1, 1],
     hasMask = 0,
-    pendingMask = null;
+    pendingMask = null,
+    zones = [];
 
   const lvh = document.createElement("div");
   lvh.setAttribute("aria-hidden", "true");
@@ -301,13 +303,36 @@ export function createLifeBackground(canvas, options) {
       x = 0,
       y = 0;
     if (seedMore && --sprinkle <= 0) {
-      x = Math.random() * size.sw;
-      y = Math.random() * size.sh;
-      z = 4 + Math.random() * 4;
+      [x, y, z] = sprinklePoint();
       sprinkle = 8;
     }
     gl.uniform3f(p.u("uDrop"), x, y, z);
     pass(p);
+  }
+
+  // Keep the parts you can actually see alive: most sprinkles land in a
+  // visible zone (the strips between sections, wide side margins).
+  const visible = [];
+  function sprinklePoint() {
+    const cell = size.css * 2;
+    const viewH = size.gh * size.css;
+    let r = 4 + Math.random() * 4;
+    visible.length = 0;
+    for (const z of zones) {
+      const y0 = Math.max(z[1], lastScroll);
+      const y1 = Math.min(z[1] + z[3], lastScroll + viewH);
+      if (y1 - y0 > cell * 2)
+        visible.push(z[0], y0 - lastScroll, z[2], y1 - y0);
+    }
+    if (visible.length && Math.random() < 0.75) {
+      const i = 4 * Math.floor((Math.random() * visible.length) / 4);
+      const h = visible[i + 3];
+      r = Math.min(r, h / cell / 2);
+      const x = visible[i] + Math.random() * visible[i + 2];
+      const y = visible[i + 1] + h / 2 + (Math.random() - 0.5) * (h - r * cell);
+      return [x / cell, (viewH - y) / cell, r];
+    }
+    return [Math.random() * size.sw, Math.random() * size.sh, r];
   }
 
   function paint() {
@@ -351,22 +376,35 @@ export function createLifeBackground(canvas, options) {
 
   // ---- text mask
   const maskCanvas = document.createElement("canvas");
+  // Each rect is drawn as N additive layers, each a little larger, so the
+  // mask ramps from 1 at the rect's edge to 0 at `fade` px out. Overlapping
+  // halos add up, which keeps small gaps (between paragraphs) fully clear.
+  const LAYERS = 8;
   function uploadMask(m) {
-    const [rects, docW, docH] = m;
+    const [rects, docW, docH, fadeX, fadeY] = m;
     const max = gl.getParameter(gl.MAX_TEXTURE_SIZE);
     const sx = Math.max(MASK_PX, docW / max);
     const sy = Math.max(MASK_PX, docH / max);
     maskCanvas.width = Math.max(1, Math.ceil(docW / sx));
     maskCanvas.height = Math.max(1, Math.ceil(docH / sy));
     const x = maskCanvas.getContext("2d");
-    x.fillStyle = "#fff";
-    for (let i = 0; i < rects.length; i += 4)
-      x.fillRect(
-        rects[i] / sx,
-        rects[i + 1] / sy,
-        rects[i + 2] / sx,
-        rects[i + 3] / sy,
-      );
+    x.globalCompositeOperation = "source-over";
+    x.fillStyle = "#000";
+    x.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
+    x.globalCompositeOperation = "lighter";
+    const v = Math.ceil(255 / LAYERS);
+    x.fillStyle = `rgb(${v},${v},${v})`;
+    for (let k = 0; k < LAYERS; k++) {
+      const ex = (fadeX * k) / LAYERS;
+      const ey = (fadeY * k) / LAYERS;
+      for (let i = 0; i < rects.length; i += 4)
+        x.fillRect(
+          (rects[i] - ex) / sx,
+          (rects[i + 1] - ey) / sy,
+          (rects[i + 2] + ex * 2) / sx,
+          (rects[i + 3] + ey * 2) / sy,
+        );
+    }
     gl.bindTexture(gl.TEXTURE_2D, maskTex);
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
     gl.texImage2D(
@@ -516,9 +554,17 @@ export function createLifeBackground(canvas, options) {
         build();
       }
     },
-    /** Blank the pattern behind these rects: flat [x, y, w, h, ...] in document CSS px. */
-    setMask(rects, docWidth, docHeight) {
-      pendingMask = [rects, docWidth, docHeight];
+    /**
+     * Fade the pattern out behind content. All rects are flat
+     * [x, y, w, h, ...] arrays in document CSS px.
+     * @param {{rects: number[], width: number, height: number,
+     *   fade?: [number, number], zones?: number[]}} mask
+     *   `fade` is the ramp width [x, y]; `zones` are where to keep seeding.
+     */
+    setMask({ rects, width, height, fade = [48, 32], zones: z = [] }) {
+      zones = [];
+      for (let i = 0; i < z.length; i += 4) zones.push(z.slice(i, i + 4));
+      pendingMask = [rects, width, height, fade[0], fade[1]];
       if (!lost) uploadMask(pendingMask);
     },
     reseed() {

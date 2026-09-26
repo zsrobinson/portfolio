@@ -2,10 +2,14 @@
 // homepage into one self-contained HTML file you can open or share.
 //
 //   node src/components/prototype-background/build-standalone.mjs out.html
+//   node src/components/prototype-background/build-standalone.mjs out.html --final
+//
+// --final builds the chosen design (components/dither-background) instead.
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { PANEL_HTML } from "../dither-background/panel.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "../../..");
@@ -21,7 +25,16 @@ const strip = (src) =>
     .replace(/^import .*?;\s*$/gm, "")
     .replace(/^export (const|function) /gm, "$1 ");
 
-const js = ["engine.js", "themes.js", "ui.js"]
+const final = process.argv.includes("--final");
+const js = (
+  final
+    ? [
+        "../dither-background/panel.js",
+        "../dither-background/life.js",
+        "../dither-background/controls.js",
+      ]
+    : ["engine.js", "themes.js", "ui.js"]
+)
   .map((f) => `// ---- ${f}\n${strip(read(f))}`)
   .join("\n");
 const font = readFileSync(
@@ -99,11 +112,7 @@ const projects = [
 const esc = (s) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 
-const html = `<title>Dither Lab</title>
-<meta name="description" content="Prototype: five animated, mouse-reactive dithered backgrounds for zsrobinson.com.">
-<style>
-@font-face { font-family: "Apple Garamond"; src: url(data:font/ttf;base64,${font}) format("truetype"); font-display: swap; }
-:root {
+const labTokens = `:root {
   --bg: #FFFCF0; --tx: #100F0F; --tx-2: #6F6E69; --tx-3: #B7B5AC; --ui: #E6E4D9;
   --link: #205EA6; --link-visited: #5E409D; --proto-accent: #87D3C3;
   --font-mono: Menlo, ui-monospace, "SF Mono", "DejaVu Sans Mono", monospace;
@@ -113,9 +122,17 @@ const html = `<title>Dither Lab</title>
   :root:not([data-theme="light"]) { --bg: #100F0F; --tx: #CECDC3; --tx-2: #878580; --tx-3: #575653; --ui: #282726; --link: #4385BE; --link-visited: #8B7EC8; color-scheme: dark; }
 }
 :root[data-theme="dark"] { --bg: #100F0F; --tx: #CECDC3; --tx-2: #878580; --tx-3: #575653; --ui: #282726; --link: #4385BE; --link-visited: #8B7EC8; color-scheme: dark; }
+a { color: var(--link); } a:visited { color: var(--link-visited); }`;
+
+const html = `<title>${final ? "Life Background" : "Dither Lab"}</title>
+<meta name="description" content="${final ? "Preview of the Game of Life background for zsrobinson.com." : "Prototype: five animated, mouse-reactive dithered backgrounds for zsrobinson.com."}">
+${final ? `<script>(() => { let t = null; try { t = localStorage.getItem("theme"); } catch {} const f = document.documentElement.dataset.theme; if (t === "dark" || (!t && (f ? f === "dark" : matchMedia("(prefers-color-scheme: dark)").matches))) document.documentElement.classList.add("dark"); })();</script>` : ""}
+<style>
+@font-face { font-family: "Apple Garamond"; src: url(data:font/ttf;base64,${font}) format("truetype"); font-display: swap; }
+:root { --font-mono: Menlo, ui-monospace, "SF Mono", "DejaVu Sans Mono", monospace; --font-display: "Apple Garamond", "Times New Roman", serif; }
+${final ? "" : labTokens}
 html { background: var(--bg); color: var(--tx); font-family: var(--font-mono); font-size: 16px; line-height: 1.5; }
 body { background: transparent; font: inherit; padding: 1rem 4ch; margin: 0 auto; max-width: 76ch; }
-a { color: var(--link); } a:visited { color: var(--link-visited); }
 h2 { font-family: var(--font-display); font-weight: normal; font-size: 1.875rem; margin: 32px 1rem 0 0; line-height: 1; text-wrap: balance; }
 p { margin: 1rem 0; }
 blockquote { padding-left: 4ch; margin: 1rem 0; color: var(--tx-2); position: relative; }
@@ -133,10 +150,15 @@ ul.posts blockquote { overflow: hidden; display: -webkit-box; -webkit-box-orient
 .proto-note { font-size: 12px; color: var(--tx-2); margin: 0 0 1.5rem; }
 .proto-note kbd { font: inherit; border: 1px solid var(--tx-3); padding: 0 4px; }
 @media (max-width: 550px) { body { padding: 1rem 2ch; } header pre { font-size: min(16px, 2.8vw); } }
-${read("prototype.css")}
+${final ? read("../dither-background/background.css") : read("prototype.css")}
 </style>
 
-<p class="proto-note">// prototype: 5 background variants for zsrobinson.com. <kbd>&larr;</kbd> <kbd>&rarr;</kbd> switch variant, move / drag / click anywhere to interact, <b>tweaks</b> for theme, dither, pixel size and fps. the readout bottom-left shows live cost.</p>
+${
+  final
+    ? `<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<p class="proto-note" data-bg-mask>// preview: game of life background for zsrobinson.com. drag or tap anywhere to add cells (they carry the accent colour). the glider button, bottom right, opens the settings.</p>`
+    : `<p class="proto-note">// prototype: 5 background variants for zsrobinson.com. <kbd>&larr;</kbd> <kbd>&rarr;</kbd> switch variant, move / drag / click anywhere to interact, <b>tweaks</b> for theme, dither, pixel size and fps. the readout bottom-left shows live cost.</p>`
+}
 
 <header>
   <a href="https://zsrobinson.com" target="_blank"><pre>                _    _
@@ -173,11 +195,11 @@ ${projects.map(([d, ongoing, url, t, desc]) => `    <li><time datetime="${d}">${
   <p aria-hidden="true" class="hr">${"-".repeat(80)}</p>
   <p>(c) 2026 Zachary Robinson. Made with &lt;3 using <a href="https://astro.build" target="_blank">Astro</a>.</p>
 </footer>
-
+${final ? PANEL_HTML : ""}
 <script>
 (() => {
 ${js}
-mountPrototype({ persist: hashPersist(), allowSoftware: !!window.__PROTO_ALLOW_SOFTWARE });
+${final ? "mountBackground" : "mountPrototype"}({ ${final ? "" : "persist: hashPersist(), "}allowSoftware: !!window.__PROTO_ALLOW_SOFTWARE });
 })();
 </script>
 `;

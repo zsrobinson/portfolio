@@ -1,0 +1,207 @@
+/* 1-bit Flexoki page colours; the background canvas paints the same bg */
+:root {
+  --bg: #fffcf0;
+  --tx: #100f0f;
+  --tx-2: #6f6e69;
+  --tx-3: #b7b5ac;
+  --accent: #66800b;
+  color-scheme: light;
+}
+:root.dark {
+  --bg: #100f0f;
+  --tx: #cecdc3;
+  --tx-2: #878580;
+  --tx-3: #575653;
+  --accent: #879a39;
+  color-scheme: dark;
+}
+html {
+  background: var(--bg);
+  color: var(--tx);
+}
+body {
+  background: transparent;
+}
+a {
+  color: inherit;
+}
+a:hover {
+  color: var(--accent);
+}
+blockquote {
+  color: var(--tx-2);
+}
+.hr {
+  color: var(--tx-3);
+}
+
+#bg-canvas {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+  contain: strict;
+  image-rendering: pixelated;
+}
+
+/* ---- toggle + popover */
+.bg-toggle {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: var(--bg);
+  color: var(--accent);
+  border: 1px solid var(--tx);
+  box-shadow: 3px 3px 0 var(--tx);
+  cursor: pointer;
+}
+.bg-toggle svg {
+  fill: currentColor;
+}
+.bg-toggle:active {
+  translate: 2px 2px;
+  box-shadow: 1px 1px 0 var(--tx);
+}
+.bg-toggle:focus-visible,
+.bg-panel :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.bg-panel {
+  position: fixed;
+  inset: auto 16px calc(72px + env(safe-area-inset-bottom, 0px)) auto;
+  margin: 0;
+  width: min(300px, calc(100vw - 32px));
+  max-height: calc(100dvh - 96px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 12px 14px 14px;
+  background: var(--bg);
+  color: var(--tx);
+  border: 1px solid var(--tx);
+  box-shadow: 4px 4px 0 var(--tx);
+  font: 13px/1.4 var(--font-mono, Menlo, ui-monospace, monospace);
+}
+.bg-panel:popover-open,
+.bg-panel:not([popover]):not([hidden]) {
+  display: grid;
+  gap: 10px;
+}
+.bg-panel p {
+  margin: 0;
+}
+.bg-panel-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 1ch;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--tx-3);
+  font-weight: bold;
+}
+.bg-panel-title span {
+  font-weight: normal;
+  color: var(--tx-2);
+}
+.bg-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+.bg-label {
+  width: 7ch;
+  color: var(--tx-2);
+}
+.bg-panel input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.bg-panel label span {
+  display: block;
+  padding: 2px 7px;
+  border: 1px solid var(--tx-3);
+  cursor: pointer;
+}
+.bg-panel input:checked + span {
+  background: var(--tx);
+  color: var(--bg);
+  border-color: var(--tx);
+}
+.bg-panel input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.bg-swatches label span {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  background: var(--sw-light);
+  border-color: transparent;
+}
+:root.dark .bg-swatches label span {
+  background: var(--sw-dark);
+}
+.bg-swatches input:checked + span {
+  background: var(--sw-light);
+  outline: 2px solid var(--tx);
+  outline-offset: 2px;
+}
+:root.dark .bg-swatches input:checked + span {
+  background: var(--sw-dark);
+}
+.bg-panel-foot {
+  display: flex;
+  align-items: center;
+  gap: 1ch;
+  padding-top: 6px;
+  border-top: 1px dashed var(--tx-3);
+  color: var(--tx-2);
+  font-size: 11px;
+}
+#bg-reseed {
+  padding: 3px 10px;
+  font: inherit;
+  font-size: 13px;
+  background: transparent;
+  color: var(--tx);
+  border: 1px solid var(--tx);
+  cursor: pointer;
+}
+
+@media (pointer: coarse) {
+  .bg-toggle {
+    width: 44px;
+    height: 44px;
+  }
+  .bg-panel {
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+  .bg-panel label span {
+    padding: 8px 10px;
+  }
+  .bg-swatches label span {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+  }
+  #bg-reseed {
+    padding: 10px 14px;
+  }
+}
+
+/* the ascii-art header is ~41ch wide; scale it so phones don't scroll sideways */
+@media (max-width: 550px) {
+  header pre {
+    font-size: min(16px, 2.8vw);
+  }
+}
